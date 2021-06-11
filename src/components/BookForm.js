@@ -20,6 +20,8 @@ const BookForm = ({
   setRead,
   readPages,
   setReadPages,
+  cover,
+  setCover,
 }) => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -50,6 +52,16 @@ const BookForm = ({
           <DatePicker
             value={published}
             onChange={(published) => setPublished(published)}
+          />
+        </div>
+        <div className="book-cover form-field">
+          <div className="title">Book Cover (optional)</div>
+          <input
+            type="text"
+            value={cover}
+            onChange={(e) => setCover(e.target.value)}
+            placeholder="Cover"
+            autoFocus
           />
         </div>
         <div className="book-pages form-field">
