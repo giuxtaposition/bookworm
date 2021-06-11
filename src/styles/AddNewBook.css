@@ -1,4 +1,4 @@
-.AddNewBook {
+.AddNewBook .container {
   position: fixed;
   width: 60px;
   height: 60px;
@@ -7,10 +7,48 @@
   background-color: #0c9;
   color: #fff;
   border-radius: 50px;
-  text-align: center;
   box-shadow: 2px 2px 3px #999;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.AddNewBook svg {
-  margin-top: 22px;
+.AddNewBook .label-container {
+  position: fixed;
+  bottom: 48px;
+  right: 105px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  visibility: hidden;
+}
+
+.AddNewBook .label-text {
+  color: #fff;
+  background: rgba(51, 51, 51, 0.5);
+  display: table-cell;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+.AddNewBook .container + div.label-container {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.5s ease;
+}
+
+.AddNewBook .container:hover + div.label-container {
+  visibility: visible;
+  opacity: 1;
+}
+
+.AddNewBook .label-text::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent rgba(51, 51, 51, 0.5);
 }

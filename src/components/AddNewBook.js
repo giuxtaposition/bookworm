@@ -5,7 +5,13 @@ import "../styles/AddNewBook.css";
 const AddNewBook = () => {
   return (
     <div className="AddNewBook">
-      <AiOutlinePlus />
+      <div className="container">
+        <AiOutlinePlus />
+      </div>
+
+      <div className="label-container">
+        <div className="label-text">Add New Book</div>
+      </div>
     </div>
   );
 };
