@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "../styles/Book.css";
 import { ImCross } from "react-icons/im";
+import { LibraryContext } from "../context";
 
 const Book = ({
   title,
@@ -14,8 +15,13 @@ const Book = ({
   setLibraryBookOpen,
   id,
 }) => {
+  //STATES
   const [open, setOpen] = useState(false);
   const [readState, setReadState] = useState(read);
+  const [bookToDelete, setBookToDelete] = useState(undefined);
+
+  //CONTEXT
+  const { books, setBooks } = useContext(LibraryContext);
 
   const handleOpenClick = () => {
     if (open) {
@@ -27,6 +33,25 @@ const Book = ({
     }
   };
 
+  const handleDelete = () => {
+    const newBooks = books.filter((book) => book.id !== id);
+
+    if (newBooks.length === 0) {
+      setBooks([]);
+      localStorage.removeItem("books");
+    } else {
+      setBooks(newBooks);
+      setBookToDelete("delete");
+    }
+  };
+
+  useEffect(() => {
+    if (bookToDelete) {
+      localStorage.setItem("books", JSON.stringify(books));
+    }
+  }, [books, bookToDelete]);
+
+  // Handle Opened Book (can only be one)
   useEffect(() => {
     if (libraryBookOpen !== id) {
       setOpen(false);
@@ -71,7 +96,13 @@ const Book = ({
             </div>
           </>
         )}
-        <button className="delete">
+        <button
+          className="delete"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDelete();
+          }}
+        >
           <ImCross />
         </button>
       </div>

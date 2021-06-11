@@ -19,6 +19,7 @@ const AddNewBook = () => {
   const [readPages, setReadPages] = useState(0);
   const [cover, setCover] = useState("");
   const { books, setBooks } = useContext(LibraryContext);
+  const [addNewBook, setAddNewBook] = useState(undefined);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,6 +50,7 @@ const AddNewBook = () => {
     }
 
     setBooks((books) => [...books, book]);
+    setAddNewBook(book);
 
     setTitle("");
     setAuthor("");
@@ -57,15 +59,13 @@ const AddNewBook = () => {
     setRead(false);
     setReadPages(0);
     setCover("");
-
-    console.log(books);
   };
 
   useEffect(() => {
-    if (books.length !== 0) {
+    if (addNewBook) {
       localStorage.setItem("books", JSON.stringify(books));
     }
-  }, [books]);
+  }, [addNewBook, books]);
 
   return (
     <div className="AddNewBook">
