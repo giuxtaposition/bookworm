@@ -55,12 +55,15 @@ const Book = ({
                 <input
                   type="checkbox"
                   className="read-switch-checkbox"
-                  name="readSwitch"
-                  id="readSwitch"
+                  name={`readSwitch-${id}`}
+                  id={`readSwitch-${id}`}
                   checked={readState}
                   onChange={(e) => setReadState(e.target.checked)}
                 />
-                <label className="read-switch-label" htmlFor="readSwitch">
+                <label
+                  className="read-switch-label"
+                  htmlFor={`readSwitch-${id}`}
+                >
                   <span className="read-switch-inner"></span>
                   <span className="read-switch-switch"></span>
                 </label>
