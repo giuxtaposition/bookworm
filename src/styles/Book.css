@@ -1,0 +1,164 @@
+.Book {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  cursor: pointer;
+  width: 40em;
+  margin-bottom: 2em;
+  padding: 2em;
+
+  perspective: 30em;
+  transition: all 0.1s;
+  background-color: #b4c2f0;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  height: 5em;
+  position: relative;
+}
+
+.Book.open {
+  height: auto;
+}
+
+.Book .cover {
+  transition: all 0.5s;
+  width: 10em;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.Book.open .cover {
+  transform: rotateY(50deg);
+  box-shadow: -10px 10px 10px 2px rgba(0, 0, 0, 0.2), -2px 0px 0px 0px #888;
+  transition: all 0.5s;
+  transition-delay: 0s;
+  transition-delay: 0.05s;
+}
+
+.Book .details {
+  margin-left: 2em;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  transition: all 0.2s;
+}
+.Book.open .details {
+  text-align: start;
+}
+
+.Book .title {
+  font-weight: bold;
+  font-size: 1.25em;
+}
+
+.Book .delete {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  cursor: pointer;
+  background-color: inherit;
+
+  transform: scale(0.8);
+  transition: transform 0.25s, opacity 0.25s;
+  opacity: 0.7;
+}
+
+.Book .delete svg {
+  fill: lightslategray;
+}
+
+.Book .delete:hover {
+  transform: rotate(90deg) scale(1.2);
+  opacity: 1;
+}
+
+.Book .read-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.Book .read-state .title {
+  font-size: 1em;
+}
+
+.read-switch {
+  position: relative;
+  width: 4em;
+  display: inline-block;
+  vertical-align: middle;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  text-align: left;
+}
+.read-switch .read-switch-checkbox {
+  display: none;
+}
+.read-switch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border: 0 solid #bbb;
+  border-radius: 20px;
+  margin: 0;
+}
+.read-switch-inner {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+}
+.read-switch-inner:before,
+.read-switch-inner:after {
+  display: block;
+  float: left;
+  width: 50%;
+  height: 34px;
+  padding: 0;
+  line-height: 34px;
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+.read-switch-inner:before {
+  content: "Yes";
+  text-transform: uppercase;
+  padding-left: 10px;
+  background-color: lightseagreen;
+  color: #fff;
+}
+
+.read-switch-inner:after {
+  content: "No";
+  text-transform: uppercase;
+  padding-right: 10px;
+  background-color: #bbb;
+  color: #fff;
+  text-align: right;
+}
+.read-switch-switch {
+  display: block;
+  width: 24px;
+  margin: 5px;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 40px;
+  border: 0 solid #bbb;
+  border-radius: 20px;
+  transition: all 0.3s ease-in 0s;
+}
+.read-switch-checkbox:checked + .read-switch-label .read-switch-inner {
+  margin-left: 0;
+}
+
+.read-switch-checkbox:checked + .read-switch-label .read-switch-switch {
+  right: 0;
+}

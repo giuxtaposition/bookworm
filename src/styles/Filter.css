@@ -1,0 +1,28 @@
+.Filter {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #e9e9e9;
+  padding: 0.5em;
+}
+
+.Filter .order-by-filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.Filter .order-by-filter .asc-desc {
+  margin-left: 0.5em;
+  cursor: pointer;
+}
+
+.Filter .search-filter input[type="text"] {
+  border: none;
+}
+
+.Filter .search-filter button {
+  border: none;
+  cursor: pointer;
+}
