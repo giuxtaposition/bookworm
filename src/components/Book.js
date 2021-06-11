@@ -18,11 +18,13 @@ const Book = ({
   //STATES
   const [open, setOpen] = useState(false);
   const [readState, setReadState] = useState(read);
+  const [readPages, setRedPages] = useState(pagesRead);
   const [bookToDelete, setBookToDelete] = useState(undefined);
 
   //CONTEXT
   const { books, setBooks } = useContext(LibraryContext);
 
+  // Handle Book Opened
   const handleOpenClick = () => {
     if (open) {
       setLibraryBookOpen("");
@@ -32,7 +34,13 @@ const Book = ({
       setOpen(true);
     }
   };
+  useEffect(() => {
+    if (libraryBookOpen !== id) {
+      setOpen(false);
+    }
+  }, [libraryBookOpen, id]);
 
+  // Handle Book Deleted
   const handleDelete = () => {
     const newBooks = books.filter((book) => book.id !== id);
 
@@ -44,19 +52,29 @@ const Book = ({
       setBookToDelete("delete");
     }
   };
-
   useEffect(() => {
     if (bookToDelete) {
       localStorage.setItem("books", JSON.stringify(books));
     }
   }, [books, bookToDelete]);
 
-  // Handle Opened Book (can only be one)
+  // Handle Changed Read State
   useEffect(() => {
-    if (libraryBookOpen !== id) {
-      setOpen(false);
+    books.find((book) => book.id === id).read = readState;
+    if (readState === true) {
+      setRedPages(pages);
     }
-  }, [libraryBookOpen, id]);
+    localStorage.setItem("books", JSON.stringify(books));
+  }, [readState]);
+
+  // Handle Read Pages
+  useEffect(() => {
+    books.find((book) => book.id === id).pagesRead = readPages;
+    if (readPages === pages) {
+      setReadState(true);
+    }
+    localStorage.setItem("books", JSON.stringify(books));
+  }, [readPages]);
 
   return (
     <div
@@ -71,12 +89,19 @@ const Book = ({
           <>
             <div className="number-pages">Number of pages: {pages}</div>
             <div className="published-date">Published: {published}</div>
-            <div className="read-state">
+            <div className="read-state" onClick={(e) => e.stopPropagation()}>
               <div className="title">Read:</div>
               <div className="pages-read">
-                {pagesRead}/{pages}
+                <input
+                  type="number"
+                  value={readPages}
+                  onChange={(e) => setRedPages(e.target.value)}
+                  placeholder=""
+                  autoFocus
+                />
+                /{pages}
               </div>
-              <div className="read-switch" onClick={(e) => e.stopPropagation()}>
+              <div className="read-switch">
                 <input
                   type="checkbox"
                   className="read-switch-checkbox"
