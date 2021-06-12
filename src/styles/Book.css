@@ -9,7 +9,7 @@
 
   perspective: 30em;
   transition: all 0.1s;
-  background-color: #b4c2f0;
+  background-color: #282a36;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   height: 5em;
@@ -49,6 +49,11 @@
 .Book .title {
   font-weight: bold;
   font-size: 1.25em;
+  color: #2a9d8f;
+}
+
+.Book .text {
+  color: #2a9d8f;
 }
 
 .Book .delete {
@@ -65,7 +70,7 @@
 }
 
 .Book .delete svg {
-  fill: lightslategray;
+  fill: #2a9d8f;
 }
 
 .Book .delete:hover {
@@ -90,6 +95,7 @@
   background-color: inherit;
   border: none;
   margin-bottom: 0.5em;
+  color: #2a9d8f;
 }
 .Book .read-state input[type="number"]:focus {
   outline: none;

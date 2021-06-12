@@ -3,7 +3,7 @@
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  background-color: #e9e9e9;
+  background-color: #2a9d8f;
   padding: 0.5em;
 }
 
@@ -13,16 +13,59 @@
   align-items: center;
 }
 
+.Filter .order-by-filter label {
+  color: #282a36;
+  margin-right: 0.25em;
+}
+
+.Filter .order-by-filter select,
+.Filter .order-by-filter select option {
+  background-color: #2a2e37;
+  border-radius: 5px;
+  color: #2a9d8f;
+  padding: 0.5em;
+  border: none;
+}
+
+.Filter .order-by-filter svg {
+  fill: #282a36;
+}
+
 .Filter .order-by-filter .asc-desc {
   margin-left: 0.5em;
   cursor: pointer;
 }
 
-.Filter .search-filter input[type="text"] {
-  border: none;
+.Filter .search-filter {
+  width: auto;
+  position: relative;
+  display: flex;
 }
 
-.Filter .search-filter button {
-  border: none;
+.Filter .search-filter input {
+  width: 100%;
+  border: 3px solid #2a2e37;
+  border-right: none;
+  padding: 5px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  color: #2a9d8f;
+  background-color: #2a2e37;
+}
+
+.Filter .search-filter svg {
+  position: absolute;
+  right: 0;
+  fill: #2a9d8f;
+  width: 40px;
+  height: auto;
+  background: transparent;
+  border-radius: 5px;
   cursor: pointer;
+  padding: 0.25em;
+  transition: transform 300ms ease-in-out;
+}
+
+.Filter .search-filter svg:hover {
+  transform: scale(1.25, 1.25);
 }

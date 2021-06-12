@@ -4,10 +4,10 @@
   height: 60px;
   bottom: 40px;
   right: 40px;
-  background-color: #0c9;
+  background-color: #2a9d8f;
   color: #fff;
   border-radius: 50px;
-  box-shadow: 2px 2px 3px #999;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   display: flex;
   justify-content: center;

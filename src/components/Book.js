@@ -84,20 +84,22 @@ const Book = ({
       <img src={cover} alt="book-cover" className="cover" />
       <div className="details">
         <div className="title">{title}</div>
-        <div className="author">{author}</div>
+        <div className="author text">{author}</div>
         {open && (
           <>
-            <div className="number-pages">Number of pages: {pages}</div>
-            <div className="published-date">Published: {published}</div>
-            <div className="read-state" onClick={(e) => e.stopPropagation()}>
+            <div className="number-pages text">Number of pages: {pages}</div>
+            <div className="published-date text">Published: {published}</div>
+            <div
+              className="read-state text"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="title">Read:</div>
-              <div className="pages-read">
+              <div className="pages-read text">
                 <input
                   type="number"
                   value={readPages}
                   onChange={(e) => setRedPages(e.target.value)}
                   placeholder=""
-                  autoFocus
                 />
                 /{pages}
               </div>

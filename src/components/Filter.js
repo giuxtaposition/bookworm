@@ -32,10 +32,8 @@ const Filter = () => {
       </div>
 
       <div className="search-filter">
-        <input type="text" placeholder="Search.." />
-        <button type="submit">
-          <ImSearch />
-        </button>
+        <input type="search" placeholder="Search.." />
+        <ImSearch />
       </div>
     </div>
   );
