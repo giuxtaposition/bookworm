@@ -60,21 +60,25 @@ const Book = ({
 
   // Handle Changed Read State
   useEffect(() => {
-    books.find((book) => book.id === id).read = readState;
-    if (readState === true) {
-      setRedPages(pages);
+    if (readState !== read) {
+      books.find((book) => book.id === id).read = readState;
+      if (readState === true) {
+        setRedPages(pages);
+      }
+      localStorage.setItem("books", JSON.stringify(books));
     }
-    localStorage.setItem("books", JSON.stringify(books));
-  }, [readState]);
+  }, [readState, read]);
 
   // Handle Read Pages
   useEffect(() => {
-    books.find((book) => book.id === id).pagesRead = readPages;
-    if (readPages === pages) {
-      setReadState(true);
+    if (readPages !== pagesRead) {
+      books.find((book) => book.id === id).pagesRead = readPages;
+      if (readPages === pages) {
+        setReadState(true);
+      }
+      localStorage.setItem("books", JSON.stringify(books));
     }
-    localStorage.setItem("books", JSON.stringify(books));
-  }, [readPages]);
+  }, [readPages, pagesRead]);
 
   return (
     <div

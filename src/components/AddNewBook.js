@@ -49,8 +49,6 @@ const AddNewBook = () => {
       ? "Please  set a publishing date"
       : "";
 
-    console.log(moment.isDate(published));
-
     setErrors({
       title: errors.title,
       author: errors.author,

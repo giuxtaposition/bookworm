@@ -12,7 +12,6 @@ const Library = () => {
   const { books, sortByFilter } = useContext(LibraryContext);
 
   const sortedBooks = useMemo(() => {
-    console.log("Filter ", sortByFilter);
     if (sortByFilter.sort === "insertion") {
       if (sortByFilter.order === "asc") {
         return books.sort((a, b) =>
@@ -54,7 +53,7 @@ const Library = () => {
 
   return (
     <div className="Library">
-      {sortedBooks.map((book, key) => (
+      {sortedBooks.map((book) => (
         <Book
           title={book.title}
           author={book.author}
@@ -63,13 +62,12 @@ const Library = () => {
           published={book.published}
           pagesRead={book.pagesRead}
           read={book.read}
-          key={key}
+          key={book.id}
           id={book.id}
           libraryBookOpen={libraryBookOpen}
           setLibraryBookOpen={setLibraryBookOpen}
         />
       ))}
-      {console.log("sortedBooks ", sortedBooks)}
     </div>
   );
 };
