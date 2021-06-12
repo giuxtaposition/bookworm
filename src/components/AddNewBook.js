@@ -14,51 +14,93 @@ const AddNewBook = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [pages, setPages] = useState(0);
-  const [published, setPublished] = useState(new Date());
+  const [published, setPublished] = useState(undefined);
   const [read, setRead] = useState(false);
   const [readPages, setReadPages] = useState(0);
   const [cover, setCover] = useState("");
   const { books, setBooks } = useContext(LibraryContext);
   const [addNewBook, setAddNewBook] = useState(undefined);
 
+  //ERRORS
+  const [errors, setErrors] = useState({
+    title: "",
+    author: "",
+    pages: "",
+    published: "",
+  });
+
+  const countErrors = (errors) => {
+    let count = 0;
+    Object.values(errors).forEach(
+      (value) => value.length > 0 && (count = count + 1)
+    );
+    return count;
+  };
+
+  const formValidation = () => {
+    errors.title = title.length < 1 ? "Please  add a Title" : "";
+
+    errors.author = author.length < 1 ? "Please  add a Author" : "";
+
+    errors.pages =
+      pages < 1 ? "Please  add total number of pages in the book" : "";
+
+    errors.published = !moment.isDate(published)
+      ? "Please  set a publishing date"
+      : "";
+
+    console.log(moment.isDate(published));
+
+    setErrors({
+      title: errors.title,
+      author: errors.author,
+      pages: errors.pages,
+      published: errors.published,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowModal(false);
-    var book = [];
-    if (cover !== "") {
-      book = {
-        title: title,
-        author: author,
-        cover: cover,
-        pages: pages,
-        published: moment(published).format("DD/MM/YYYY"),
-        pagesRead: readPages,
-        read: read,
-        id: uuidv4(),
-      };
-    } else {
-      book = {
-        title: title,
-        author: author,
-        cover: defaultCover,
-        pages: pages,
-        published: moment(published).format("DD/MM/YYYY"),
-        pagesRead: readPages,
-        read: read,
-        id: uuidv4(),
-      };
+    formValidation();
+
+    if (countErrors(errors) === 0) {
+      setShowModal(false);
+      var book = [];
+      if (cover !== "") {
+        book = {
+          title: title,
+          author: author,
+          cover: cover,
+          pages: pages,
+          published: moment(published).format("DD/MM/YYYY"),
+          pagesRead: readPages,
+          read: read,
+          id: uuidv4(),
+        };
+      } else {
+        book = {
+          title: title,
+          author: author,
+          cover: defaultCover,
+          pages: pages,
+          published: moment(published).format("DD/MM/YYYY"),
+          pagesRead: readPages,
+          read: read,
+          id: uuidv4(),
+        };
+      }
+
+      setBooks((books) => [...books, book]);
+      setAddNewBook(book);
+
+      setTitle("");
+      setAuthor("");
+      setPages(0);
+      setPublished(undefined);
+      setRead(false);
+      setReadPages(0);
+      setCover("");
     }
-
-    setBooks((books) => [...books, book]);
-    setAddNewBook(book);
-
-    setTitle("");
-    setAuthor("");
-    setPages(0);
-    setPublished(new Date());
-    setRead(false);
-    setReadPages(0);
-    setCover("");
   };
 
   useEffect(() => {
@@ -96,6 +138,7 @@ const AddNewBook = () => {
           setReadPages={setReadPages}
           cover={cover}
           setCover={setCover}
+          errors={errors}
         />
       </Modal>
     </div>

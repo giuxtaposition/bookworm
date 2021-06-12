@@ -101,3 +101,9 @@ input[type="number"] {
   width: 2em;
   height: 2em;
 }
+
+.BookForm .form-error {
+  color: #ff5555;
+  transition: all 300ms ease-in-out;
+  font-size: 0.85em;
+}

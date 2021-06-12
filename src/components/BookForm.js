@@ -103,6 +103,7 @@ const BookForm = ({
   setReadPages,
   cover,
   setCover,
+  errors,
 }) => {
   return (
     <ThemeProvider theme={draculaTheme}>
@@ -110,7 +111,7 @@ const BookForm = ({
         <form onSubmit={handleSubmit} className="BookForm">
           <div className="heading">{heading}</div>
           <div className="book-title form-field">
-            <div className="title">Title</div>
+            <div className="title">Title*</div>
             <input
               type="text"
               value={title}
@@ -118,9 +119,12 @@ const BookForm = ({
               placeholder="Title"
               autoFocus
             />
+            {errors.title.length > 0 && (
+              <div className="form-error">{errors.title}</div>
+            )}
           </div>
           <div className="book-author form-field">
-            <div className="title">Author</div>
+            <div className="title">Author*</div>
             <input
               type="text"
               value={author}
@@ -128,13 +132,19 @@ const BookForm = ({
               placeholder="Author"
               autoFocus
             />
+            {errors.author.length > 0 && (
+              <div className="form-error">{errors.author}</div>
+            )}
           </div>
           <div className="book-published form-field">
-            <div className="title">Publishing Date</div>
+            <div className="title">Publishing Date*</div>
             <DatePicker
               value={published}
               onChange={(published) => setPublished(published)}
             />
+            {errors.published.length > 0 && (
+              <div className="form-error">{errors.published}</div>
+            )}
           </div>
           <div className="book-cover form-field">
             <div className="title">Book Cover (optional)</div>
@@ -147,7 +157,7 @@ const BookForm = ({
             />
           </div>
           <div className="book-pages form-field">
-            <div className="title">Read/Total Pages</div>
+            <div className="title">Read/Total* Pages</div>
             <input
               type="number"
               value={readPages}
@@ -163,6 +173,9 @@ const BookForm = ({
               placeholder=""
               autoFocus
             />
+            {errors.pages.length > 0 && (
+              <div className="form-error">{errors.pages}</div>
+            )}
           </div>
           <div className="book-read form-field">
             <div className="title">Read Status</div>
