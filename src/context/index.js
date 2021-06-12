@@ -4,6 +4,10 @@ const LibraryContext = createContext();
 
 function LibraryContextProvider({ children }) {
   const [books, setBooks] = useState([]);
+  const [sortByFilter, setSortByFilter] = useState({
+    sort: "insertion",
+    order: "asc",
+  });
 
   useEffect(() => {
     if (localStorage.getItem("books")) {
@@ -16,6 +20,8 @@ function LibraryContextProvider({ children }) {
       value={{
         books,
         setBooks,
+        sortByFilter,
+        setSortByFilter,
       }}
     >
       {children}

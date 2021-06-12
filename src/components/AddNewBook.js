@@ -76,6 +76,7 @@ const AddNewBook = () => {
           pagesRead: readPages,
           read: read,
           id: uuidv4(),
+          insertion: moment(new Date()).format("DD/MM/YYYY-HH:mm:ss"),
         };
       } else {
         book = {
@@ -87,6 +88,7 @@ const AddNewBook = () => {
           pagesRead: readPages,
           read: read,
           id: uuidv4(),
+          insertion: moment(new Date()).format("DD/MM/YYYY-HH:mm:ss"),
         };
       }
 
