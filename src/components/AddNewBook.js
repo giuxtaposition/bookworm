@@ -26,6 +26,7 @@ const AddNewBook = () => {
     title: "",
     author: "",
     pages: "",
+    readPages: "",
     published: "",
   });
 
@@ -45,6 +46,11 @@ const AddNewBook = () => {
     errors.pages =
       pages < 1 ? "Please  add total number of pages in the book" : "";
 
+    errors.readPages =
+      readPages > pages
+        ? "Read pages cannot be more than total number of pages"
+        : "";
+
     errors.published = !moment.isDate(published)
       ? "Please  set a publishing date"
       : "";
@@ -53,6 +59,7 @@ const AddNewBook = () => {
       title: errors.title,
       author: errors.author,
       pages: errors.pages,
+      readPages: errors.readPages,
       published: errors.published,
     });
   };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -34,6 +34,12 @@ const BookForm = ({
   setCover,
   errors,
 }) => {
+  useEffect(() => {
+    if (read) {
+      setReadPages(pages);
+    }
+  }, [read]);
+
   return (
     <ThemeProvider theme={darkTheme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -111,6 +117,9 @@ const BookForm = ({
             />
             {errors.pages.length > 0 && (
               <div className="form-error">{errors.pages}</div>
+            )}
+            {errors.readPages.length > 0 && (
+              <div className="form-error">{errors.readPages}</div>
             )}
           </div>
           <div className="book-read form-field">
