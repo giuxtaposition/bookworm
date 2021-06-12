@@ -5,13 +5,14 @@ import { LibraryContext } from "../context";
 
 const Filter = () => {
   //CONTEXT
-  const { sortByFilter, setSortByFilter } = useContext(LibraryContext);
+  const { sortByFilter, setSortByFilter, searchFilter, setSearchFilter } =
+    useContext(LibraryContext);
 
   //STATES
   const [ascDescOrder, setAscDescOrder] = useState(sortByFilter.order);
   const [sortFilter, setSortFilter] = useState(sortByFilter.sort);
 
-  const toggleAscDescOrder = () => {
+  const handleAscDescOrderChange = () => {
     if (ascDescOrder === "asc") {
       setAscDescOrder("desc");
       setSortByFilter({ ...sortByFilter, order: "desc" });
@@ -21,13 +22,17 @@ const Filter = () => {
     }
   };
 
-  const handleOrderChange = (e) => {
+  const handleSortChange = (e) => {
     setSortFilter(e.target.value);
     if (e.target.value === "publishing") {
       setSortByFilter({ ...sortByFilter, sort: "publishing" });
     } else {
       setSortByFilter({ ...sortByFilter, sort: "insertion" });
     }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchFilter(e.target.value);
   };
 
   return (
@@ -38,13 +43,13 @@ const Filter = () => {
           id="order-by"
           name="order-by"
           value={sortFilter}
-          onChange={(e) => handleOrderChange(e)}
+          onChange={(e) => handleSortChange(e)}
         >
           <option value="publishing">Publishing Date</option>
           <option value="insertion">Insertion Date</option>
         </select>
 
-        <div className="asc-desc" onClick={() => toggleAscDescOrder()}>
+        <div className="asc-desc" onClick={() => handleAscDescOrderChange()}>
           {ascDescOrder === "asc" ? (
             <ImSortNumericAsc />
           ) : (
@@ -54,7 +59,12 @@ const Filter = () => {
       </div>
 
       <div className="search-filter">
-        <input type="search" placeholder="Search.." />
+        <input
+          type="search"
+          placeholder="Search.."
+          value={searchFilter}
+          onChange={(e) => handleSearchChange(e)}
+        />
         <ImSearch />
       </div>
     </div>

@@ -9,6 +9,8 @@ function LibraryContextProvider({ children }) {
     order: "asc",
   });
 
+  const [searchFilter, setSearchFilter] = useState("");
+
   useEffect(() => {
     if (localStorage.getItem("books")) {
       setBooks(JSON.parse(localStorage.getItem("books")));
@@ -22,6 +24,8 @@ function LibraryContextProvider({ children }) {
         setBooks,
         sortByFilter,
         setSortByFilter,
+        searchFilter,
+        setSearchFilter,
       }}
     >
       {children}

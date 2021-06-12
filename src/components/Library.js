@@ -9,8 +9,9 @@ const Library = () => {
   const [libraryBookOpen, setLibraryBookOpen] = useState("");
 
   //CONTEXT
-  const { books, sortByFilter } = useContext(LibraryContext);
+  const { books, sortByFilter, searchFilter } = useContext(LibraryContext);
 
+  //Sort Books
   const sortedBooks = useMemo(() => {
     if (sortByFilter.sort === "insertion") {
       if (sortByFilter.order === "asc") {
@@ -51,9 +52,22 @@ const Library = () => {
     }
   }, [books, sortByFilter]);
 
+  //Search Books
+  const searchedBooks = useMemo(() => {
+    if (searchFilter === "") {
+      return sortedBooks;
+    } else {
+      return sortedBooks.filter(
+        (book) =>
+          book.title.toLowerCase().includes(searchFilter.toLowerCase()) |
+          book.author.toLowerCase().includes(searchFilter.toLowerCase())
+      );
+    }
+  }, [sortedBooks, searchFilter]);
+
   return (
     <div className="Library">
-      {sortedBooks.map((book) => (
+      {searchedBooks.map((book) => (
         <Book
           title={book.title}
           author={book.author}
