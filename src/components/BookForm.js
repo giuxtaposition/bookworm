@@ -1,87 +1,16 @@
 import React from "react";
-import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { BiX } from "react-icons/bi";
 import "../styles/BookForm.css";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
-const foreground = "#f8f8f2";
-const background = "#2a2e37";
-const lighterBackground = "#44475a";
-const green = "#228174";
-
-const draculaTheme = createMuiTheme({
-  overrides: {
-    MuiPickersToolbar: {
-      toolbar: {
-        backgroundColor: green,
-      },
-    },
-    MuiPickersToolbarText: {
-      toolbarTxt: {
-        color: background,
-      },
-      toolbarBtnSelected: {
-        color: "#494c62",
-      },
-    },
-    MuiPickersCalendarHeader: {
-      switchHeader: {
-        backgroundColor: background,
-        color: foreground,
-      },
-      iconButton: {
-        backgroundColor: lighterBackground,
-        color: foreground,
-      },
-      dayLabel: {
-        color: foreground,
-      },
-    },
-    MuiPickersDay: {
-      current: {
-        "& .MuiIconButton-label": {
-          color: foreground,
-        },
-        backgroundColor: lighterBackground,
-        "&:hover": {
-          filter: "brightness(60%)",
-          backgroundColor: green,
-          "& .MuiIconButton-label": {
-            color: background,
-          },
-        },
-      },
-      daySelected: {
-        backgroundColor: green,
-        "& .MuiIconButton-label": {
-          color: background,
-        },
-        "&:hover": {
-          filter: "brightness(60%)",
-          backgroundColor: green,
-        },
-      },
-    },
-    MuiPickersModal: {
-      dialogRoot: {
-        backgroundColor: background,
-      },
-    },
-    MuiDialogActions: {
-      root: {
-        MuiButton: {
-          label: {
-            color: foreground,
-          },
-        },
-      },
-    },
-    MuiInputBase: {
-      input: {
-        color: foreground,
-      },
-    },
+const darkTheme = createMuiTheme({
+  palette: {
+    type: "dark",
   },
 });
 
@@ -106,7 +35,7 @@ const BookForm = ({
   errors,
 }) => {
   return (
-    <ThemeProvider theme={draculaTheme}>
+    <ThemeProvider theme={darkTheme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <form onSubmit={handleSubmit} className="BookForm">
           <div className="heading">{heading}</div>
@@ -138,9 +67,16 @@ const BookForm = ({
           </div>
           <div className="book-published form-field">
             <div className="title">Publishing Date*</div>
-            <DatePicker
+            <KeyboardDatePicker
+              disableToolbar
+              variant="inline"
+              format="dd/MM/yyyy"
+              margin="normal"
               value={published}
               onChange={(published) => setPublished(published)}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
             />
             {errors.published.length > 0 && (
               <div className="form-error">{errors.published}</div>
