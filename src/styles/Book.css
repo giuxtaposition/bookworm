@@ -56,7 +56,7 @@
   color: #2a9d8f;
 }
 
-.Book .delete {
+.Book .button {
   position: absolute;
   top: 0;
   right: 0;
@@ -66,16 +66,23 @@
 
   transform: scale(0.8);
   transition: transform 0.25s, opacity 0.25s;
-  opacity: 0.7;
 }
 
-.Book .delete svg {
+.Book .button svg {
   fill: #2a9d8f;
 }
 
-.Book .delete:hover {
+.Book .add svg {
+  width: 2em;
+  height: 2em;
+}
+
+.Book .button.add:hover {
+  transform: scale(1.15, 1.15);
+}
+
+.Book .button.delete:hover {
   transform: rotate(90deg) scale(1.2);
-  opacity: 1;
 }
 
 .Book .read-state {

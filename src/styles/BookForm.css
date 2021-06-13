@@ -48,7 +48,7 @@
   padding: 0;
 }
 
-.BookForm .submit button {
+.BookForm .add-button button {
   border: none;
   cursor: pointer;
 
@@ -62,7 +62,7 @@
   box-shadow: 0px 5px 0px 0px #228174;
 }
 
-.BookForm .submit:active {
+.BookForm .add-buttont:active {
   transform: translate(0px, 5px);
   -webkit-transform: translate(0px, 5px);
   box-shadow: 0px 1px 0px 0px;
@@ -115,4 +115,19 @@ input[type="number"] {
     margin: 0;
     padding: 1em;
   }
+}
+
+.BookForm .tab-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.BookForm .tab {
+  cursor: pointer;
+}
+
+.BookForm .tab.active {
+  color: #2a9d8f;
+  border-bottom: 1px solid #2a9d8f;
 }

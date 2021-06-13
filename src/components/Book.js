@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import "../styles/Book.css";
 import { ImCross } from "react-icons/im";
+import { BiBookmarkPlus } from "react-icons/bi";
 import { LibraryContext } from "../context";
 
 const Book = ({
@@ -14,6 +15,8 @@ const Book = ({
   libraryBookOpen,
   setLibraryBookOpen,
   id,
+  addButton = false,
+  deleteButton = true,
 }) => {
   //STATES
   const [open, setOpen] = useState(false);
@@ -89,6 +92,7 @@ const Book = ({
       <div className="details">
         <div className="title">{title}</div>
         <div className="author text">{author}</div>
+
         {open && (
           <>
             <div className="number-pages text">Number of pages: {pages}</div>
@@ -104,6 +108,7 @@ const Book = ({
                   value={readPages}
                   onChange={(e) => setRedPages(e.target.value)}
                   placeholder=""
+                  autoFocus
                 />
                 /{pages}
               </div>
@@ -127,15 +132,22 @@ const Book = ({
             </div>
           </>
         )}
-        <button
-          className="delete"
-          onClick={(e) => {
-            e.stopPropagation();
-            handleDelete();
-          }}
-        >
-          <ImCross />
-        </button>
+        {deleteButton && (
+          <button
+            className="delete button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleDelete();
+            }}
+          >
+            <ImCross />
+          </button>
+        )}
+        {addButton && (
+          <button className="add button">
+            <BiBookmarkPlus />
+          </button>
+        )}
       </div>
     </div>
   );
