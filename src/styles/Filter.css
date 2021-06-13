@@ -69,3 +69,12 @@
 .Filter .search-filter svg:hover {
   transform: scale(1.25, 1.25);
 }
+
+@media screen and (max-width: 700px) {
+  .Filter {
+    flex-direction: column-reverse;
+  }
+  .Filter .search-filter {
+    margin-bottom: 0.5em;
+  }
+}

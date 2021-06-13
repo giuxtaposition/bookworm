@@ -18,15 +18,8 @@
   height: 5em;
 }
 
-.Header .stats {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  border: 1px solid #228174;
-  padding: 2em;
-}
-
-.Header .stats .title {
-  font-size: large;
-  font-weight: bold;
+@media screen and (max-width: 800px) {
+  .Header {
+    flex-direction: column;
+  }
 }

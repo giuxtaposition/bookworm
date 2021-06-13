@@ -101,3 +101,28 @@
   outline: none;
   border-bottom: 1px solid #3f51b5;
 }
+
+@media screen and (max-width: 750px) {
+  .Book {
+    width: 90%;
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .Book .read-state {
+    align-items: flex-start;
+    margin-top: 0.5em;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .Book {
+    padding: 1em;
+  }
+  .Book .details {
+    font-size: 90%;
+  }
+  .Book .details .title {
+    font-size: 95%;
+  }
+}

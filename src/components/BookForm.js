@@ -38,7 +38,7 @@ const BookForm = ({
     if (read) {
       setReadPages(pages);
     }
-  }, [read]);
+  }, [read, pages, setReadPages]);
 
   return (
     <ThemeProvider theme={darkTheme}>

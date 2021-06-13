@@ -22,10 +22,11 @@ function Modal({ children, showModal, setShowModal }) {
       <animated.div
         style={modalAnimation}
         className="Modal"
-        ref={modalRef}
         onClick={closeModal}
       >
-        <div className="modal-container">{children}</div>
+        <div className="modal-container" ref={modalRef}>
+          {children}
+        </div>
       </animated.div>
     )
   );

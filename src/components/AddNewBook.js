@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus, AiOutlineMenu } from "react-icons/ai";
+import { IoStatsChart } from "react-icons/io5";
 import { LibraryContext } from "../context";
 import "../styles/AddNewBook.css";
 import BookForm from "./BookForm";
@@ -7,6 +8,8 @@ import Modal from "./Modal";
 import moment from "moment";
 import defaultCover from "../images/default-cover.jpg";
 import { v4 as uuidv4 } from "uuid";
+import useWindowSize from "../utils/useWindowSize";
+import Stats from "./Stats";
 
 const AddNewBook = () => {
   //STATES
@@ -20,6 +23,10 @@ const AddNewBook = () => {
   const [cover, setCover] = useState("");
   const { books, setBooks } = useContext(LibraryContext);
   const [addNewBook, setAddNewBook] = useState(undefined);
+  const [openMobileMenu, setOpenMobileMenu] = useState(false);
+  const [showStats, setShowStats] = useState(false);
+
+  const { width } = useWindowSize();
 
   //ERRORS
   const [errors, setErrors] = useState({
@@ -118,13 +125,51 @@ const AddNewBook = () => {
 
   return (
     <div className="AddNewBook">
-      <div className="container" onClick={() => setShowModal(true)}>
-        <AiOutlinePlus />
-      </div>
+      {width > 800 && (
+        <>
+          <div className="container" onClick={() => setShowModal(true)}>
+            <AiOutlinePlus />
+          </div>
+          <div className="label-container">
+            <div className="label-text">Add New Book</div>
+          </div>
+        </>
+      )}
+      {width <= 800 && openMobileMenu && (
+        <div className="mobile-menu">
+          <div className="mobile-menu-stats">
+            <div className="container" onClick={() => setShowStats(true)}>
+              <IoStatsChart />
+            </div>
+            <div className="label-container">
+              <div className="label-text">Stats</div>
+            </div>
+          </div>
 
-      <div className="label-container">
-        <div className="label-text">Add New Book</div>
-      </div>
+          <div className="mobile-menu-add">
+            <div className="container" onClick={() => setShowModal(true)}>
+              <AiOutlinePlus />
+            </div>
+            <div className="label-container">
+              <div className="label-text">Add New Book</div>
+            </div>
+          </div>
+        </div>
+      )}
+      {width <= 800 && (
+        <>
+          <div
+            className="container"
+            onClick={() => setOpenMobileMenu(!openMobileMenu)}
+          >
+            <AiOutlineMenu />
+          </div>
+          <div className="label-container">
+            <div className="label-text">Menu</div>
+          </div>
+        </>
+      )}
+
       <Modal showModal={showModal} setShowModal={setShowModal}>
         <BookForm
           showModal={showModal}
@@ -147,6 +192,9 @@ const AddNewBook = () => {
           setCover={setCover}
           errors={errors}
         />
+      </Modal>
+      <Modal showModal={showStats} setShowModal={setShowStats}>
+        <Stats />
       </Modal>
     </div>
   );
