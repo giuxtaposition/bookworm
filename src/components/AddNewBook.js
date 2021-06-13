@@ -191,6 +191,8 @@ const AddNewBook = () => {
           cover={cover}
           setCover={setCover}
           errors={errors}
+          formValidation={formValidation}
+          countErrors={countErrors}
         />
       </Modal>
       <Modal showModal={showStats} setShowModal={setShowStats}>

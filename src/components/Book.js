@@ -3,6 +3,7 @@ import "../styles/Book.css";
 import { ImCross } from "react-icons/im";
 import { BiBookmarkPlus } from "react-icons/bi";
 import { LibraryContext } from "../context";
+import moment from "moment";
 
 const Book = ({
   title,
@@ -17,12 +18,14 @@ const Book = ({
   id,
   addButton = false,
   deleteButton = true,
+  inLibrary = true,
 }) => {
   //STATES
   const [open, setOpen] = useState(false);
   const [readState, setReadState] = useState(read);
   const [readPages, setRedPages] = useState(pagesRead);
   const [bookToDelete, setBookToDelete] = useState(undefined);
+  const [addNewBook, setAddNewBook] = useState(undefined);
 
   //CONTEXT
   const { books, setBooks } = useContext(LibraryContext);
@@ -63,7 +66,7 @@ const Book = ({
 
   // Handle Changed Read State
   useEffect(() => {
-    if (readState !== read) {
+    if (readState !== read && inLibrary) {
       books.find((book) => book.id === id).read = readState;
       if (readState === true) {
         setRedPages(pages);
@@ -74,7 +77,7 @@ const Book = ({
 
   // Handle Read Pages
   useEffect(() => {
-    if (readPages !== pagesRead) {
+    if (readPages !== pagesRead && inLibrary) {
       books.find((book) => book.id === id).pagesRead = readPages;
       if (readPages === pages) {
         setReadState(true);
@@ -83,6 +86,32 @@ const Book = ({
     }
   }, [readPages, pagesRead]);
 
+  // Handle Book Added (From Google Book API)
+  const handleAdd = () => {
+    var book = [];
+    if (cover !== "") {
+      book = {
+        title: title,
+        author: author,
+        cover: cover,
+        pages: pages,
+        published: moment(published).format("DD/MM/YYYY"),
+        pagesRead: readPages,
+        read: readState,
+        id: id,
+        insertion: moment(new Date()).format("DD/MM/YYYY-HH:mm:ss"),
+      };
+      setBooks((books) => [...books, book]);
+      setAddNewBook(book);
+    }
+  };
+
+  //Save new book to localStorage
+  useEffect(() => {
+    if (addNewBook) {
+      localStorage.setItem("books", JSON.stringify(books));
+    }
+  }, [addNewBook, books]);
   return (
     <div
       className={`Book ${open ? "open" : ""}`}
@@ -144,7 +173,13 @@ const Book = ({
           </button>
         )}
         {addButton && (
-          <button className="add button">
+          <button
+            className="add button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAdd();
+            }}
+          >
             <BiBookmarkPlus />
           </button>
         )}
