@@ -12,9 +12,7 @@ const AutomaticBookForm = () => {
   //STATES
   const [search, SetSearch] = useState("");
   const [searchBookOpen, setSearchBookOpen] = useState("");
-  const [apiKey, setApiKey] = useState(
-    "AIzaSyDi5VwAtZHab0ufcOB8xeHWESepbyjdvbs"
-  );
+  const apiKey = "AIzaSyDi5VwAtZHab0ufcOB8xeHWESepbyjdvbs";
   const [results, setResults] = useState([]);
   const [checkedFilter, setCheckedFilter] = useState("all");
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -74,6 +72,12 @@ const AutomaticBookForm = () => {
     });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      submitSearch();
+    }
+  };
+
   return (
     <div className="AutomaticBookForm">
       <div className="search">
@@ -82,6 +86,7 @@ const AutomaticBookForm = () => {
           placeholder="Search.."
           value={search}
           onChange={(e) => handleSearchChange(e)}
+          onKeyDown={(e) => handleKeyDown(e)}
         />
         <ImSearch onClick={() => submitSearch()} />
       </div>
