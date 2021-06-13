@@ -1,13 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { ImSearch } from "react-icons/im";
+import { BsXCircle } from "react-icons/bs";
+import { AiFillCheckCircle } from "react-icons/ai";
 import Book from "./Book";
 
 import "../styles/AutomaticBookForm.css";
-import { LibraryContext } from "../context";
 import axios from "axios";
+import { useSpring, animated } from "react-spring";
 
 const AutomaticBookForm = () => {
-  const { books } = useContext(LibraryContext);
+  //STATES
   const [search, SetSearch] = useState("");
   const [searchBookOpen, setSearchBookOpen] = useState("");
   const [apiKey, setApiKey] = useState(
@@ -15,7 +17,16 @@ const AutomaticBookForm = () => {
   );
   const [results, setResults] = useState([]);
   const [checkedFilter, setCheckedFilter] = useState("all");
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
+  //ANIMATIONS
+  const successAlertAnimation = useSpring({
+    transform: showSuccessAlert ? "translateY(0)" : "translateY(20)",
+    opacity: showSuccessAlert ? 1 : 0,
+    config: { duration: 500 },
+  });
+
+  //FUNCTIONS
   const handleSearchChange = (e) => {
     SetSearch(e.target.value);
   };
@@ -132,6 +143,17 @@ const AutomaticBookForm = () => {
           </label>
         </div>
       </div>
+      {showSuccessAlert && (
+        <animated.div className="alert-success" style={successAlertAnimation}>
+          <div className="alert-icon">
+            <AiFillCheckCircle />
+          </div>
+          <div className="alert-content">Book Added Successfully!</div>
+          <div className="alert-close">
+            <BsXCircle onClick={() => setShowSuccessAlert(false)} />
+          </div>
+        </animated.div>
+      )}
       <div className="results">
         {results.map((book) => (
           <Book
@@ -149,6 +171,9 @@ const AutomaticBookForm = () => {
             addButton={true}
             deleteButton={false}
             inLibrary={false}
+            searchResultsBooks={results}
+            setSearchResultsBooks={setResults}
+            setShowSuccessAlert={setShowSuccessAlert}
           />
         ))}
       </div>

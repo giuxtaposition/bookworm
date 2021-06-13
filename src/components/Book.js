@@ -4,6 +4,7 @@ import { ImCross } from "react-icons/im";
 import { BiBookmarkPlus } from "react-icons/bi";
 import { LibraryContext } from "../context";
 import moment from "moment";
+import defaultCover from "../images/default-cover.jpg";
 
 const Book = ({
   title,
@@ -19,6 +20,9 @@ const Book = ({
   addButton = false,
   deleteButton = true,
   inLibrary = true,
+  searchResultsBooks = false,
+  setSearchResultsBooks = false,
+  setShowSuccessAlert = false,
 }) => {
   //STATES
   const [open, setOpen] = useState(false);
@@ -88,22 +92,28 @@ const Book = ({
 
   // Handle Book Added (From Google Book API)
   const handleAdd = () => {
-    var book = [];
-    if (cover !== "") {
-      book = {
-        title: title,
-        author: author,
-        cover: cover,
-        pages: pages,
-        published: moment(published).format("DD/MM/YYYY"),
-        pagesRead: readPages,
-        read: readState,
-        id: id,
-        insertion: moment(new Date()).format("DD/MM/YYYY-HH:mm:ss"),
-      };
-      setBooks((books) => [...books, book]);
-      setAddNewBook(book);
-    }
+    var book = {
+      title: title,
+      author: author,
+      cover: cover !== "" ? cover : defaultCover,
+      pages: pages,
+      published: moment(published).format("DD/MM/YYYY"),
+      pagesRead: readPages,
+      read: readState,
+      id: id,
+      insertion: moment(new Date()).format("DD/MM/YYYY-HH:mm:ss"),
+    };
+    setBooks((books) => [...books, book]);
+    setAddNewBook(book);
+
+    // Remove Just Added Book from results
+    const newBooks = searchResultsBooks.filter((book) => book.id !== id);
+    setSearchResultsBooks(newBooks);
+    setShowSuccessAlert(true);
+
+    setTimeout(function () {
+      setShowSuccessAlert(false);
+    }, 2500);
   };
 
   //Save new book to localStorage
