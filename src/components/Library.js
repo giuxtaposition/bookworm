@@ -54,14 +54,28 @@ const Library = () => {
 
   //Search Books
   const searchedBooks = useMemo(() => {
+    //Check if search filter is in author or title
+    const checkAuthorOrTitle = (book) => {
+      if (book.title.toLowerCase().includes(searchFilter.toLowerCase())) {
+        return book;
+      }
+      if (Array.isArray(book.author)) {
+        for (const author of book.author) {
+          if (author.toLowerCase().includes(searchFilter.toLowerCase())) {
+            return book;
+          }
+        }
+      } else {
+        if (book.author.toLowerCase().includes(searchFilter.toLowerCase())) {
+          return book;
+        }
+      }
+    };
+
     if (searchFilter === "") {
       return sortedBooks;
     } else {
-      return sortedBooks.filter(
-        (book) =>
-          book.title.toLowerCase().includes(searchFilter.toLowerCase()) |
-          book.author.toLowerCase().includes(searchFilter.toLowerCase())
-      );
+      return sortedBooks.filter((book) => checkAuthorOrTitle(book));
     }
   }, [sortedBooks, searchFilter]);
 
