@@ -1,9 +1,9 @@
-.App {
+/* .App {
   background-color: #264653;
   width: 100vw;
   min-height: 100vh;
   height: auto;
-}
+} */
 
 .Modal {
   position: fixed;
@@ -65,7 +65,7 @@
   box-sizing: border-box;
 }
 .read-switch-inner:before {
-  content: "Yes";
+  content: 'Yes';
   text-transform: uppercase;
   padding-left: 10px;
   background-color: lightseagreen;
@@ -73,7 +73,7 @@
 }
 
 .read-switch-inner:after {
-  content: "No";
+  content: 'No';
   text-transform: uppercase;
   padding-right: 10px;
   background-color: #bbb;

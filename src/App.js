@@ -1,19 +1,18 @@
-import React from "react";
-import "./App.css";
-import AddNewBook from "./components/AddNewBook";
-import Filter from "./components/Filter";
-import Header from "./components/Header";
-import Library from "./components/Library";
+import React from 'react'
+import './App.css'
+import Header from './components/Header/Header'
+import Library from './components/Library/Library'
+import { ChakraProvider } from '@chakra-ui/react'
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Filter />
-      <Library />
-      <AddNewBook />
-    </div>
-  );
+    <ChakraProvider>
+      <div className='App'>
+        <Header />
+        <Library />
+      </div>
+    </ChakraProvider>
+  )
 }
 
-export default App;
+export default App
