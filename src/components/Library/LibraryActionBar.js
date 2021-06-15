@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import '../../styles/Filter.css'
 import { LibraryContext } from '../../context'
 
 import { Search2Icon, AddIcon } from '@chakra-ui/icons'

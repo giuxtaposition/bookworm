@@ -12,11 +12,27 @@ import {
   Stack,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
+import { Link as ReactRouterLink } from 'react-router-dom'
 
-const Links = ['Home', 'Library', 'Stats']
+const Links = [
+  {
+    name: 'Home',
+    path: '/',
+  },
+  {
+    name: 'Library',
+    path: '/library',
+  },
+  {
+    name: 'Stats',
+    path: '/stats',
+  },
+]
 
-const NavLink = ({ children }) => (
+const NavLink = ({ name, path }) => (
   <Link
+    as={ReactRouterLink}
+    to={path}
     px={2}
     py={1}
     rounded={'md'}
@@ -26,7 +42,7 @@ const NavLink = ({ children }) => (
     }}
     href={'#'}
   >
-    {children}
+    {name}
   </Link>
 )
 
@@ -37,9 +53,11 @@ const Header = () => {
   return (
     <header>
       <Box
-        bg={useColorModeValue('teal.50', 'gray.900')}
+        bg={useColorModeValue('white', 'gray.900')}
         color={useColorModeValue('gray.900', 'gray.100')}
         px={4}
+        borderTop='3px solid'
+        borderTopColor={useColorModeValue('teal.500', 'teal.300')}
       >
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           {/* Mobile Hamburger */}
@@ -61,7 +79,7 @@ const Header = () => {
               display={{ base: 'none', md: 'flex' }}
             >
               {Links.map(link => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink key={link.name} name={link.name} path={link.path} />
               ))}
             </HStack>
           </HStack>
@@ -79,7 +97,7 @@ const Header = () => {
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
               {Links.map(link => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink key={link.name} name={link.name} path={link.path} />
               ))}
             </Stack>
           </Box>

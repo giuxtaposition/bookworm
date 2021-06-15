@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
-import '../styles/Book.css'
 import { LibraryContext } from '../../context'
 import moment from 'moment'
-import defaultCover from '../images/default-cover.jpg'
+import defaultCover from '../../images/default-cover.jpg'
 import {
   Tr,
   Td,

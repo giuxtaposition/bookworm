@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-  Box,
-  Text,
-  Icon,
-  useColorModeValue,
-  Heading,
-  useColorMode,
-} from '@chakra-ui/react'
+import { Icon, useColorModeValue, Heading } from '@chakra-ui/react'
 import { FaBookReader } from 'react-icons/fa'
 
 const Logo = () => {
