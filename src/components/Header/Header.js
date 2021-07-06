@@ -21,21 +21,6 @@ import {
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink } from 'react-router-dom'
 
-const Links = [
-  {
-    name: 'Home',
-    path: '/',
-  },
-  {
-    name: 'Library',
-    path: '/library',
-  },
-  {
-    name: 'Stats',
-    path: '/stats',
-  },
-]
-
 const NavLink = ({ name, path }) => (
   <Link
     as={ReactRouterLink}
@@ -62,10 +47,11 @@ const Header = ({ token, logout }) => {
       <Box
         bg={useColorModeValue('white', 'gray.900')}
         color={useColorModeValue('gray.900', 'gray.100')}
-        px={4}
+        boxShadow='lg'
+        px={8}
+        py={2}
         borderTop='3px solid'
         borderTopColor={useColorModeValue('teal.500', 'teal.300')}
-        boxShadow='lg'
       >
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           {/* Mobile Hamburger */}
@@ -86,9 +72,12 @@ const Header = ({ token, logout }) => {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}
             >
-              {Links.map(link => (
-                <NavLink key={link.name} name={link.name} path={link.path} />
-              ))}
+              {token && (
+                <>
+                  <NavLink key='Library' name='Library' path='/library' />
+                  <NavLink key='Stats' name='Stats' path='/stats' />
+                </>
+              )}
             </HStack>
           </HStack>
 
@@ -166,9 +155,12 @@ const Header = ({ token, logout }) => {
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
-              {Links.map(link => (
-                <NavLink key={link.name} name={link.name} path={link.path} />
-              ))}
+              {token && (
+                <>
+                  <NavLink key='Library' name='Library' path='/library' />
+                  <NavLink key='Stats' name='Stats' path='/stats' />
+                </>
+              )}
             </Stack>
           </Box>
         ) : null}

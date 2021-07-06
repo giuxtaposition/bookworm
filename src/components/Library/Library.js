@@ -1,10 +1,9 @@
 import React from 'react'
-import { Box } from '@material-ui/core'
-import { Heading } from '@chakra-ui/layout'
+import { Heading, Box } from '@chakra-ui/layout'
 import LibraryTable from './LibraryTable'
 import LibraryActionBar from './LibraryActionBar'
 
-const Library = () => {
+const Library = props => {
   return (
     <Box px={4} mt={4}>
       <Heading>Library</Heading>

@@ -7,6 +7,7 @@ import { Switch, Route } from 'react-router-dom'
 import LoginForm from './components/Account/LoginForm'
 import { useHistory } from 'react-router-dom'
 import SignUpForm from './components/Account/SignUpForm'
+import Library from './components/Library/Library'
 
 function App() {
   const [token, setToken] = useState(null)
@@ -19,10 +20,10 @@ function App() {
   }, [])
 
   const logout = () => {
+    history.push('/')
     setToken(null)
     localStorage.clear()
     client.resetStore()
-    history.push('/')
   }
 
   return (
@@ -35,7 +36,7 @@ function App() {
 
           <Route path='/library'>
             {token ? (
-              <></>
+              <Library />
             ) : (
               <Heading>Please Log In to use these features!</Heading>
             )}

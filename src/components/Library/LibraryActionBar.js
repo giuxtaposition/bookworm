@@ -1,6 +1,4 @@
-import React, { useContext } from 'react'
-import { LibraryContext } from '../../context'
-
+import React from 'react'
 import { Search2Icon, AddIcon } from '@chakra-ui/icons'
 import {
   useColorModeValue,
@@ -15,15 +13,7 @@ import {
 } from '@chakra-ui/react'
 import AddNewBook from './AddNewBook'
 
-const LibraryActionBar = () => {
-  //CONTEXT
-  const {
-    searchFilter,
-    setSearchFilter,
-    searchFilterType,
-    setSearchFilterType,
-  } = useContext(LibraryContext)
-
+const LibraryActionBar = props => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
@@ -40,8 +30,8 @@ const LibraryActionBar = () => {
             <Input
               type='search'
               placeholder='Search..'
-              value={searchFilter}
-              onChange={e => setSearchFilter(e.target.value)}
+              // value={searchFilter}
+              // onChange={e => setSearchFilter(e.target.value)}
             />
             <InputRightElement
               children={
@@ -55,8 +45,8 @@ const LibraryActionBar = () => {
             variant='outline'
             w='fit-content'
             minW={150}
-            value={searchFilterType}
-            onChange={e => setSearchFilterType(e.target.value)}
+            // value={searchFilterType}
+            // onChange={e => setSearchFilterType(e.target.value)}
           >
             <option value='all'>All</option>
             <option value='title'>Title</option>
