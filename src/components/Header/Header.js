@@ -10,6 +10,13 @@ import {
   useColorModeValue,
   useColorMode,
   Stack,
+  Button,
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink } from 'react-router-dom'
@@ -46,7 +53,7 @@ const NavLink = ({ name, path }) => (
   </Link>
 )
 
-const Header = () => {
+const Header = ({ token, logout }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { colorMode, toggleColorMode } = useColorMode()
 
@@ -58,6 +65,7 @@ const Header = () => {
         px={4}
         borderTop='3px solid'
         borderTopColor={useColorModeValue('teal.500', 'teal.300')}
+        boxShadow='lg'
       >
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
           {/* Mobile Hamburger */}
@@ -84,11 +92,73 @@ const Header = () => {
             </HStack>
           </HStack>
 
-          {/*Dark/Light Theme Button*/}
           <Flex alignItems={'center'}>
-            <IconButton onClick={toggleColorMode} isRound='true'>
-              {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-            </IconButton>
+            {/*User Account*/}
+            <HStack spacing='5' display={{ base: 'none', md: 'flex' }}>
+              {token ? (
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={'full'}
+                    variant={'link'}
+                    cursor={'pointer'}
+                  >
+                    <Avatar
+                      size='md'
+                      name='Giulia Ye'
+                      src='https://api.giuxtaposition.tech/images/avatar.png'
+                    />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>Profile</MenuItem>
+                    <MenuItem>Settings</MenuItem>
+                    <MenuDivider />
+                    <MenuItem
+                      onClick={() => {
+                        logout()
+                      }}
+                    >
+                      Logout
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              ) : (
+                <>
+                  {/*Sign In Button*/}
+                  <Button colorScheme='teal' variant='ghost' size='sm'>
+                    <Link
+                      as={ReactRouterLink}
+                      to='/signin'
+                      href={'#'}
+                      _hover={{
+                        textDecoration: 'none',
+                      }}
+                    >
+                      Sign In
+                    </Link>
+                  </Button>
+
+                  {/*Sign Up Button*/}
+                  <Button colorScheme='teal' variant='solid' size='sm'>
+                    <Link
+                      as={ReactRouterLink}
+                      to='/signup'
+                      href={'#'}
+                      _hover={{
+                        textDecoration: 'none',
+                      }}
+                    >
+                      Sign up
+                    </Link>
+                  </Button>
+                </>
+              )}
+
+              {/*Dark/Light Theme Button*/}
+              <IconButton onClick={toggleColorMode} isRound='true'>
+                {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+              </IconButton>
+            </HStack>
           </Flex>
         </Flex>
 

@@ -1,32 +1,63 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './App.css'
 import Header from './components/Header/Header'
-import Library from './components/Library/Library'
-import Stats from './components/Stats/Stats'
-import { ChakraProvider } from '@chakra-ui/react'
-
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { ChakraProvider, Heading } from '@chakra-ui/react'
+import { useApolloClient } from '@apollo/client'
+import { Switch, Route } from 'react-router-dom'
+import LoginForm from './components/Account/LoginForm'
+import { useHistory } from 'react-router-dom'
+import SignUpForm from './components/Account/SignUpForm'
 
 function App() {
+  const [token, setToken] = useState(null)
+  const client = useApolloClient()
+  const history = useHistory()
+
+  useEffect(() => {
+    const loggedUserToken = window.localStorage.getItem('bookworm-user-token')
+    setToken(loggedUserToken)
+  }, [])
+
+  const logout = () => {
+    setToken(null)
+    localStorage.clear()
+    client.resetStore()
+    history.push('/')
+  }
+
   return (
-    <Router>
-      <ChakraProvider>
-        <div className='App'>
-          <Header />
+    <ChakraProvider>
+      <div className='App'>
+        <Header token={token} logout={logout} />
 
-          <Switch>
-            <Route exact path='/'></Route>
+        <Switch>
+          <Route exact path='/'></Route>
 
-            <Route path='/library'>
-              <Library />
-            </Route>
-            <Route path='/stats'>
-              <Stats />
-            </Route>
-          </Switch>
-        </div>
-      </ChakraProvider>
-    </Router>
+          <Route path='/library'>
+            {token ? (
+              <></>
+            ) : (
+              <Heading>Please Log In to use these features!</Heading>
+            )}
+          </Route>
+          <Route path='/stats'>
+            {token ? (
+              <></>
+            ) : (
+              <Heading>Please Log In to use these features!</Heading>
+            )}
+          </Route>
+
+          <Route path='/signin'>
+            <LoginForm setToken={setToken} token={token} />
+          </Route>
+
+          <Route path='/signup'>
+            <SignUpForm token={token} />
+          </Route>
+        </Switch>
+      </div>
+    </ChakraProvider>
   )
 }
 
