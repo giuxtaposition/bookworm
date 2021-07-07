@@ -1,8 +1,10 @@
 import React from 'react'
 import defaultCover from '../../images/default-cover.jpg'
-import { Tr, Td, Image, Center, IconButton } from '@chakra-ui/react'
+import { Tr, Td, Image, Center, IconButton, useToast } from '@chakra-ui/react'
 import { CheckIcon, CloseIcon, DeleteIcon } from '@chakra-ui/icons'
 import { MdLibraryAdd } from 'react-icons/md'
+import { DELETE_BOOK, EDIT_BOOK, ADD_BOOK } from '../../graphql/mutations'
+import { useMutation } from '@apollo/client'
 
 const Book = ({
   title,
@@ -17,12 +19,111 @@ const Book = ({
   inLibrary = true,
   searchResultsBooks = false,
   setSearchResultsBooks = false,
+  updateCacheWith,
 }) => {
-  const handleDelete = () => {}
+  const toast = useToast()
 
-  const handleAdd = () => {}
+  const [deleteBook] = useMutation(DELETE_BOOK, {
+    onError: error => {
+      toast({
+        title: 'Error',
+        description: error.graphQLErrors[0].message,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })
+    },
+    update: (store, response) => {
+      updateCacheWith(response.data.deleteBook, 'DELETED')
+    },
+    onCompleted: () =>
+      toast({
+        title: 'Book Deleted.',
+        description: 'Book deleted with success!',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      }),
+  })
 
-  const handleRead = () => {}
+  const handleDelete = () => {
+    deleteBook({
+      variables: {
+        id: id,
+      },
+    })
+  }
+
+  const [changeReadState] = useMutation(EDIT_BOOK, {
+    onError: error => {
+      toast({
+        title: 'Error',
+        description: error.graphQLErrors[0].message,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })
+    },
+    update: (store, response) => {
+      updateCacheWith(response.data.editBook, 'EDITED')
+    },
+  })
+
+  const handleRead = () => {
+    changeReadState({
+      variables: {
+        id: id,
+        readState: read === 'read' ? 'unread' : 'read',
+      },
+    })
+  }
+
+  const [addBook] = useMutation(ADD_BOOK, {
+    onError: error => {
+      console.log(error)
+      if (error.graphQLErrors) {
+        toast({
+          title: 'Error',
+          description: error.graphQLErrors[0].message,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
+      } else {
+        console.error(error)
+      }
+    },
+    update: (store, response) => {
+      updateCacheWith(response.data.addBook, 'ADDED')
+    },
+    onCompleted: () => {
+      console.log('here')
+      const newBooks = searchResultsBooks.filter(book => book.id !== id)
+      setSearchResultsBooks(newBooks)
+      toast({
+        title: 'Book Added.',
+        description: 'Book added with success!',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
+    },
+  })
+
+  const handleAdd = async () => {
+    await addBook({
+      variables: {
+        readState: 'unread',
+        title: title,
+        id: id,
+        published: published,
+        author: author[0],
+        genres: genres,
+        cover: cover,
+        pages: pages,
+      },
+    })
+  }
 
   return (
     <Tr>

@@ -16,3 +16,17 @@ export const ALL_BOOKS = gql`
     }
   }
 `
+
+export const SEARCH_BOOKS = gql`
+  query searchBooks($filter: String, $searchParameter: String!) {
+    searchBooks(filter: $filter, searchParameter: $searchParameter) {
+      title
+      published
+      author
+      genres
+      pages
+      cover
+      id
+    }
+  }
+`

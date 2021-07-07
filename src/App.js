@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react'
 import './App.css'
 import Header from './components/Header/Header'
 import { ChakraProvider, Heading } from '@chakra-ui/react'
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient, useSubscription } from '@apollo/client'
 import { Switch, Route } from 'react-router-dom'
 import LoginForm from './components/Account/LoginForm'
 import { useHistory } from 'react-router-dom'
 import SignUpForm from './components/Account/SignUpForm'
 import Library from './components/Library/Library'
+import { ALL_BOOKS } from './graphql/queries'
+import { BOOK_ADDED, BOOK_DELETED, BOOK_EDITED } from './graphql/subscriptions'
 
 function App() {
   const [token, setToken] = useState(null)
@@ -26,6 +28,71 @@ function App() {
     client.resetStore()
   }
 
+  // Listen for new books and update cache when subscription data arrives
+  const updateCacheWith = (book, type) => {
+    const includedIn = (set, object) => set.map(b => b.id).includes(object.id)
+
+    // Check that added book is not included in the current store
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+
+    if (type === 'ADDED') {
+      console.log('added type', book)
+      if (!includedIn(dataInStore.allBooks, book)) {
+        client.writeQuery({
+          query: ALL_BOOKS,
+          data: { allBooks: dataInStore.allBooks.concat(book) },
+        })
+      }
+    }
+
+    if (type === 'DELETED') {
+      if (includedIn(dataInStore.allBooks, book)) {
+        client.writeQuery({
+          query: ALL_BOOKS,
+          data: {
+            allBooks: dataInStore.allBooks.filter(
+              bookInStore => bookInStore.id !== book.id
+            ),
+          },
+        })
+      }
+    }
+
+    if (type === 'EDITED') {
+      if (!includedIn(dataInStore.allBooks, book)) {
+        client.writeQuery({
+          query: ALL_BOOKS,
+          data: {
+            allBooks: dataInStore.allBooks
+              .filter(bookInStore => bookInStore.id !== book.id)
+              .concat(book),
+          },
+        })
+      }
+    }
+  }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded
+      updateCacheWith(addedBook, 'ADDED')
+    },
+  })
+
+  useSubscription(BOOK_DELETED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const deletedBook = subscriptionData.data.bookDeleted
+      updateCacheWith(deletedBook, 'DELETED')
+    },
+  })
+
+  useSubscription(BOOK_EDITED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const editedBook = subscriptionData.data.bookEdited
+      updateCacheWith(editedBook, 'EDITED')
+    },
+  })
+
   return (
     <ChakraProvider>
       <div className='App'>
@@ -36,7 +103,7 @@ function App() {
 
           <Route path='/library'>
             {token ? (
-              <Library />
+              <Library updateCacheWith={updateCacheWith} />
             ) : (
               <Heading>Please Log In to use these features!</Heading>
             )}

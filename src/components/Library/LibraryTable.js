@@ -241,6 +241,7 @@ const LibraryTable = props => {
                 read={book.readState}
                 key={book.id}
                 id={book.id}
+                updateCacheWith={props.updateCacheWith}
               />
             ))}
           </Tbody>

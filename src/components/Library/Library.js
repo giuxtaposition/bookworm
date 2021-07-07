@@ -7,8 +7,8 @@ const Library = props => {
   return (
     <Box px={4} mt={4}>
       <Heading>Library</Heading>
-      <LibraryActionBar />
-      <LibraryTable />
+      <LibraryActionBar updateCacheWith={props.updateCacheWith} />
+      <LibraryTable updateCacheWith={props.updateCacheWith} />
     </Box>
   )
 }

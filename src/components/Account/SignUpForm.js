@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import {
-  Flex,
   Box,
   Heading,
   FormControl,
@@ -9,7 +8,6 @@ import {
   Button,
   VStack,
   useToast,
-  Text,
   Link,
 } from '@chakra-ui/react'
 import { useMutation } from '@apollo/client'

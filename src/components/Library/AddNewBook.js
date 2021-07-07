@@ -1,6 +1,4 @@
-import React, { useState } from 'react'
-
-import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import Book from './Book'
 
 import {
@@ -20,62 +18,45 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  Alert,
-  AlertIcon,
-  CloseButton,
   Table,
   Thead,
   Tbody,
   Tr,
   Th,
+  Spinner,
 } from '@chakra-ui/react'
 import { Search2Icon } from '@chakra-ui/icons'
+import { useLazyQuery } from '@apollo/client'
+import { SEARCH_BOOKS } from '../../graphql/queries'
 
-const AddNewBook = ({ onClose, isOpen }) => {
+const AddNewBook = ({ onClose, isOpen, updateCacheWith }) => {
   const [search, SetSearch] = useState('')
-  const apiKey = 'AIzaSyDi5VwAtZHab0ufcOB8xeHWESepbyjdvbs'
-  const [results, setResults] = useState([])
   const [checkedFilter, setCheckedFilter] = useState('all')
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false)
+  const [results, setResults] = useState([])
+
+  const [getBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS)
+
+  useEffect(() => {
+    if (data) {
+      setResults(data.searchBooks)
+    }
+  }, [data])
 
   const submitSearch = () => {
-    console.log(checkedFilter)
-    let filter = ''
-
-    if (checkedFilter === 'title') {
-      filter = '+intitle:'
-    } else if (checkedFilter === 'author') {
-      filter = '+inauthor:'
-    } else if (checkedFilter === 'ISBN') {
-      filter = '+isbn:'
-    }
-
-    let url =
-      'https://www.googleapis.com/books/v1/volumes?q=' +
-      filter +
-      search +
-      '&key=' +
-      apiKey +
-      '&maxResults=5'
-
-    axios.get(url).then(data => {
-      const books = data.data.items.map(book => {
-        return {
-          id: book.id,
-          title: book.volumeInfo.title,
-          author: book.volumeInfo.authors,
-          cover:
-            book.volumeInfo.imageLinks === undefined
-              ? ''
-              : book.volumeInfo.imageLinks.thumbnail,
-          pages: book.volumeInfo.pageCount,
-          published: book.volumeInfo.publishedDate,
-          pagesRead: 0,
-          read: false,
-        }
+    if (checkedFilter !== 'all') {
+      getBooks({
+        variables: {
+          searchParameter: search,
+          filter: checkedFilter,
+        },
       })
-      setResults(books)
-    })
+    } else {
+      getBooks({
+        variables: {
+          searchParameter: search,
+        },
+      })
+    }
   }
 
   const handleKeyDown = e => {
@@ -124,66 +105,59 @@ const AddNewBook = ({ onClose, isOpen }) => {
                   <Radio value='all'>All</Radio>
                   <Radio value='title'>Title</Radio>
                   <Radio value='author'>Author</Radio>
-                  <Radio value='ISBN'>ISBN</Radio>
+                  <Radio value='isbn'>ISBN</Radio>
                 </Stack>
               </RadioGroup>
 
-              {/*Book Added Successfully Alert*/}
-              {showSuccessAlert && (
-                <Alert status='success'>
-                  <AlertIcon />
-                  Book Added Successfully!
-                  <CloseButton
-                    position='absolute'
-                    right='8px'
-                    top='8px'
-                    onClick={() => setShowSuccessAlert(false)}
-                  />
-                </Alert>
-              )}
-
               {/*Search Results*/}
-              <Table
-                variant='simple'
-                mt={6}
-                colorScheme='teal'
-                px={2}
-                py={2}
-                maxW='xl'
-              >
-                <Thead>
-                  <Tr>
-                    <Th>Cover</Th>
-                    <Th>Title</Th>
-                    <Th>Author</Th>
-                    <Th>Publication Date</Th>
-                    <Th>Total Pages</Th>
-                    <Th>Pages Read</Th>
-                    <Th>Read</Th>
-                    <Th></Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {results.map(book => (
-                    <Book
-                      title={book.title}
-                      author={book.author}
-                      cover={book.cover}
-                      pages={book.pages}
-                      published={book.published}
-                      insertion={book.insertion}
-                      pagesRead={book.pagesRead}
-                      read={book.read}
-                      key={book.id}
-                      id={book.id}
-                      inLibrary={false}
-                      searchResultsBooks={results}
-                      setSearchResultsBooks={setResults}
-                      setShowSuccessAlert={setShowSuccessAlert}
-                    />
-                  ))}
-                </Tbody>
-              </Table>
+              {loading ? (
+                <Spinner
+                  thickness='4px'
+                  speed='0.65s'
+                  emptyColor='gray.300'
+                  color='teal.500'
+                  size='xl'
+                />
+              ) : (
+                <Table
+                  variant='simple'
+                  mt={6}
+                  colorScheme='teal'
+                  px={2}
+                  py={2}
+                  maxW='xl'
+                >
+                  <Thead>
+                    <Tr>
+                      <Th>Cover</Th>
+                      <Th>Title</Th>
+                      <Th>Author</Th>
+                      <Th>Publication Date</Th>
+                      <Th>Total Pages</Th>
+                      <Th>Read</Th>
+                      <Th></Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {results.map(book => (
+                      <Book
+                        title={book.title}
+                        author={book.author}
+                        cover={book.cover}
+                        pages={book.pages}
+                        published={book.published}
+                        genres={book.genres}
+                        key={book.id}
+                        id={book.id}
+                        inLibrary={false}
+                        searchResultsBooks={results}
+                        setSearchResultsBooks={setResults}
+                        updateCacheWith={updateCacheWith}
+                      />
+                    ))}
+                  </Tbody>
+                </Table>
+              )}
             </VStack>
           </ModalBody>
 
