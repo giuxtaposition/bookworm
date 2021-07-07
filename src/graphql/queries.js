@@ -30,3 +30,15 @@ export const SEARCH_BOOKS = gql`
     }
   }
 `
+
+export const BOOK_COUNT = gql`
+  query {
+    bookCount
+  }
+`
+
+export const BOOK_COUNT_BY_READSTATE = gql`
+  query bookCountByReadState($readState: String!) {
+    bookCountByReadState(readState: $readState)
+  }
+`

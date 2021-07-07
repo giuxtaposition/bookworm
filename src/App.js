@@ -10,6 +10,7 @@ import SignUpForm from './components/Account/SignUpForm'
 import Library from './components/Library/Library'
 import { ALL_BOOKS } from './graphql/queries'
 import { BOOK_ADDED, BOOK_DELETED, BOOK_EDITED } from './graphql/subscriptions'
+import Stats from './components/Stats/Stats'
 
 function App() {
   const [token, setToken] = useState(null)
@@ -110,7 +111,7 @@ function App() {
           </Route>
           <Route path='/stats'>
             {token ? (
-              <></>
+              <Stats></Stats>
             ) : (
               <Heading>Please Log In to use these features!</Heading>
             )}

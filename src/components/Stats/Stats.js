@@ -5,36 +5,21 @@ import {
   Flex,
   SimpleGrid,
   useColorModeValue,
+  Spinner,
 } from '@chakra-ui/react'
-import React, { useContext, useEffect, useState } from 'react'
-import { LibraryContext } from '../../context'
+import React from 'react'
 import StatBox from './StatBox'
+import { useQuery } from '@apollo/client'
+import { BOOK_COUNT, BOOK_COUNT_BY_READSTATE } from '../../graphql/queries'
 
 const Stats = () => {
-  //CONTEXT
-  const { books } = useContext(LibraryContext)
-
-  //STATES
-  const [totalBooks, setTotalBooks] = useState(0)
-  const [totalRead, setTotalRead] = useState(0)
-  const [totalUnread, setTotalUnread] = useState(0)
-
-  useEffect(() => {
-    // Total Count
-    setTotalBooks(books.length)
-
-    // Total Read
-    let readCount = 0
-    books.forEach(book => {
-      if (book.read === true) {
-        readCount++
-      }
-    })
-    setTotalRead(readCount)
-
-    // Total Unread
-    setTotalUnread(books.length - readCount)
-  }, [books])
+  const totalBooks = useQuery(BOOK_COUNT)
+  const totalRead = useQuery(BOOK_COUNT_BY_READSTATE, {
+    variables: { readState: 'read' },
+  })
+  const totalUnread = useQuery(BOOK_COUNT_BY_READSTATE, {
+    variables: { readState: 'unread' },
+  })
 
   return (
     <Box spacing={6} pb={20} m={0} h='100%' w='100%'>
@@ -49,30 +34,40 @@ const Stats = () => {
       </Box>
 
       {/*Stats*/}
-      <Flex mt='calc(var(--chakra-space-20) * -1)' justifyContent='center'>
-        <Box maxW='7xl' paddingInlineStart={8} paddingInlineEnd={8}>
-          <SimpleGrid columns={{ sm: 1, md: 3 }} spacing={6}>
-            {/*Total Number of Books*/}
-            <StatBox
-              label='Total Books'
-              number={totalBooks}
-              text='Total number of books in the library'
-            />
-            {/*Total Read*/}
-            <StatBox
-              label='Read'
-              number={totalRead}
-              text='Total number of books read'
-            />
-            {/*Total Not Read*/}
-            <StatBox
-              label='Not Read'
-              number={totalUnread}
-              text='Total number of books not read'
-            />
-          </SimpleGrid>
-        </Box>
-      </Flex>
+      {totalBooks.loading | totalRead.loading | totalUnread.loading ? (
+        <Spinner
+          thickness='4px'
+          speed='0.65s'
+          emptyColor='gray.300'
+          color='green.500'
+          size='xl'
+        />
+      ) : (
+        <Flex mt='calc(var(--chakra-space-20) * -1)' justifyContent='center'>
+          <Box maxW='7xl' paddingInlineStart={8} paddingInlineEnd={8}>
+            <SimpleGrid columns={{ sm: 1, md: 3 }} spacing={6}>
+              {/*Total Number of Books*/}
+              <StatBox
+                label='Total Books'
+                number={totalBooks.data.bookCount}
+                text='Total number of books in the library'
+              />
+              {/*Total Read*/}
+              <StatBox
+                label='Read'
+                number={totalRead.data.bookCountByReadState}
+                text='Total number of books read'
+              />
+              {/*Total Not Read*/}
+              <StatBox
+                label='Not Read'
+                number={totalUnread.data.bookCountByReadState}
+                text='Total number of books not read'
+              />
+            </SimpleGrid>
+          </Box>
+        </Flex>
+      )}
     </Box>
   )
 }
