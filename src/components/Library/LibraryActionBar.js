@@ -30,8 +30,8 @@ const LibraryActionBar = props => {
             <Input
               type='search'
               placeholder='Search..'
-              // value={searchFilter}
-              // onChange={e => setSearchFilter(e.target.value)}
+              value={props.searchFilter}
+              onChange={e => props.setSearchFilter(e.target.value)}
             />
             <InputRightElement
               children={
@@ -45,8 +45,8 @@ const LibraryActionBar = props => {
             variant='outline'
             w='fit-content'
             minW={150}
-            // value={searchFilterType}
-            // onChange={e => setSearchFilterType(e.target.value)}
+            value={props.searchFilterType}
+            onChange={e => props.setSearchFilterType(e.target.value)}
           >
             <option value='all'>All</option>
             <option value='title'>Title</option>

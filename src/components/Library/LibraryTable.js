@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   Table,
   Thead,
@@ -14,6 +14,7 @@ import { AiOutlineSortAscending, AiOutlineSortDescending } from 'react-icons/ai'
 import Book from './Book'
 import { ALL_BOOKS } from '../../graphql/queries'
 import { useQuery } from '@apollo/client'
+import moment from 'moment'
 
 const LibraryTable = props => {
   //STATES
@@ -24,99 +25,61 @@ const LibraryTable = props => {
     order: '',
   })
 
-  const { data, loading, error } = useQuery(ALL_BOOKS)
+  const [books, setBooks] = useState([])
 
-  if (error) {
-    console.error(error)
-    return null
-  }
+  const { data, loading, error } = useQuery(ALL_BOOKS, {
+    onCompleted: data => {
+      setBooks(data.allBooks)
+    },
+  })
 
-  //Sort By Publication Date
-  const handlePublicationSorting = () => {
-    if (publicationSorting === 'asc') {
-      setPublicationSorting('desc')
-      setSortByFilter({
-        sort: 'publication',
-        order: 'desc',
-      })
-    } else {
-      setPublicationSorting('asc')
-      setSortByFilter({
-        sort: 'publication',
-        order: 'asc',
-      })
+  //Search Books
+  const searchedBooks = useMemo(() => {
+    console.log(props.searchFilter)
+
+    //Check if search filter is in author or title
+    const checkAuthorOrTitle = book => {
+      if (book.title.toLowerCase().includes(props.searchFilter.toLowerCase())) {
+        return book
+      } else if (
+        book.author.name
+          .toLowerCase()
+          .includes(props.searchFilter.toLowerCase())
+      ) {
+        return book
+      }
     }
-  }
 
-  //Sort By Insertion Date
-  const handleInsertionSorting = () => {
-    if (insertionSorting === 'asc') {
-      setInsertionSorting('desc')
-      setSortByFilter({
-        sort: 'insertion',
-        order: 'desc',
-      })
-    } else {
-      setInsertionSorting('asc')
-      setSortByFilter({
-        sort: 'insertion',
-        order: 'asc',
-      })
+    const checkAuthor = book => {
+      if (
+        book.author.name
+          .toLowerCase()
+          .includes(props.searchFilter.toLowerCase())
+      ) {
+        return book
+      }
     }
-  }
 
-  // //Search Books
-  // const searchedBooks = useMemo(() => {
-  //   //Check if search filter is in author or title
-  //   const checkAuthorOrTitle = book => {
-  //     if (book.title.toLowerCase().includes(searchFilter.toLowerCase())) {
-  //       return book
-  //     }
-  //     if (Array.isArray(book.author)) {
-  //       for (const author of book.author) {
-  //         if (author.toLowerCase().includes(searchFilter.toLowerCase())) {
-  //           return book
-  //         }
-  //       }
-  //     } else {
-  //       if (book.author.toLowerCase().includes(searchFilter.toLowerCase())) {
-  //         return book
-  //       }
-  //     }
-  //   }
-  //   const checkAuthor = book => {
-  //     if (Array.isArray(book.author)) {
-  //       for (const author of book.author) {
-  //         if (author.toLowerCase().includes(searchFilter.toLowerCase())) {
-  //           return book
-  //         }
-  //       }
-  //     } else {
-  //       if (book.author.toLowerCase().includes(searchFilter.toLowerCase())) {
-  //         return book
-  //       }
-  //     }
-  //   }
-  //   const checkTitle = book => {
-  //     if (book.title.toLowerCase().includes(searchFilter.toLowerCase())) {
-  //       return book
-  //     }
-  //   }
+    const checkTitle = book => {
+      if (book.title.toLowerCase().includes(props.searchFilter.toLowerCase())) {
+        return book
+      }
+    }
 
-  //   if (searchFilter === '') {
-  //     return books
-  //   } else {
-  //     if (searchFilterType === 'all') {
-  //       return books.filter(book => checkAuthorOrTitle(book))
-  //     } else if (searchFilterType === 'title') {
-  //       return books.filter(book => checkTitle(book))
-  //     } else if (searchFilterType === 'author') {
-  //       return books.filter(book => checkAuthor(book))
-  //     }
-  //   }
-  // }, [books, searchFilter, searchFilterType])
+    if (props.searchFilter === '') {
+      return books
+    } else {
+      if (props.searchFilterType === 'title') {
+        return books.filter(book => checkTitle(book))
+      } else if (props.searchFilterType === 'author') {
+        return books.filter(book => checkAuthor(book))
+      } else {
+        return books.filter(book => checkAuthorOrTitle(book))
+      }
+    }
+  }, [books, props.searchFilter, props.searchFilterType])
 
-  // // Sort Books
+  // Sort Books
   // const sortedBooks = useMemo(() => {
   //   if (sortByFilter.sort === 'insertion') {
   //     if (sortByFilter.order === 'asc') {
@@ -158,6 +121,45 @@ const LibraryTable = props => {
   //     return searchedBooks
   //   }
   // }, [sortByFilter, searchedBooks])
+
+  // if (error) {
+  //   console.error(error)
+  //   return null
+  // }
+
+  //Sort By Publication Date
+  const handlePublicationSorting = () => {
+    if (publicationSorting === 'asc') {
+      setPublicationSorting('desc')
+      setSortByFilter({
+        sort: 'publication',
+        order: 'desc',
+      })
+    } else {
+      setPublicationSorting('asc')
+      setSortByFilter({
+        sort: 'publication',
+        order: 'asc',
+      })
+    }
+  }
+
+  //Sort By Insertion Date
+  const handleInsertionSorting = () => {
+    if (insertionSorting === 'asc') {
+      setInsertionSorting('desc')
+      setSortByFilter({
+        sort: 'insertion',
+        order: 'desc',
+      })
+    } else {
+      setInsertionSorting('asc')
+      setSortByFilter({
+        sort: 'insertion',
+        order: 'asc',
+      })
+    }
+  }
 
   return (
     <>
@@ -230,20 +232,22 @@ const LibraryTable = props => {
             </Tr>
           </Thead>
           <Tbody>
-            {data.allBooks.map(book => (
-              <Book
-                title={book.title}
-                author={book.author.name}
-                cover={book.cover}
-                pages={book.pages}
-                published={book.published}
-                insertion={book.insertion}
-                read={book.readState}
-                key={book.id}
-                id={book.id}
-                updateCacheWith={props.updateCacheWith}
-              />
-            ))}
+            {console.log(searchedBooks)}
+            {searchedBooks &&
+              searchedBooks.map(book => (
+                <Book
+                  title={book.title}
+                  author={book.author.name}
+                  cover={book.cover}
+                  pages={book.pages}
+                  published={book.published}
+                  insertion={book.insertion}
+                  read={book.readState}
+                  key={book.id}
+                  id={book.id}
+                  updateCacheWith={props.updateCacheWith}
+                />
+              ))}
           </Tbody>
         </Table>
       )}
