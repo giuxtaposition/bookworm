@@ -103,7 +103,7 @@ function App() {
 
         <Switch>
           <Route exact path='/'>
-            <Home />
+            <Home updateCacheWith={updateCacheWith} />
           </Route>
 
           <Route path='/library'>

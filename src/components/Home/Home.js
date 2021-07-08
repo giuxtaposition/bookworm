@@ -8,6 +8,7 @@ import {
   Button,
   useColorModeValue,
   HStack,
+  useDisclosure,
 } from '@chakra-ui/react'
 import React, { useState, useEffect } from 'react'
 import { Search2Icon } from '@chakra-ui/icons'
@@ -15,18 +16,29 @@ import { SEARCH_BOOKS } from '../../graphql/queries'
 import { useLazyQuery } from '@apollo/client'
 import Features from './Features'
 import PopularBooks from './PopularBooks'
+import AddNewBook from '../Library/AddNewBook'
 
-const Home = () => {
+const Home = props => {
   const [search, SetSearch] = useState('')
   const [results, setResults] = useState([])
+  const [renderAddNewBook, setRenderAddNewBook] = useState(false)
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [getBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS)
 
   useEffect(() => {
     if (data) {
       setResults(data.searchBooks)
+      setRenderAddNewBook(true)
+      onOpen()
     }
-  }, [data])
+  }, [data, onOpen])
+
+  useEffect(() => {
+    if (!isOpen) {
+      setRenderAddNewBook(false)
+    }
+  }, [isOpen])
 
   const submitSearch = () => {
     getBooks({
@@ -84,6 +96,15 @@ const Home = () => {
             }
           />
         </InputGroup>
+        {renderAddNewBook && (
+          <AddNewBook
+            onClose={onClose}
+            isOpen={isOpen}
+            updateCacheWith={props.updateCacheWith}
+            oldSearch={search}
+            oldResults={results}
+          />
+        )}
       </VStack>
 
       <PopularBooks />

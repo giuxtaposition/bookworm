@@ -67,7 +67,6 @@ const PopularBooks = () => {
 
   const popularBooks = useQuery(POPULAR_BOOKS, {
     onCompleted: data => {
-      console.log(data.popularBooks)
       setBooks(data.popularBooks)
     },
   })
@@ -102,8 +101,8 @@ const PopularBooks = () => {
             slidesPerView={slidesPerView}
             navigation
             pagination={{ clickable: true }}
-            onSwiper={swiper => console.log(swiper)}
-            onSlideChange={() => console.log('on slide change')}
+            // onSwiper={swiper => console.log(swiper)}
+            // onSlideChange={() => console.log('on slide change')}
           >
             {books.map(book => (
               <SwiperSlide key={book.googleId}>

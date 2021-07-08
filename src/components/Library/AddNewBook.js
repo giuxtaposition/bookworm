@@ -29,10 +29,16 @@ import { Search2Icon } from '@chakra-ui/icons'
 import { useLazyQuery } from '@apollo/client'
 import { SEARCH_BOOKS } from '../../graphql/queries'
 
-const AddNewBook = ({ onClose, isOpen, updateCacheWith }) => {
-  const [search, SetSearch] = useState('')
+const AddNewBook = ({
+  onClose,
+  isOpen,
+  updateCacheWith,
+  oldSearch,
+  oldResults,
+}) => {
+  const [search, SetSearch] = useState(oldSearch)
   const [checkedFilter, setCheckedFilter] = useState('all')
-  const [results, setResults] = useState([])
+  const [results, setResults] = useState(oldResults)
 
   const [getBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS)
 
