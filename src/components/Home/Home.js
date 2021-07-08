@@ -14,6 +14,7 @@ import { Search2Icon } from '@chakra-ui/icons'
 import { SEARCH_BOOKS } from '../../graphql/queries'
 import { useLazyQuery } from '@apollo/client'
 import Features from './Features'
+import PopularBooks from './PopularBooks'
 
 const Home = () => {
   const [search, SetSearch] = useState('')
@@ -84,6 +85,8 @@ const Home = () => {
           />
         </InputGroup>
       </VStack>
+
+      <PopularBooks />
 
       <Features />
     </VStack>

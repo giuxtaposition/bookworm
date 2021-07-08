@@ -13,6 +13,7 @@ export const ALL_BOOKS = gql`
       cover
       readState
       id
+      googleId
     }
   }
 `
@@ -40,5 +41,21 @@ export const BOOK_COUNT = gql`
 export const BOOK_COUNT_BY_READSTATE = gql`
   query bookCountByReadState($readState: String!) {
     bookCountByReadState(readState: $readState)
+  }
+`
+
+export const POPULAR_BOOKS = gql`
+  query {
+    popularBooks {
+      title
+      published
+      author {
+        name
+      }
+      genres
+      insertion
+      cover
+      googleId
+    }
   }
 `
