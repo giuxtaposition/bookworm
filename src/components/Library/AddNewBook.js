@@ -33,8 +33,8 @@ const AddNewBook = ({
   onClose,
   isOpen,
   updateCacheWith,
-  oldSearch,
-  oldResults,
+  oldSearch = '',
+  oldResults = [],
 }) => {
   const [search, SetSearch] = useState(oldSearch)
   const [checkedFilter, setCheckedFilter] = useState('all')
