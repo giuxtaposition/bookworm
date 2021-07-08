@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import {
   Table,
   Thead,
@@ -27,11 +27,13 @@ const LibraryTable = props => {
 
   const [books, setBooks] = useState([])
 
-  const { data, loading, error } = useQuery(ALL_BOOKS, {
-    onCompleted: data => {
+  const { data, loading, error } = useQuery(ALL_BOOKS)
+
+  useEffect(() => {
+    if (data) {
       setBooks(data.allBooks)
-    },
-  })
+    }
+  }, [data])
 
   //Search Books
   const searchedBooks = useMemo(() => {
