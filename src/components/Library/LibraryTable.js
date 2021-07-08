@@ -35,8 +35,6 @@ const LibraryTable = props => {
 
   //Search Books
   const searchedBooks = useMemo(() => {
-    console.log(props.searchFilter)
-
     //Check if search filter is in author or title
     const checkAuthorOrTitle = book => {
       if (book.title.toLowerCase().includes(props.searchFilter.toLowerCase())) {
@@ -79,53 +77,49 @@ const LibraryTable = props => {
     }
   }, [books, props.searchFilter, props.searchFilterType])
 
-  // Sort Books
-  // const sortedBooks = useMemo(() => {
-  //   if (sortByFilter.sort === 'insertion') {
-  //     if (sortByFilter.order === 'asc') {
-  //       return searchedBooks.sort((a, b) =>
-  //         moment(a.insertion, 'DD/MM/YYYY-HH:mm:ss').isBefore(
-  //           moment(b.insertion, 'DD/MM/YYYY-HH:mm:ss')
-  //         )
-  //           ? -1
-  //           : 1
-  //       )
-  //     } else {
-  //       return searchedBooks.sort((a, b) =>
-  //         moment(a.insertion, 'DD/MM/YYYY-HH:mm:ss').isBefore(
-  //           moment(b.insertion, 'DD/MM/YYYY-HH:mm:ss')
-  //         )
-  //           ? 1
-  //           : -1
-  //       )
-  //     }
-  //   } else if (sortByFilter.sort === 'publication') {
-  //     if (sortByFilter.order === 'asc') {
-  //       return searchedBooks.sort((a, b) =>
-  //         moment(a.published, 'DD/MM/YYYY').isBefore(
-  //           moment(b.published, 'DD/MM/YYYY')
-  //         )
-  //           ? -1
-  //           : 1
-  //       )
-  //     } else {
-  //       return searchedBooks.sort((a, b) =>
-  //         moment(a.published, 'DD/MM/YYYY').isBefore(
-  //           moment(b.published, 'DD/MM/YYYY')
-  //         )
-  //           ? 1
-  //           : -1
-  //       )
-  //     }
-  //   } else {
-  //     return searchedBooks
-  //   }
-  // }, [sortByFilter, searchedBooks])
-
-  // if (error) {
-  //   console.error(error)
-  //   return null
-  // }
+  //Sort Books
+  const sortedBooks = useMemo(() => {
+    let booksToSort = searchedBooks.slice()
+    if (sortByFilter.sort === 'insertion') {
+      if (sortByFilter.order === 'asc') {
+        return booksToSort.sort((a, b) =>
+          moment(a.insertion, 'DD/MM/YYYY-HH:mm:ss').isBefore(
+            moment(b.insertion, 'DD/MM/YYYY-HH:mm:ss')
+          )
+            ? -1
+            : 1
+        )
+      } else {
+        return booksToSort.sort((a, b) =>
+          moment(a.insertion, 'DD/MM/YYYY-HH:mm:ss').isBefore(
+            moment(b.insertion, 'DD/MM/YYYY-HH:mm:ss')
+          )
+            ? 1
+            : -1
+        )
+      }
+    } else if (sortByFilter.sort === 'publication') {
+      if (sortByFilter.order === 'asc') {
+        return booksToSort.sort((a, b) =>
+          moment(a.published, 'DD/MM/YYYY').isBefore(
+            moment(b.published, 'DD/MM/YYYY')
+          )
+            ? -1
+            : 1
+        )
+      } else {
+        return booksToSort.sort((a, b) =>
+          moment(a.published, 'DD/MM/YYYY').isBefore(
+            moment(b.published, 'DD/MM/YYYY')
+          )
+            ? 1
+            : -1
+        )
+      }
+    } else {
+      return searchedBooks
+    }
+  }, [sortByFilter, searchedBooks])
 
   //Sort By Publication Date
   const handlePublicationSorting = () => {
@@ -232,9 +226,8 @@ const LibraryTable = props => {
             </Tr>
           </Thead>
           <Tbody>
-            {console.log(searchedBooks)}
-            {searchedBooks &&
-              searchedBooks.map(book => (
+            {sortedBooks &&
+              sortedBooks.map(book => (
                 <Book
                   title={book.title}
                   author={book.author.name}
