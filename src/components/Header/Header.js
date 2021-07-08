@@ -44,7 +44,7 @@ const Header = ({ token, logout }) => {
 
   return (
     <header>
-      <Box
+      <Flex
         bg={useColorModeValue('white', 'gray.900')}
         color={useColorModeValue('gray.900', 'gray.100')}
         boxShadow='lg'
@@ -52,8 +52,14 @@ const Header = ({ token, logout }) => {
         py={2}
         borderTop='3px solid'
         borderTopColor={useColorModeValue('teal.500', 'teal.300')}
+        justifyContent='center'
       >
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+        <Flex
+          h={16}
+          alignItems={'center'}
+          justifyContent={'space-between'}
+          w='5xl'
+        >
           {/* Mobile Hamburger */}
           <IconButton
             size={'md'}
@@ -164,7 +170,7 @@ const Header = ({ token, logout }) => {
             </Stack>
           </Box>
         ) : null}
-      </Box>
+      </Flex>
     </header>
   )
 }

@@ -11,6 +11,8 @@ import Library from './components/Library/Library'
 import { ALL_BOOKS } from './graphql/queries'
 import { BOOK_ADDED, BOOK_DELETED, BOOK_EDITED } from './graphql/subscriptions'
 import Stats from './components/Stats/Stats'
+import Home from './components/Home/Home'
+import { globalTheme } from './components/theme'
 
 function App() {
   const [token, setToken] = useState(null)
@@ -95,12 +97,14 @@ function App() {
   })
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={globalTheme}>
       <div className='App'>
         <Header token={token} logout={logout} />
 
         <Switch>
-          <Route exact path='/'></Route>
+          <Route exact path='/'>
+            <Home />
+          </Route>
 
           <Route path='/library'>
             {token ? (
