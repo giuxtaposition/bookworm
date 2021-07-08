@@ -14,8 +14,19 @@ import {
 } from '@chakra-ui/react'
 import { POPULAR_BOOKS } from '../../graphql/queries'
 import { useQuery } from '@apollo/client'
+
+import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper'
+
 import { Swiper, SwiperSlide } from 'swiper/react'
+
+// Import Swiper styles
 import 'swiper/swiper.scss'
+import 'swiper/components/navigation/navigation.scss'
+import 'swiper/components/pagination/pagination.scss'
+import 'swiper/components/scrollbar/scrollbar.scss'
+
+// install Swiper modules
+SwiperCore.use([Navigation, Pagination, Scrollbar, A11y])
 
 const Book = props => {
   return (
@@ -101,6 +112,7 @@ const PopularBooks = () => {
             slidesPerView={slidesPerView}
             navigation
             pagination={{ clickable: true }}
+            scrollbar={{ draggable: true }}
             // onSwiper={swiper => console.log(swiper)}
             // onSlideChange={() => console.log('on slide change')}
           >
