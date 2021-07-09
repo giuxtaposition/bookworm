@@ -1,9 +1,19 @@
 import React from 'react'
-import { Icon, useColorModeValue, Heading, Link } from '@chakra-ui/react'
+import {
+  Icon,
+  useColorModeValue,
+  Heading,
+  Link,
+  useMediaQuery,
+  useColorMode,
+} from '@chakra-ui/react'
 import { FaBookReader } from 'react-icons/fa'
 import { Link as ReactRouterLink } from 'react-router-dom'
 
 const Logo = () => {
+  const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
+  const { colorMode, toggleColorMode } = useColorMode()
+
   return (
     <Heading
       fontSize='x-large'
@@ -23,10 +33,12 @@ const Logo = () => {
         href={'#'}
       >
         Bookworm{' '}
-        <Icon
-          as={FaBookReader}
-          color={useColorModeValue('teal.500', 'teal.300')}
-        />
+        {isLargerThan400 && (
+          <Icon
+            as={FaBookReader}
+            color={`${colorMode === 'light' ? 'teal.500' : 'teal.300'}`}
+          />
+        )}
       </Link>
     </Heading>
   )

@@ -17,9 +17,12 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
+  useMediaQuery,
+  chakra,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink } from 'react-router-dom'
+import { FaUserAlt } from 'react-icons/fa'
 
 const NavLink = ({ name, path }) => (
   <Link
@@ -40,10 +43,11 @@ const NavLink = ({ name, path }) => (
 
 const Header = ({ token, logout }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isUserMenuOpen, onUserMenuOpen, onUserMenuClose } = useDisclosure()
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
-    <header>
+    <chakra.header w='100vw'>
       <Flex
         bg={useColorModeValue('white', 'gray.900')}
         color={useColorModeValue('gray.900', 'gray.100')}
@@ -52,13 +56,15 @@ const Header = ({ token, logout }) => {
         py={2}
         borderTop='3px solid'
         borderTopColor={useColorModeValue('teal.500', 'teal.300')}
-        justifyContent='center'
+        justifyContent={['flex-start', 'flex-start', 'center']}
+        flexDir={['column', 'column', 'row']}
       >
         <Flex
           h={16}
           alignItems={'center'}
-          justifyContent={'space-between'}
-          w='5xl'
+          justifyContent={['space-between', 'space-between', 'space-between']}
+          w='100%'
+          spacing={8}
         >
           {/* Mobile Hamburger */}
           <IconButton
@@ -87,10 +93,11 @@ const Header = ({ token, logout }) => {
             </HStack>
           </HStack>
 
-          <Flex alignItems={'center'}>
+          <HStack spacing='5'>
             {/*User Account*/}
-            <HStack spacing='5' display={{ base: 'none', md: 'flex' }}>
-              {token ? (
+
+            {token ? (
+              <HStack>
                 <Menu>
                   <MenuButton
                     as={Button}
@@ -105,8 +112,26 @@ const Header = ({ token, logout }) => {
                     />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem>Profile</MenuItem>
-                    <MenuItem>Settings</MenuItem>
+                    <Link
+                      as={ReactRouterLink}
+                      to='/profile'
+                      href={'#'}
+                      _hover={{
+                        textDecoration: 'none',
+                      }}
+                    >
+                      <MenuItem>Profile</MenuItem>
+                    </Link>
+                    <Link
+                      as={ReactRouterLink}
+                      to='/settings'
+                      href={'#'}
+                      _hover={{
+                        textDecoration: 'none',
+                      }}
+                    >
+                      <MenuItem>Settings</MenuItem>
+                    </Link>
                     <MenuDivider />
                     <MenuItem
                       onClick={() => {
@@ -117,8 +142,10 @@ const Header = ({ token, logout }) => {
                     </MenuItem>
                   </MenuList>
                 </Menu>
-              ) : (
-                <>
+              </HStack>
+            ) : (
+              <>
+                <HStack spacing='5' display={{ base: 'none', md: 'flex' }}>
                   {/*Sign In Button*/}
                   <Button colorScheme='teal' variant='ghost' size='sm'>
                     <Link
@@ -146,15 +173,66 @@ const Header = ({ token, logout }) => {
                       Sign up
                     </Link>
                   </Button>
-                </>
-              )}
+                </HStack>
 
-              {/*Dark/Light Theme Button*/}
-              <IconButton onClick={toggleColorMode} isRound='true'>
-                {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-              </IconButton>
-            </HStack>
-          </Flex>
+                {/* Mobile Account Button*/}
+                <HStack display={{ md: 'none' }}>
+                  <Menu>
+                    <MenuButton
+                      as={IconButton}
+                      icon={<FaUserAlt w='xl' />}
+                      aria-label={'Open User Menu'}
+                      rounded={'full'}
+                      colorScheme='teal'
+                      cursor={'pointer'}
+                    ></MenuButton>
+                    <MenuList>
+                      <Link
+                        as={ReactRouterLink}
+                        to='/signin'
+                        href={'#'}
+                        _hover={{
+                          textDecoration: 'none',
+                        }}
+                      >
+                        <MenuItem>Sign In</MenuItem>
+                      </Link>
+                      <Link
+                        as={ReactRouterLink}
+                        to='/signup'
+                        href={'#'}
+                        _hover={{
+                          textDecoration: 'none',
+                        }}
+                      >
+                        <MenuItem>Sign Up</MenuItem>
+                      </Link>
+                      <MenuDivider />
+
+                      <MenuItem onClick={toggleColorMode}>
+                        {/*Dark/Light Theme Button*/}
+                        <IconButton isRound='true' mr={2}>
+                          {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                        </IconButton>
+                        {colorMode === 'light'
+                          ? 'Toggle Dark Mode'
+                          : 'Toggle Light Mode'}
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
+                </HStack>
+              </>
+            )}
+
+            {/*Dark/Light Theme Button*/}
+            <IconButton
+              onClick={toggleColorMode}
+              isRound='true'
+              display={{ base: 'none', md: 'flex' }}
+            >
+              {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+            </IconButton>
+          </HStack>
         </Flex>
 
         {/* Mobile Nav Links */}
@@ -171,7 +249,7 @@ const Header = ({ token, logout }) => {
           </Box>
         ) : null}
       </Flex>
-    </header>
+    </chakra.header>
   )
 }
 

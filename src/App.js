@@ -13,6 +13,15 @@ import { BOOK_ADDED, BOOK_DELETED, BOOK_EDITED } from './graphql/subscriptions'
 import Stats from './components/Stats/Stats'
 import Home from './components/Home/Home'
 import { globalTheme } from './components/theme'
+import Settings from './components/Account/Settings'
+
+const RedirectToSignin = ({ token, children, history }) => {
+  if (token) {
+    return <>{children}</>
+  } else {
+    history.push('/signin')
+  }
+}
 
 function App() {
   const [token, setToken] = useState(null)
@@ -24,11 +33,11 @@ function App() {
     setToken(loggedUserToken)
   }, [])
 
-  const logout = () => {
-    history.push('/')
+  const logout = async () => {
+    await history.push('/')
     setToken(null)
     localStorage.clear()
-    client.resetStore()
+    await client.resetStore()
   }
 
   // Listen for new books and update cache when subscription data arrives
@@ -113,9 +122,18 @@ function App() {
               <Heading>Please Log In to use these features!</Heading>
             )}
           </Route>
+
           <Route path='/stats'>
             {token ? (
-              <Stats></Stats>
+              <Stats />
+            ) : (
+              <Heading>Please Log In to use these features!</Heading>
+            )}
+          </Route>
+
+          <Route path='/settings'>
+            {token ? (
+              <Settings />
             ) : (
               <Heading>Please Log In to use these features!</Heading>
             )}
