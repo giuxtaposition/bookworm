@@ -67,13 +67,15 @@ const Header = ({ token, logout }) => {
           spacing={8}
         >
           {/* Mobile Hamburger */}
-          <IconButton
-            size={'md'}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={'Open Menu'}
-            display={{ md: 'none' }}
-            onClick={isOpen ? onClose : onOpen}
-          />
+          {token && (
+            <IconButton
+              size={'md'}
+              icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+              aria-label={'Open Menu'}
+              display={{ md: 'none' }}
+              onClick={isOpen ? onClose : onOpen}
+            />
+          )}
           <HStack spacing={8} alignItems={'center'}>
             {/* Logo */}
             <Logo />
@@ -236,15 +238,11 @@ const Header = ({ token, logout }) => {
         </Flex>
 
         {/* Mobile Nav Links */}
-        {isOpen ? (
+        {isOpen && token ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
-              {token && (
-                <>
-                  <NavLink key='Library' name='Library' path='/library' />
-                  <NavLink key='Stats' name='Stats' path='/stats' />
-                </>
-              )}
+              <NavLink key='Library' name='Library' path='/library' />
+              <NavLink key='Stats' name='Stats' path='/stats' />
             </Stack>
           </Box>
         ) : null}
