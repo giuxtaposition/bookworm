@@ -43,13 +43,13 @@ const LoginForm = ({ setToken, token }) => {
         duration: 9000,
         isClosable: true,
       })
+      history.push('/')
     },
   })
 
   const handleLogin = event => {
     event.preventDefault()
     login({ variables: { username, password } })
-    history.push('/')
   }
 
   return (

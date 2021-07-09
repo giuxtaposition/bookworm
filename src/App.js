@@ -35,9 +35,9 @@ function App() {
 
   const logout = async () => {
     await history.push('/')
+    await client.resetStore()
     setToken(null)
     localStorage.clear()
-    await client.resetStore()
   }
 
   // Listen for new books and update cache when subscription data arrives

@@ -17,7 +17,7 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  useMediaQuery,
+  Icon,
   chakra,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
@@ -142,6 +142,19 @@ const Header = ({ token, logout }) => {
                     >
                       Logout
                     </MenuItem>
+                    <MenuDivider />
+                    <MenuItem
+                      onClick={toggleColorMode}
+                      display={{ md: 'none' }}
+                    >
+                      {/*Dark/Light Theme Button*/}
+                      <Icon mr={2}>
+                        {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                      </Icon>
+                      {colorMode === 'light'
+                        ? 'Toggle Dark Mode'
+                        : 'Toggle Light Mode'}
+                    </MenuItem>
                   </MenuList>
                 </Menu>
               </HStack>
@@ -213,9 +226,9 @@ const Header = ({ token, logout }) => {
 
                       <MenuItem onClick={toggleColorMode}>
                         {/*Dark/Light Theme Button*/}
-                        <IconButton isRound='true' mr={2}>
+                        <Icon mr={2}>
                           {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-                        </IconButton>
+                        </Icon>
                         {colorMode === 'light'
                           ? 'Toggle Dark Mode'
                           : 'Toggle Light Mode'}

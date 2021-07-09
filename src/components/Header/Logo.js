@@ -1,7 +1,6 @@
 import React from 'react'
 import {
   Icon,
-  useColorModeValue,
   Heading,
   Link,
   useMediaQuery,
