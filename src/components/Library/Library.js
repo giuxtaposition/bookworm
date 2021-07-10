@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
-import { Heading, Box } from '@chakra-ui/layout'
+import { Heading, Spinner, VStack, Stack } from '@chakra-ui/react'
 import LibraryTable from './LibraryTable'
 import LibraryActionBar from './LibraryActionBar'
+import { ALL_BOOKS } from '../../graphql/queries'
+import { useQuery } from '@apollo/client'
 
 const Library = props => {
   const [searchFilter, setSearchFilter] = useState('')
   const [searchFilterType, setSearchFilterType] = useState('')
+  const { data, loading, error } = useQuery(ALL_BOOKS)
+
   return (
-    <Box px={4} mt={4}>
+    <Stack px={4} mt={4} flexGrow={1} flexDir='column'>
       <Heading>Library</Heading>
       <LibraryActionBar
         updateCacheWith={props.updateCacheWith}
@@ -16,12 +20,30 @@ const Library = props => {
         setSearchFilter={setSearchFilter}
         setSearchFilterType={setSearchFilterType}
       />
-      <LibraryTable
-        updateCacheWith={props.updateCacheWith}
-        searchFilter={searchFilter}
-        searchFilterType={searchFilterType}
-      />
-    </Box>
+      {loading ? (
+        <VStack
+          bg='transparent'
+          justifyContent='center'
+          alignItems='center'
+          flexGrow={1}
+        >
+          <Spinner
+            thickness='4px'
+            speed='0.65s'
+            emptyColor='gray.300'
+            color='teal.500'
+            size='xl'
+          />
+        </VStack>
+      ) : (
+        <LibraryTable
+          updateCacheWith={props.updateCacheWith}
+          searchFilter={searchFilter}
+          searchFilterType={searchFilterType}
+          books={data.allBooks}
+        />
+      )}
+    </Stack>
   )
 }
 

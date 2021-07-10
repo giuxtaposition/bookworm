@@ -26,7 +26,6 @@ const Home = props => {
   const [renderAddNewBook, setRenderAddNewBook] = useState(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isLargerThan600] = useMediaQuery('(min-width: 600px)')
-  const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
 
   const [getBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS)
 

@@ -15,14 +15,6 @@ import Home from './components/Home/Home'
 import { globalTheme } from './components/theme'
 import Settings from './components/Account/Settings'
 
-const RedirectToSignin = ({ token, children, history }) => {
-  if (token) {
-    return <>{children}</>
-  } else {
-    history.push('/signin')
-  }
-}
-
 function App() {
   const [token, setToken] = useState(null)
   const client = useApolloClient()

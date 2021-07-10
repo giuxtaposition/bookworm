@@ -76,7 +76,7 @@ const PopularBooks = () => {
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)')
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
 
-  const popularBooks = useQuery(POPULAR_BOOKS, {
+  useQuery(POPULAR_BOOKS, {
     onCompleted: data => {
       setBooks(data.popularBooks)
     },

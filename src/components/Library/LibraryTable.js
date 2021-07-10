@@ -1,22 +1,10 @@
-import React, { useState, useMemo, useEffect } from 'react'
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Icon,
-  Button,
-  Spinner,
-  Center,
-} from '@chakra-ui/react'
-import { AiOutlineSortAscending, AiOutlineSortDescending } from 'react-icons/ai'
-import Book from './Book'
-import { ALL_BOOKS } from '../../graphql/queries'
-import { useQuery } from '@apollo/client'
+import React, { useState, useMemo } from 'react'
+import { Flex, Stack, useColorMode } from '@chakra-ui/react'
 import moment from 'moment'
+import LibraryTableHeader from './LibraryTableHeader'
+import LibraryTableBody from './LibraryTableBody'
 
-const LibraryTable = props => {
+function LibraryTable(props) {
   //STATES
   const [publicationSorting, setPublicationSorting] = useState('asc')
   const [insertionSorting, setInsertionSorting] = useState('asc')
@@ -25,15 +13,7 @@ const LibraryTable = props => {
     order: '',
   })
 
-  const [books, setBooks] = useState([])
-
-  const { data, loading, error } = useQuery(ALL_BOOKS)
-
-  useEffect(() => {
-    if (data) {
-      setBooks(data.allBooks)
-    }
-  }, [data])
+  const { colorMode, toggleColorMode } = useColorMode()
 
   //Search Books
   const searchedBooks = useMemo(() => {
@@ -67,17 +47,17 @@ const LibraryTable = props => {
     }
 
     if (props.searchFilter === '') {
-      return books
+      return props.books
     } else {
       if (props.searchFilterType === 'title') {
-        return books.filter(book => checkTitle(book))
+        return props.books.filter(book => checkTitle(book))
       } else if (props.searchFilterType === 'author') {
-        return books.filter(book => checkAuthor(book))
+        return props.books.filter(book => checkAuthor(book))
       } else {
-        return books.filter(book => checkAuthorOrTitle(book))
+        return props.books.filter(book => checkAuthorOrTitle(book))
       }
     }
-  }, [books, props.searchFilter, props.searchFilterType])
+  }, [props.books, props.searchFilter, props.searchFilterType])
 
   //Sort Books
   const sortedBooks = useMemo(() => {
@@ -158,95 +138,46 @@ const LibraryTable = props => {
   }
 
   return (
-    <>
-      {loading ? (
-        <Center>
-          <Spinner
-            thickness='4px'
-            speed='0.65s'
-            emptyColor='gray.300'
-            color='teal.500'
-            size='xl'
-          />
-        </Center>
-      ) : (
-        <Table variant='simple' mt={6} colorScheme='teal'>
-          <Thead>
-            <Tr>
-              <Th>Cover</Th>
-              <Th>Title</Th>
-              <Th>Author</Th>
-              <Th>
-                <Button
-                  onClick={() => handlePublicationSorting()}
-                  bg='transparent'
-                >
-                  Publication Date
-                  {publicationSorting === 'asc' ? (
-                    <Icon
-                      w={6}
-                      h={6}
-                      bg='transparent'
-                      as={AiOutlineSortAscending}
-                    />
-                  ) : (
-                    <Icon
-                      w={6}
-                      h={6}
-                      bg='transparent'
-                      as={AiOutlineSortDescending}
-                    />
-                  )}
-                </Button>
-              </Th>
-              <Th>
-                <Button
-                  onClick={() => handleInsertionSorting()}
-                  bg='transparent'
-                >
-                  Date Added
-                  {insertionSorting === 'asc' ? (
-                    <Icon
-                      w={6}
-                      h={6}
-                      bg='transparent'
-                      as={AiOutlineSortAscending}
-                    />
-                  ) : (
-                    <Icon
-                      w={6}
-                      h={6}
-                      bg='transparent'
-                      as={AiOutlineSortDescending}
-                    />
-                  )}
-                </Button>
-              </Th>
-              <Th>Total Pages</Th>
-              <Th>Read</Th>
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {sortedBooks &&
-              sortedBooks.map(book => (
-                <Book
-                  title={book.title}
-                  author={book.author.name}
-                  cover={book.cover}
-                  pages={book.pages}
-                  published={book.published}
-                  insertion={book.insertion}
-                  read={book.readState}
-                  key={book.id}
-                  id={book.id}
-                  updateCacheWith={props.updateCacheWith}
-                />
-              ))}
-          </Tbody>
-        </Table>
-      )}
-    </>
+    <Flex
+      w='full'
+      px={{ base: 15, md: 50 }}
+      py={50}
+      alignItems='center'
+      justifyContent='center'
+    >
+      <Stack
+        direction={{ base: 'column' }}
+        w='full'
+        bg={{ md: colorMode === 'light' ? 'white' : '#19191d' }}
+        shadow='lg'
+      >
+        {sortedBooks.map((book, index) => {
+          return (
+            <Flex
+              direction={{ base: 'row', md: 'column' }}
+              bg={`${colorMode === 'light' ? 'gray.200' : '#25252b'}`}
+              _hover={{
+                bg: colorMode === 'light' ? 'gray.200' : '#2e2e36',
+              }}
+              key={book.id}
+            >
+              <LibraryTableHeader
+                elementIndex={index}
+                showSortingButtons={true}
+                handlePublicationSorting={handlePublicationSorting}
+                publicationSorting={publicationSorting}
+                handleInsertionSorting={handleInsertionSorting}
+                insertionSorting={insertionSorting}
+              />
+              <LibraryTableBody
+                book={book}
+                updateCacheWith={props.updateCacheWith}
+              />
+            </Flex>
+          )
+        })}
+      </Stack>
+    </Flex>
   )
 }
 export default LibraryTable

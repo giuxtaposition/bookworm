@@ -43,7 +43,6 @@ const NavLink = ({ name, path }) => (
 
 const Header = ({ token, logout }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { isUserMenuOpen, onUserMenuOpen, onUserMenuClose } = useDisclosure()
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
