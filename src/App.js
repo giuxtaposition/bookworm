@@ -12,7 +12,7 @@ import { BOOK_ADDED, BOOK_DELETED, BOOK_EDITED } from './graphql/subscriptions'
 import Stats from './components/Stats/Stats'
 import Home from './components/Home/Home'
 import { globalTheme } from './components/theme'
-import Settings from './components/Account/Settings'
+import AccountSettings from './components/Account/AccountSettings'
 import PrivateRoute from './components/PrivateRoute'
 import UpdateCacheWith from './graphql/updateCache'
 
@@ -64,22 +64,13 @@ function App() {
             <Home />
           </Route>
 
-          <PrivateRoute
-            path='/library'
-            token={token}
-            component={Library}
-          ></PrivateRoute>
+          <PrivateRoute path='/library' component={Library}></PrivateRoute>
 
-          <PrivateRoute
-            path='/stats'
-            token={token}
-            component={Stats}
-          ></PrivateRoute>
+          <PrivateRoute path='/stats' component={Stats}></PrivateRoute>
 
           <PrivateRoute
             path='/settings'
-            token={token}
-            component={Settings}
+            component={AccountSettings}
           ></PrivateRoute>
 
           <Route path='/signin'>

@@ -28,8 +28,8 @@ const LibraryTableHeader = ({
           columns={{ base: 1, md: 6 }}
           w={{ base: '15vw', md: 'full' }}
           textTransform='uppercase'
-          bg={`${colorMode === 'light' ? 'gray.100' : '#19191d'}`}
-          color={`${colorMode === 'light' ? 'gray.500' : 'white'}`}
+          bg={`${colorMode === 'light' ? 'teal.400' : '#19191d'}`}
+          color='white'
           py={{ base: 1, md: 4 }}
           px={{ base: 2, md: 10 }}
           fontSize='md'

@@ -1,12 +1,13 @@
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
 
-const PrivateRoute = ({ component: Component, token, ...rest }) => {
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const loggedUserToken = window.localStorage.getItem('bookworm-user-token')
   return (
     <Route
       {...rest}
       render={props =>
-        token ? (
+        loggedUserToken ? (
           <Component {...props} />
         ) : (
           <Redirect
