@@ -69,11 +69,7 @@ const LibraryActionBar = props => {
       </Stack>
 
       {/*Add New Book Modal*/}
-      <AddNewBook
-        onClose={onClose}
-        isOpen={isOpen}
-        updateCacheWith={props.updateCacheWith}
-      />
+      <AddNewBook onClose={onClose} isOpen={isOpen} />
     </>
   )
 }

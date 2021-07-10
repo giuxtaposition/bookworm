@@ -12,12 +12,13 @@ import {
 } from '@chakra-ui/react'
 import { useMutation } from '@apollo/client'
 import { LOGIN } from '../../graphql/mutations'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 const LoginForm = ({ setToken, token }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
+  const location = useLocation()
 
   const toast = useToast()
   const [login] = useMutation(LOGIN, {
@@ -43,7 +44,12 @@ const LoginForm = ({ setToken, token }) => {
         duration: 9000,
         isClosable: true,
       })
-      history.push('/')
+      console.log(location.state)
+      if (location.state) {
+        history.push(location.state.from.pathname)
+      } else {
+        history.push('/')
+      }
     },
   })
 

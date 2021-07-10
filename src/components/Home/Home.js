@@ -106,7 +106,6 @@ const Home = props => {
           <AddNewBook
             onClose={onClose}
             isOpen={isOpen}
-            updateCacheWith={props.updateCacheWith}
             oldSearch={search}
             oldResults={results}
           />

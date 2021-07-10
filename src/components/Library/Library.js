@@ -14,7 +14,6 @@ const Library = props => {
     <Stack px={4} mt={4} flexGrow={1} flexDir='column'>
       <Heading>Library</Heading>
       <LibraryActionBar
-        updateCacheWith={props.updateCacheWith}
         searchFilter={searchFilter}
         searchFilterType={searchFilterType}
         setSearchFilter={setSearchFilter}
@@ -37,7 +36,6 @@ const Library = props => {
         </VStack>
       ) : (
         <LibraryTable
-          updateCacheWith={props.updateCacheWith}
           searchFilter={searchFilter}
           searchFilterType={searchFilterType}
           books={data.allBooks}

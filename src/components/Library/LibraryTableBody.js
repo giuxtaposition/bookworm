@@ -8,15 +8,18 @@ import {
   ButtonGroup,
   IconButton,
   useToast,
+  useColorMode,
 } from '@chakra-ui/react'
 import defaultCover from '../../images/default-cover.jpg'
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
 import { BsFillTrashFill } from 'react-icons/bs'
 import { DELETE_BOOK, EDIT_BOOK } from '../../graphql/mutations'
 import { useMutation } from '@apollo/client'
+import UpdateCacheWith from '../../graphql/updateCache'
 
-const LibraryTableBody = ({ book, updateCacheWith }) => {
+const LibraryTableBody = ({ book }) => {
   const toast = useToast()
+  const { colorMode, toggleColorMode } = useColorMode()
   const [isLargerThan730] = useMediaQuery('(min-width: 730px)')
 
   const [deleteBook] = useMutation(DELETE_BOOK, {
@@ -30,7 +33,7 @@ const LibraryTableBody = ({ book, updateCacheWith }) => {
       })
     },
     update: (store, response) => {
-      updateCacheWith(response.data.deleteBook, 'DELETED')
+      UpdateCacheWith(response.data.deleteBook, 'DELETED')
     },
     onCompleted: () =>
       toast({
@@ -61,7 +64,7 @@ const LibraryTableBody = ({ book, updateCacheWith }) => {
       })
     },
     update: (store, response) => {
-      updateCacheWith(response.data.editBook, 'EDITED')
+      UpdateCacheWith(response.data.editBook, 'EDITED')
     },
   })
 
@@ -87,7 +90,7 @@ const LibraryTableBody = ({ book, updateCacheWith }) => {
         fontWeight='hairline'
         color='#777'
         _hover={{
-          color: 'white',
+          color: colorMode === 'light' ? 'black' : 'white',
         }}
         alignItems='center'
       >

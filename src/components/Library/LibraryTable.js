@@ -169,10 +169,7 @@ function LibraryTable(props) {
                 handleInsertionSorting={handleInsertionSorting}
                 insertionSorting={insertionSorting}
               />
-              <LibraryTableBody
-                book={book}
-                updateCacheWith={props.updateCacheWith}
-              />
+              <LibraryTableBody book={book} />
             </Flex>
           )
         })}
