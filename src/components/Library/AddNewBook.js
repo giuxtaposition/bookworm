@@ -35,13 +35,11 @@ const AddNewBook = ({ onClose, isOpen, oldSearch = '', oldResults = [] }) => {
   const [checkedFilter, setCheckedFilter] = useState('all')
   const [results, setResults] = useState(oldResults)
 
-  const [getBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS)
-
-  useEffect(() => {
-    if (data) {
+  const [getBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS, {
+    onCompleted: data => {
       setResults(data.searchBooks)
-    }
-  }, [data])
+    },
+  })
 
   const submitSearch = () => {
     if (checkedFilter !== 'all') {

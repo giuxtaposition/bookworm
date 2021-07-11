@@ -76,3 +76,25 @@ export const ADD_BOOK = gql`
     }
   }
 `
+
+export const EDIT_USER = gql`
+  mutation editUser(
+    $name: String
+    $email: String
+    $bio: String
+    $favoriteGenre: String
+  ) {
+    editUser(
+      name: $name
+      email: $email
+      bio: $bio
+      favoriteGenre: $favoriteGenre
+    ) {
+      username
+      favoriteGenre
+      name
+      email
+      bio
+    }
+  }
+`

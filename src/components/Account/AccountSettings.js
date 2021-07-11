@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   VStack,
   Heading,
@@ -15,13 +15,16 @@ import {
   Icon,
   Avatar,
   Stack,
-  useMediaQuery,
   Flex,
   chakra,
   VisuallyHidden,
+  useToast,
 } from '@chakra-ui/react'
 import { FaUser } from 'react-icons/fa'
 import { BiCloudUpload } from 'react-icons/bi'
+import { EDIT_USER } from '../../graphql/mutations'
+import { useMutation } from '@apollo/client'
+import UpdateCacheWith from '../../graphql/updateCache'
 
 const FormSection = ({ sectionTitle, children }) => {
   return (
@@ -41,7 +44,51 @@ const FormSection = ({ sectionTitle, children }) => {
 }
 
 const Settings = () => {
-  const [isLargerThan730] = useMediaQuery('(min-width: 730px)')
+  // STATES
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [bio, setBio] = useState('')
+  const [favoriteGenre, setFavoriteGenre] = useState('')
+  const [userProfile, setUserProfile] = useState([])
+  const [userCover, setUserCover] = useState([])
+
+  const toast = useToast()
+
+  const [editUser] = useMutation(EDIT_USER, {
+    onError: error => {
+      toast({
+        title: 'Error',
+        description: error.graphQLErrors[0].message,
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+        position: 'top',
+      })
+    },
+    update: (store, response) => {
+      //
+    },
+    onCompleted: () =>
+      toast({
+        title: 'Success',
+        description: 'Your changes have been saved',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'top',
+      }),
+  })
+
+  const handleEdit = () => {
+    editUser({
+      variables: {
+        name,
+        email,
+        bio,
+        favoriteGenre,
+      },
+    })
+  }
 
   return (
     <VStack py={50}>
@@ -63,10 +110,12 @@ const Settings = () => {
               </FormLabel>
               <InputGroup size='sm'>
                 <Input
-                  type='tel'
+                  type='text'
                   placeholder='Katniss  Evergreen'
                   focusBorderColor='teal.400'
                   rounded='md'
+                  value={name}
+                  onChange={({ target }) => setName(target.value)}
                 />
               </InputGroup>
             </FormControl>
@@ -82,10 +131,12 @@ const Settings = () => {
               </FormLabel>
               <InputGroup size='sm'>
                 <Input
-                  type='tel'
+                  type='email'
                   placeholder='kat.evergreen@district12.com'
                   focusBorderColor='teal.400'
                   rounded='md'
+                  value={email}
+                  onChange={({ target }) => setEmail(target.value)}
                 />
               </InputGroup>
             </FormControl>
@@ -100,12 +151,14 @@ const Settings = () => {
                 About
               </FormLabel>
               <Textarea
-                placeholder='I like overthrow dictatorships for breakfast'
+                placeholder='I like to overthrow dictatorships for breakfast'
                 mt={1}
                 rows={3}
                 shadow='sm'
                 focusBorderColor='teal.400'
                 fontSize={{ sm: 'sm' }}
+                value={bio}
+                onChange={({ target }) => setBio(target.value)}
               />
               <FormHelperText>
                 Brief description for your profile. URLs are hyperlinked.
@@ -123,10 +176,12 @@ const Settings = () => {
               </FormLabel>
               <InputGroup size='sm'>
                 <Input
-                  type='tel'
+                  type='text'
                   placeholder='Fantasy'
                   focusBorderColor='teal.400'
                   rounded='md'
+                  value={favoriteGenre}
+                  onChange={({ target }) => setFavoriteGenre(target.value)}
                 />
               </InputGroup>
             </FormControl>
@@ -138,17 +193,27 @@ const Settings = () => {
         {/* User Profile */}
         <FormSection sectionTitle='Profile Photo'>
           <Stack direction={['column', 'row']} spacing={4}>
-            <Avatar
-              cursor='pointer'
-              size='xl'
-              bg={useColorModeValue('gray.300', 'gray.700')}
-              icon={
-                <Icon
-                  as={FaUser}
-                  color={useColorModeValue('teal.400', 'teal.600')}
+            <chakra.label htmlFor='user-profile'>
+              <Avatar
+                cursor='pointer'
+                size='xl'
+                bg={useColorModeValue('gray.300', 'gray.700')}
+                icon={
+                  <Icon
+                    as={FaUser}
+                    color={useColorModeValue('teal.400', 'teal.600')}
+                  />
+                }
+              />
+              <VisuallyHidden>
+                <input
+                  id='user-profile'
+                  name='user-profile'
+                  type='file'
+                  onChange={e => setUserProfile(e.target.files[0])}
                 />
-              }
-            />
+              </VisuallyHidden>
+            </chakra.label>
 
             <VStack>
               <Stack direction={['column', 'row']}>
@@ -208,7 +273,7 @@ const Settings = () => {
                   <path
                     d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02'
                     strokeWidth='2'
-                    strokLinecap='round'
+                    strokeLinecap='round'
                     strokeLinejoin='round'
                   />
                 </Icon>
@@ -218,7 +283,7 @@ const Settings = () => {
                   alignItems='baseline'
                 >
                   <chakra.label
-                    htmlFor='file-upload'
+                    htmlFor='user-cover'
                     cursor='pointer'
                     rounded='md'
                     fontSize='md'
@@ -230,7 +295,12 @@ const Settings = () => {
                   >
                     <span>Upload a file</span>
                     <VisuallyHidden>
-                      <input id='file-upload' name='file-upload' type='file' />
+                      <input
+                        id='user-cover'
+                        name='user-cover'
+                        type='file'
+                        onChange={e => setUserCover(e.target.files[0])}
+                      />
                     </VisuallyHidden>
                   </chakra.label>
                   <Text pl={1}>or drag and drop</Text>
@@ -247,7 +317,12 @@ const Settings = () => {
         </FormSection>
 
         <Stack direction={['column', 'row']}>
-          <Button type='submit' colorScheme='teal' fontWeight='bold'>
+          <Button
+            type='submit'
+            colorScheme='teal'
+            fontWeight='bold'
+            onClick={handleEdit}
+          >
             Save Changes
           </Button>
           <Button type='button' variant='outline' fontWeight='bold'>
