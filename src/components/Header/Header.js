@@ -114,7 +114,11 @@ const Header = ({ token, logout }) => {
                       <Avatar
                         size='md'
                         name={user.me.username}
-                        src={user.me.profilePhoto.location}
+                        src={
+                          user.me.profilePhoto
+                            ? user.me.profilePhoto.location
+                            : ''
+                        }
                       />
                     )}
                   </MenuButton>

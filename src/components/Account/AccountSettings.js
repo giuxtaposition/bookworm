@@ -67,8 +67,6 @@ const AccountSettings = () => {
   const client = useApolloClient()
   const user = client.readQuery({ query: CURRENT_USER })
 
-  console.log(user.me.profilePhoto.location)
-
   const [editUser] = useMutation(EDIT_USER, {
     onError: error => {
       toast({
@@ -201,7 +199,7 @@ const AccountSettings = () => {
   return (
     <VStack py={50}>
       <VStack spacing={4} w={['90%', '90%', '80%', '50%', '50%']}>
-        <Heading>Account AccountSettings</Heading>
+        <Heading>Account Settings</Heading>
 
         <Divider />
 
@@ -301,11 +299,11 @@ const AccountSettings = () => {
         {/* User Profile */}
         <FormSection sectionTitle='Profile Photo'>
           <Stack direction={['column', 'row']} spacing={4}>
-            {user.me.profilePhoto ? (
+            {user ? (
               <Avatar
                 size='xl'
                 bg={colorMode === 'light' ? 'gray.300' : 'gray.700'}
-                src={user.me.profilePhoto.location}
+                src={user.me.profilePhoto ? user.me.profilePhoto.location : ''}
               />
             ) : (
               <Avatar

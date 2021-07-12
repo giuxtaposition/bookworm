@@ -116,15 +116,16 @@ const PopularBooks = () => {
             // onSwiper={swiper => console.log(swiper)}
             // onSlideChange={() => console.log('on slide change')}
           >
-            {books.map(book => (
-              <SwiperSlide key={book.googleId}>
-                <Book
-                  title={book.title}
-                  author={book.author.name}
-                  cover={book.cover}
-                />
-              </SwiperSlide>
-            ))}
+            {books &&
+              books.map(book => (
+                <SwiperSlide key={book.googleId}>
+                  <Book
+                    title={book.title}
+                    author={book.author.name}
+                    cover={book.cover}
+                  />
+                </SwiperSlide>
+              ))}
           </Swiper>
         </Flex>
       </HStack>
