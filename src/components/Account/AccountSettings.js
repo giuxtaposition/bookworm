@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {
   VStack,
   Heading,
@@ -19,10 +19,15 @@ import {
   chakra,
   VisuallyHidden,
   useToast,
+  useColorMode,
 } from '@chakra-ui/react'
 import { FaUser } from 'react-icons/fa'
 import { BiCloudUpload } from 'react-icons/bi'
-import { EDIT_USER } from '../../graphql/mutations'
+import {
+  EDIT_USER,
+  EDIT_USER_COVER_PHOTO,
+  EDIT_USER_PROFILE_PHOTO,
+} from '../../graphql/mutations'
 import { useMutation } from '@apollo/client'
 import UpdateCacheWith from '../../graphql/updateCache'
 
@@ -49,10 +54,13 @@ const Settings = () => {
   const [email, setEmail] = useState('')
   const [bio, setBio] = useState('')
   const [favoriteGenre, setFavoriteGenre] = useState('')
-  const [userProfile, setUserProfile] = useState([])
-  const [userCover, setUserCover] = useState([])
+  const [draggedFile, setDraggedFile] = useState(false)
+
+  const userProfileInput = useRef(null)
+  const userCoverInput = useRef(null)
 
   const toast = useToast()
+  const { colorMode, toggleColorMode } = useColorMode()
 
   const [editUser] = useMutation(EDIT_USER, {
     onError: error => {
@@ -68,7 +76,11 @@ const Settings = () => {
     update: (store, response) => {
       //
     },
-    onCompleted: () =>
+    onCompleted: () => {
+      setName('')
+      setBio('')
+      setEmail('')
+      setFavoriteGenre('')
       toast({
         title: 'Success',
         description: 'Your changes have been saved',
@@ -76,7 +88,8 @@ const Settings = () => {
         duration: 9000,
         isClosable: true,
         position: 'top',
-      }),
+      })
+    },
   })
 
   const handleEdit = () => {
@@ -89,6 +102,94 @@ const Settings = () => {
       },
     })
   }
+
+  const [editUserProfilePhoto] = useMutation(EDIT_USER_PROFILE_PHOTO, {
+    onError: error => {
+      if (error.graphQLErrors) {
+        toast({
+          title: 'Error',
+          description: error.graphQLErrors[0].message,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+          position: 'top',
+        })
+      } else {
+        console.log(error)
+      }
+    },
+    update: (store, response) => {
+      //
+    },
+    onCompleted: () => {
+      toast({
+        title: 'Success',
+        description: 'Profile Photo changed successfully!',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'top',
+      })
+    },
+  })
+
+  const [editUserCoverPhoto, { loading }] = useMutation(EDIT_USER_COVER_PHOTO, {
+    onError: error => {
+      if (error.graphQLErrors) {
+        toast({
+          title: 'Error',
+          description: error.graphQLErrors[0].message,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+          position: 'top',
+        })
+      } else {
+        console.log(error)
+      }
+    },
+    update: (store, response) => {
+      //
+    },
+    onCompleted: () => {
+      toast({
+        title: 'Success',
+        description: 'Cover photo changed successfully!',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'top',
+      })
+    },
+  })
+
+  const handleUserProfilePhoto = ({
+    target: {
+      validity,
+      files: [file],
+    },
+  }) =>
+    validity.valid &&
+    editUserProfilePhoto({ variables: { profilePhoto: file } })
+
+  const handleDrop = event => {
+    event.preventDefault()
+    setDraggedFile(false)
+
+    if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+      editUserCoverPhoto({
+        variables: { coverPhoto: event.dataTransfer.files[0] },
+      })
+    }
+  }
+
+  const handleUserCoverPhoto = ({
+    target: {
+      validity,
+      files: [file],
+    },
+  }) =>
+    validity.valid && editUserCoverPhoto({ variables: { coverPhoto: file } })
 
   return (
     <VStack py={50}>
@@ -193,39 +294,42 @@ const Settings = () => {
         {/* User Profile */}
         <FormSection sectionTitle='Profile Photo'>
           <Stack direction={['column', 'row']} spacing={4}>
-            <chakra.label htmlFor='user-profile'>
-              <Avatar
-                cursor='pointer'
-                size='xl'
-                bg={useColorModeValue('gray.300', 'gray.700')}
-                icon={
-                  <Icon
-                    as={FaUser}
-                    color={useColorModeValue('teal.400', 'teal.600')}
-                  />
-                }
-              />
-              <VisuallyHidden>
-                <input
-                  id='user-profile'
-                  name='user-profile'
-                  type='file'
-                  onChange={e => setUserProfile(e.target.files[0])}
+            <Avatar
+              size='xl'
+              bg={useColorModeValue('gray.300', 'gray.700')}
+              icon={
+                <Icon
+                  as={FaUser}
+                  color={useColorModeValue('teal.400', 'teal.600')}
                 />
-              </VisuallyHidden>
-            </chakra.label>
+              }
+            />
 
             <VStack>
               <Stack direction={['column', 'row']}>
-                <Button
-                  leftIcon={<BiCloudUpload />}
-                  type='button'
-                  variant='solid'
-                  size='md'
-                  fontWeight='medium'
-                >
-                  Change Photo
-                </Button>
+                <chakra.label htmlFor='user-profile'>
+                  <Button
+                    leftIcon={<BiCloudUpload />}
+                    type='button'
+                    variant='solid'
+                    size='md'
+                    fontWeight='medium'
+                    onClick={() => {
+                      userProfileInput.current.click()
+                    }}
+                  >
+                    Change Photo
+                  </Button>
+                  <VisuallyHidden>
+                    <Input
+                      ref={userProfileInput}
+                      id='user-profile'
+                      name='user-profile'
+                      type='file'
+                      onChange={handleUserProfilePhoto}
+                    />
+                  </VisuallyHidden>
+                </chakra.label>
                 <Button
                   type='button'
                   variant='ghost'
@@ -236,7 +340,7 @@ const Settings = () => {
                 </Button>
               </Stack>
               <Text fontSize='sm' color='gray.500'>
-                .jpg, .gif, or .png. Max file size 700K.
+                .jpg, or .png. Max file size 700K.
               </Text>
             </VStack>
           </Stack>
@@ -246,6 +350,7 @@ const Settings = () => {
         <FormSection sectionTitle='Cover Photo'>
           <VStack>
             <Flex
+              ref={userCoverInput}
               w={{ base: 'xs', lg: 'sm' }}
               mt={1}
               justify='center'
@@ -253,11 +358,32 @@ const Settings = () => {
               pt={5}
               pb={6}
               borderWidth={2}
-              borderColor={useColorModeValue('gray.300', 'gray.500')}
+              borderColor={`${
+                draggedFile && colorMode === 'light'
+                  ? 'teal.300'
+                  : draggedFile && colorMode === 'dark'
+                  ? 'teal.500'
+                  : !draggedFile && colorMode === 'light'
+                  ? 'gray.300'
+                  : 'gray.500'
+              }`}
               borderStyle='dashed'
               rounded='md'
               _hover={{
                 borderColor: useColorModeValue('teal.300', 'teal.500'),
+              }}
+              onDrop={event => handleDrop(event)}
+              onDragEnter={e => {
+                e.preventDefault()
+                setDraggedFile(true)
+              }}
+              onDragLeave={e => {
+                e.preventDefault()
+                setDraggedFile(false)
+              }}
+              onDragOver={e => {
+                e.preventDefault()
+                setDraggedFile(true)
               }}
             >
               <Stack spacing={1} textAlign='center'>
@@ -299,7 +425,7 @@ const Settings = () => {
                         id='user-cover'
                         name='user-cover'
                         type='file'
-                        onChange={e => setUserCover(e.target.files[0])}
+                        onChange={handleUserCoverPhoto}
                       />
                     </VisuallyHidden>
                   </chakra.label>

@@ -9,12 +9,11 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import {
   ApolloClient,
   ApolloProvider,
-  HttpLink,
   InMemoryCache,
   split,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-
+import { createUploadLink } from 'apollo-upload-client'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { WebSocketLink } from '@apollo/client/link/ws'
 
@@ -36,8 +35,11 @@ const authLink = setContext((_, { headers }) => {
   }
 })
 
-const httpLink = new HttpLink({
+const httpLink = createUploadLink({
   uri: httpLinkUri,
+  headers: {
+    'keep-alive': 'true',
+  },
 })
 
 const wsLink = process.browser

@@ -98,3 +98,29 @@ export const EDIT_USER = gql`
     }
   }
 `
+
+export const EDIT_USER_PROFILE_PHOTO = gql`
+  mutation editUserProfilePhoto($profilePhoto: Upload!) {
+    editUserProfilePhoto(profilePhoto: $profilePhoto) {
+      profilePhoto {
+        filename
+        mimetype
+        encoding
+        location
+      }
+    }
+  }
+`
+
+export const EDIT_USER_COVER_PHOTO = gql`
+  mutation editUserCoverPhoto($coverPhoto: Upload!) {
+    editUserCoverPhoto(coverPhoto: $coverPhoto) {
+      coverPhoto {
+        filename
+        mimetype
+        encoding
+        location
+      }
+    }
+  }
+`
