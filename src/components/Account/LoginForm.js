@@ -44,7 +44,6 @@ const LoginForm = ({ setToken, token }) => {
         duration: 9000,
         isClosable: true,
       })
-      console.log(location.state)
       if (location.state) {
         history.push(location.state.from.pathname)
       } else {

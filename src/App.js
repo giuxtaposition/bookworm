@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './App.css'
 import Header from './components/Header/Header'
 import { ChakraProvider } from '@chakra-ui/react'
-import { useApolloClient, useSubscription } from '@apollo/client'
+import { useApolloClient, useSubscription, useLazyQuery } from '@apollo/client'
 import { Switch, Route } from 'react-router-dom'
 import LoginForm from './components/Account/LoginForm'
 import { useHistory } from 'react-router-dom'
@@ -15,11 +15,14 @@ import { globalTheme } from './components/theme'
 import AccountSettings from './components/Account/AccountSettings'
 import PrivateRoute from './components/PrivateRoute'
 import UpdateCacheWith from './graphql/updateCache'
+import { CURRENT_USER } from './graphql/queries'
 
 function App() {
   const [token, setToken] = useState(null)
   const client = useApolloClient()
   const history = useHistory()
+
+  const [getUser] = useLazyQuery(CURRENT_USER)
 
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
@@ -46,6 +49,10 @@ function App() {
     const loggedUserToken = window.localStorage.getItem('bookworm-user-token')
     setToken(loggedUserToken)
   }, [])
+
+  useEffect(() => {
+    getUser()
+  }, [token, getUser])
 
   const logout = async () => {
     await history.push('/')

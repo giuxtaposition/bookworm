@@ -50,3 +50,18 @@ export const BOOK_DELETED = gql`
     }
   }
 `
+
+export const USER_PROFILE_EDITED = gql`
+  subscription {
+    userProfileUpdated {
+      username
+      favoriteGenre
+      name
+      email
+      bio
+      profilePhoto
+      coverPhoto
+      id
+    }
+  }
+`

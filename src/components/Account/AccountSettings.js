@@ -28,8 +28,9 @@ import {
   EDIT_USER_COVER_PHOTO,
   EDIT_USER_PROFILE_PHOTO,
 } from '../../graphql/mutations'
-import { useMutation } from '@apollo/client'
+import { useMutation, useApolloClient } from '@apollo/client'
 import UpdateCacheWith from '../../graphql/updateCache'
+import { CURRENT_USER } from '../../graphql/queries'
 
 const FormSection = ({ sectionTitle, children }) => {
   return (
@@ -48,7 +49,7 @@ const FormSection = ({ sectionTitle, children }) => {
   )
 }
 
-const Settings = () => {
+const AccountSettings = () => {
   // STATES
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -60,7 +61,13 @@ const Settings = () => {
   const userCoverInput = useRef(null)
 
   const toast = useToast()
+
   const { colorMode, toggleColorMode } = useColorMode()
+
+  const client = useApolloClient()
+  const user = client.readQuery({ query: CURRENT_USER })
+
+  console.log(user.me.profilePhoto.location)
 
   const [editUser] = useMutation(EDIT_USER, {
     onError: error => {
@@ -194,7 +201,7 @@ const Settings = () => {
   return (
     <VStack py={50}>
       <VStack spacing={4} w={['90%', '90%', '80%', '50%', '50%']}>
-        <Heading>Account Settings</Heading>
+        <Heading>Account AccountSettings</Heading>
 
         <Divider />
 
@@ -294,16 +301,24 @@ const Settings = () => {
         {/* User Profile */}
         <FormSection sectionTitle='Profile Photo'>
           <Stack direction={['column', 'row']} spacing={4}>
-            <Avatar
-              size='xl'
-              bg={useColorModeValue('gray.300', 'gray.700')}
-              icon={
-                <Icon
-                  as={FaUser}
-                  color={useColorModeValue('teal.400', 'teal.600')}
-                />
-              }
-            />
+            {user.me.profilePhoto ? (
+              <Avatar
+                size='xl'
+                bg={colorMode === 'light' ? 'gray.300' : 'gray.700'}
+                src={user.me.profilePhoto.location}
+              />
+            ) : (
+              <Avatar
+                size='xl'
+                bg={colorMode === 'light' ? 'gray.300' : 'gray.700'}
+                icon={
+                  <Icon
+                    as={FaUser}
+                    color={colorMode === 'light' ? 'teal.400' : 'teal.600'}
+                  />
+                }
+              />
+            )}
 
             <VStack>
               <Stack direction={['column', 'row']}>
@@ -460,4 +475,4 @@ const Settings = () => {
   )
 }
 
-export default Settings
+export default AccountSettings
