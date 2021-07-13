@@ -24,6 +24,7 @@ import {
 import { FaUser } from 'react-icons/fa'
 import { BiCloudUpload } from 'react-icons/bi'
 import {
+  DELETE_USER_PROFILE_PHOTO,
   EDIT_USER,
   EDIT_USER_COVER_PHOTO,
   EDIT_USER_PROFILE_PHOTO,
@@ -217,6 +218,48 @@ const AccountSettings = () => {
   }) =>
     validity.valid && editUserCoverPhoto({ variables: { coverPhoto: file } })
 
+  const [deleteUserProfilePhoto] = useMutation(DELETE_USER_PROFILE_PHOTO, {
+    onError: ({ graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
+        toast({
+          title: 'Error',
+          description: graphQLErrors[0].message,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+          position: 'top',
+        })
+      } else {
+        toast({
+          title: 'Error',
+          description: networkError,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+          position: 'top',
+        })
+      }
+    },
+    update: (store, { data }) => {
+      store.writeQuery({
+        query: CURRENT_USER,
+        data: {
+          me: data.deleteUserProfilePhoto,
+        },
+      })
+    },
+    onCompleted: () => {
+      toast({
+        title: 'Success',
+        description: 'Profile Photo deleted successfully!',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+        position: 'top',
+      })
+    },
+  })
+
   return (
     <VStack py={50}>
       <VStack spacing={4} w={['90%', '90%', '80%', '50%', '50%']}>
@@ -369,6 +412,7 @@ const AccountSettings = () => {
                   variant='ghost'
                   size='md'
                   colorScheme='red'
+                  onClick={deleteUserProfilePhoto}
                 >
                   Delete
                 </Button>

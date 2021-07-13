@@ -124,3 +124,16 @@ export const EDIT_USER_COVER_PHOTO = gql`
     }
   }
 `
+
+export const DELETE_USER_PROFILE_PHOTO = gql`
+  mutation deleteUserProfilePhoto {
+    deleteUserProfilePhoto {
+      profilePhoto {
+        filename
+        mimetype
+        encoding
+        location
+      }
+    }
+  }
+`
