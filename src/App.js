@@ -28,6 +28,8 @@ function App() {
 
   const [getUser] = useLazyQuery(CURRENT_USER)
 
+  const user = client.readQuery({ query: CURRENT_USER })
+
   const includedIn = (set, object) => set.map(b => b.id).includes(object.id)
   const isEquivalent = (a, b) => {
     // Create arrays of property names
@@ -164,14 +166,17 @@ function App() {
             <Home />
           </Route>
 
-          <PrivateRoute path='/library' component={Library}></PrivateRoute>
+          <PrivateRoute path='/library'>
+            <Library />
+          </PrivateRoute>
 
-          <PrivateRoute path='/stats' component={Stats}></PrivateRoute>
+          <PrivateRoute path='/stats'>
+            <Stats />
+          </PrivateRoute>
 
-          <PrivateRoute
-            path='/settings'
-            component={AccountSettings}
-          ></PrivateRoute>
+          <PrivateRoute path='/settings'>
+            <AccountSettings user={user} />
+          </PrivateRoute>
 
           <Route path='/signin'>
             <LoginForm setToken={setToken} token={token} />

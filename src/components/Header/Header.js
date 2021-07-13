@@ -23,8 +23,6 @@ import {
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { FaUserAlt } from 'react-icons/fa'
-import { useApolloClient } from '@apollo/client'
-import { CURRENT_USER } from '../../graphql/queries'
 
 const NavLink = ({ name, path }) => (
   <Link
@@ -43,11 +41,9 @@ const NavLink = ({ name, path }) => (
   </Link>
 )
 
-const Header = ({ token, logout }) => {
+const Header = ({ token, logout, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { colorMode, toggleColorMode } = useColorMode()
-  const client = useApolloClient()
-  const user = client.readQuery({ query: CURRENT_USER })
 
   return (
     <chakra.header w='100vw'>

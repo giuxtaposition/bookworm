@@ -1,18 +1,16 @@
 import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ children, ...rest }) => {
   const loggedUserToken = window.localStorage.getItem('bookworm-user-token')
   return (
     <Route
       {...rest}
-      render={props =>
+      render={({ location }) =>
         loggedUserToken ? (
-          <Component {...props} />
+          children
         ) : (
-          <Redirect
-            to={{ pathname: '/signin', state: { from: props.location } }}
-          />
+          <Redirect to={{ pathname: '/signin', state: { from: location } }} />
         )
       }
     />

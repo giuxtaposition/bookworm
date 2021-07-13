@@ -29,7 +29,7 @@ import {
   EDIT_USER_COVER_PHOTO,
   EDIT_USER_PROFILE_PHOTO,
 } from '../../graphql/mutations'
-import { useMutation, useApolloClient } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { CURRENT_USER } from '../../graphql/queries'
 
 const FormSection = ({ sectionTitle, children }) => {
@@ -49,7 +49,7 @@ const FormSection = ({ sectionTitle, children }) => {
   )
 }
 
-const AccountSettings = () => {
+const AccountSettings = ({ user }) => {
   // STATES
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -63,9 +63,6 @@ const AccountSettings = () => {
   const toast = useToast()
 
   const { colorMode, toggleColorMode } = useColorMode()
-
-  const client = useApolloClient()
-  const user = client.readQuery({ query: CURRENT_USER })
 
   const [editUser] = useMutation(EDIT_USER, {
     onError: error => {
@@ -363,13 +360,15 @@ const AccountSettings = () => {
         {/* User Profile */}
         <FormSection sectionTitle='Profile Photo'>
           <Stack direction={['column', 'row']} spacing={4}>
-            {user ? (
+            {user && (
               <Avatar
                 size='xl'
+                name={user.me.username}
                 bg={colorMode === 'light' ? 'gray.300' : 'gray.700'}
                 src={user.me.profilePhoto ? user.me.profilePhoto.location : ''}
               />
-            ) : (
+            )}
+            {!user && (
               <Avatar
                 size='xl'
                 bg={colorMode === 'light' ? 'gray.300' : 'gray.700'}
