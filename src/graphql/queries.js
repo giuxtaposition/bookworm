@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const ALL_BOOKS = gql`
-  query {
+  query allBooks {
     allBooks {
       title
       published
@@ -33,7 +33,7 @@ export const SEARCH_BOOKS = gql`
 `
 
 export const BOOK_COUNT = gql`
-  query {
+  query bookCount {
     bookCount
   }
 `
@@ -45,7 +45,7 @@ export const BOOK_COUNT_BY_READSTATE = gql`
 `
 
 export const POPULAR_BOOKS = gql`
-  query {
+  query popularBooks {
     popularBooks {
       title
       published

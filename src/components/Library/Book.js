@@ -19,7 +19,6 @@ const Book = ({
   inLibrary = true,
   searchResultsBooks = false,
   setSearchResultsBooks = false,
-  updateCacheWith,
 }) => {
   const toast = useToast()
 
@@ -34,7 +33,7 @@ const Book = ({
       })
     },
     update: (store, response) => {
-      updateCacheWith(response.data.deleteBook, 'DELETED')
+      // updateCacheWith(response.data.deleteBook, 'DELETED')
     },
     onCompleted: () =>
       toast({
@@ -65,7 +64,7 @@ const Book = ({
       })
     },
     update: (store, response) => {
-      updateCacheWith(response.data.editBook, 'EDITED')
+      // updateCacheWith(response.data.editBook, 'EDITED')
     },
   })
 
@@ -94,7 +93,7 @@ const Book = ({
       }
     },
     update: (store, response) => {
-      updateCacheWith(response.data.addBook, 'ADDED')
+      // updateCacheWith(response.data.addBook, 'ADDED')
     },
     onCompleted: () => {
       console.log('here')

@@ -28,8 +28,9 @@ if (process.env.NODE_ENV !== 'production') {
   wsLinkUri = 'wss://bookworm.giuxtaposition.tech/graphql'
 }
 
+const token = localStorage.getItem('bookworm-user-token')
+
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('bookworm-user-token')
   return {
     headers: { ...headers, authorization: token ? `bearer ${token}` : null },
   }
@@ -45,7 +46,13 @@ const httpLink = createUploadLink({
 const wsLink = process.browser
   ? new WebSocketLink({
       uri: wsLinkUri,
-      options: { reconnect: true },
+      options: {
+        reconnect: true,
+        connectionParams: {
+          authorization: token ? token : null,
+          url: httpLinkUri.replace('/graphql', ''),
+        },
+      },
     })
   : null
 

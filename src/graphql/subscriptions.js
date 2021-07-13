@@ -59,8 +59,12 @@ export const USER_PROFILE_EDITED = gql`
       name
       email
       bio
-      profilePhoto
-      coverPhoto
+      profilePhoto {
+        location
+      }
+      coverPhoto {
+        location
+      }
       id
     }
   }

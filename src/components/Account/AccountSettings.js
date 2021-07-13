@@ -29,7 +29,6 @@ import {
   EDIT_USER_PROFILE_PHOTO,
 } from '../../graphql/mutations'
 import { useMutation, useApolloClient } from '@apollo/client'
-import UpdateCacheWith from '../../graphql/updateCache'
 import { CURRENT_USER } from '../../graphql/queries'
 
 const FormSection = ({ sectionTitle, children }) => {
@@ -69,17 +68,15 @@ const AccountSettings = () => {
 
   const [editUser] = useMutation(EDIT_USER, {
     onError: error => {
-      toast({
-        title: 'Error',
-        description: error.graphQLErrors[0].message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-        position: 'top',
-      })
+      console.log(error)
     },
-    update: (store, response) => {
-      //
+    update: (store, { data }) => {
+      store.writeQuery({
+        query: CURRENT_USER,
+        data: {
+          me: data.editUser,
+        },
+      })
     },
     onCompleted: () => {
       setName('')
@@ -109,22 +106,34 @@ const AccountSettings = () => {
   }
 
   const [editUserProfilePhoto] = useMutation(EDIT_USER_PROFILE_PHOTO, {
-    onError: error => {
-      if (error.graphQLErrors) {
+    onError: ({ graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
         toast({
           title: 'Error',
-          description: error.graphQLErrors[0].message,
+          description: graphQLErrors[0].message,
           status: 'error',
           duration: 9000,
           isClosable: true,
           position: 'top',
         })
       } else {
-        console.log(error)
+        toast({
+          title: 'Error',
+          description: networkError,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+          position: 'top',
+        })
       }
     },
-    update: (store, response) => {
-      //
+    update: (store, { data }) => {
+      store.writeQuery({
+        query: CURRENT_USER,
+        data: {
+          me: data.editUserProfilePhoto,
+        },
+      })
     },
     onCompleted: () => {
       toast({
@@ -139,22 +148,34 @@ const AccountSettings = () => {
   })
 
   const [editUserCoverPhoto, { loading }] = useMutation(EDIT_USER_COVER_PHOTO, {
-    onError: error => {
-      if (error.graphQLErrors) {
+    onError: ({ graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
         toast({
           title: 'Error',
-          description: error.graphQLErrors[0].message,
+          description: graphQLErrors[0].message,
           status: 'error',
           duration: 9000,
           isClosable: true,
           position: 'top',
         })
       } else {
-        console.log(error)
+        toast({
+          title: 'Error',
+          description: networkError,
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+          position: 'top',
+        })
       }
     },
-    update: (store, response) => {
-      //
+    update: (store, { data }) => {
+      store.writeQuery({
+        query: CURRENT_USER,
+        data: {
+          me: data.editUserCoverPhoto,
+        },
+      })
     },
     onCompleted: () => {
       toast({

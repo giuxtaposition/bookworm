@@ -11,6 +11,7 @@ import {
   chakra,
   useColorModeValue,
   useMediaQuery,
+  useColorMode,
 } from '@chakra-ui/react'
 import { POPULAR_BOOKS } from '../../graphql/queries'
 import { useQuery } from '@apollo/client'
@@ -76,6 +77,8 @@ const PopularBooks = () => {
   const [isLargerThan1200] = useMediaQuery('(min-width: 1200px)')
   const [isLargerThan800] = useMediaQuery('(min-width: 800px)')
 
+  const { colorMode, toggleColorMode } = useColorMode()
+
   useQuery(POPULAR_BOOKS, {
     onCompleted: data => {
       setBooks(data.popularBooks)
@@ -94,13 +97,17 @@ const PopularBooks = () => {
     }
   }, [isLargerThan1600, isLargerThan1200, isLargerThan800])
 
+  if (!books.length) {
+    return null
+  }
+
   return (
     <VStack>
       <Heading>Popular Books</Heading>
       <Text>Check out some of our popular books below</Text>
       <HStack>
         <Flex
-          bg={useColorModeValue('green.100', 'gray.600')}
+          bg={colorMode === 'light' ? 'green.100' : 'gray.600'}
           py={50}
           px={50}
           alignItems='center'

@@ -15,7 +15,6 @@ import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
 import { BsFillTrashFill } from 'react-icons/bs'
 import { DELETE_BOOK, EDIT_BOOK } from '../../graphql/mutations'
 import { useMutation } from '@apollo/client'
-import UpdateCacheWith from '../../graphql/updateCache'
 
 const LibraryTableBody = ({ book }) => {
   const toast = useToast()
@@ -32,8 +31,11 @@ const LibraryTableBody = ({ book }) => {
         isClosable: true,
       })
     },
-    update: (store, response) => {
-      UpdateCacheWith(response.data.deleteBook, 'DELETED')
+    update: (cache, { data }) => {
+      const deletedBook = data.deleteBook
+      const normalizedId = cache.identify(deletedBook)
+      cache.evict({ id: normalizedId })
+      cache.gc()
     },
     onCompleted: () =>
       toast({
@@ -63,8 +65,17 @@ const LibraryTableBody = ({ book }) => {
         isClosable: true,
       })
     },
-    update: (store, response) => {
-      UpdateCacheWith(response.data.editBook, 'EDITED')
+    update: (cache, { data }) => {
+      const editedBook = data.editBook
+      const normalizedId = cache.identify(editedBook)
+      cache.modify({
+        id: normalizedId,
+        fields: {
+          readState() {
+            return editedBook.readState
+          },
+        },
+      })
     },
   })
 
