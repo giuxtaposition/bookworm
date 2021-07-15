@@ -19,12 +19,17 @@ import {
   MenuDivider,
   Icon,
   chakra,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  Text,
+  Divider,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { FaUserAlt } from 'react-icons/fa'
 
-const NavLink = ({ name, path }) => (
+const NavLink = ({ name, path, ...rest }) => (
   <Link
     as={ReactRouterLink}
     to={path}
@@ -36,6 +41,8 @@ const NavLink = ({ name, path }) => (
       bg: useColorModeValue('gray.200', 'gray.700'),
     }}
     href={'#'}
+    fontSize='xl'
+    {...rest}
   >
     {name}
   </Link>
@@ -100,71 +107,70 @@ const Header = ({ logout, user }) => {
             {/*User Account*/}
 
             {user ? (
-              <HStack>
-                <Menu>
-                  <MenuButton
-                    as={Button}
-                    rounded={'full'}
-                    variant={'link'}
-                    cursor={'pointer'}
+              <Popover placement='bottom-start'>
+                <PopoverTrigger>
+                  <Avatar
+                    cursor='pointer'
+                    size='lg'
+                    name={user.me.username}
+                    src={
+                      user.me.profilePhoto ? user.me.profilePhoto.location : ''
+                    }
+                  />
+                </PopoverTrigger>
+                <PopoverContent
+                  border={0}
+                  boxShadow={'xl'}
+                  p={4}
+                  rounded={'xl'}
+                  w={'xs'}
+                  bgColor={colorMode === 'light' ? 'white' : 'gray.900'}
+                >
+                  <NavLink name='Profile' path='/profile' />
+                  <NavLink name='Setting' path='/settings' />
+                  <Divider />
+                  <Text
+                    onClick={() => {
+                      logout()
+                    }}
+                    aria-label={'Logout Button'}
+                    fontSize='xl'
+                    px={2}
+                    py={2}
+                    rounded={'md'}
+                    _hover={{
+                      textDecoration: 'none',
+                      bg: colorMode === 'light' ? 'gray.200' : 'gray.700',
+                    }}
+                    cursor='pointer'
                   >
-                    {user && (
-                      <Avatar
-                        size='md'
-                        name={user.me.username}
-                        src={
-                          user.me.profilePhoto
-                            ? user.me.profilePhoto.location
-                            : ''
-                        }
-                      />
-                    )}
-                  </MenuButton>
-                  <MenuList>
-                    <Link
-                      as={ReactRouterLink}
-                      to='/profile'
-                      href={'#'}
-                      _hover={{
-                        textDecoration: 'none',
-                      }}
-                    >
-                      <MenuItem>Profile</MenuItem>
-                    </Link>
-                    <Link
-                      as={ReactRouterLink}
-                      to='/settings'
-                      href={'#'}
-                      _hover={{
-                        textDecoration: 'none',
-                      }}
-                    >
-                      <MenuItem>Settings</MenuItem>
-                    </Link>
-                    <MenuDivider />
-                    <MenuItem
-                      onClick={() => {
-                        logout()
-                      }}
-                    >
-                      Logout
-                    </MenuItem>
-                    <MenuDivider />
-                    <MenuItem
-                      onClick={toggleColorMode}
-                      display={{ md: 'none' }}
-                    >
-                      {/*Dark/Light Theme Button*/}
-                      <Icon mr={2}>
-                        {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
-                      </Icon>
-                      {colorMode === 'light'
-                        ? 'Toggle Dark Mode'
-                        : 'Toggle Light Mode'}
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
-              </HStack>
+                    Logout
+                  </Text>
+                  <Divider display={{ md: 'none' }} />
+                  <Text
+                    onClick={toggleColorMode}
+                    display={{ md: 'none' }}
+                    aria-label={'Toggle Light/Dark Theme'}
+                    fontSize='xl'
+                    px={2}
+                    py={2}
+                    rounded={'md'}
+                    _hover={{
+                      textDecoration: 'none',
+                      bg: colorMode === 'light' ? 'gray.200' : 'gray.700',
+                    }}
+                    cursor='pointer'
+                  >
+                    {/*Dark/Light Theme Button*/}
+                    <Icon mr={2}>
+                      {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
+                    </Icon>
+                    {colorMode === 'light'
+                      ? 'Toggle Dark Mode'
+                      : 'Toggle Light Mode'}
+                  </Text>
+                </PopoverContent>
+              </Popover>
             ) : (
               <>
                 <HStack spacing='5' display={{ base: 'none', md: 'flex' }}>
