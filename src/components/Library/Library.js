@@ -12,7 +12,7 @@ const Library = props => {
 
   return (
     <Stack px={4} mt={4} flexGrow={1} flexDir='column'>
-      <Heading>Library</Heading>
+      <Heading px={8}>Library</Heading>
       <LibraryActionBar
         searchFilter={searchFilter}
         searchFilterType={searchFilterType}

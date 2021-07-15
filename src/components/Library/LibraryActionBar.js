@@ -1,29 +1,19 @@
 import React from 'react'
-import { Search2Icon, AddIcon } from '@chakra-ui/icons'
+import { Search2Icon } from '@chakra-ui/icons'
 import {
   useColorModeValue,
   Stack,
   Input,
   InputGroup,
   InputRightElement,
-  Button,
   Select,
   HStack,
-  useDisclosure,
 } from '@chakra-ui/react'
-import AddNewBook from './AddNewBook'
 
 const LibraryActionBar = props => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
   return (
     <>
-      <Stack
-        direction={['column', 'row']}
-        spacing={4}
-        justify='space-between'
-        mt={4}
-      >
+      <Stack direction={['column', 'row']} spacing={4} mt={4} px={8}>
         {/* Search Bar */}
         <HStack>
           <InputGroup minW={150}>
@@ -53,23 +43,7 @@ const LibraryActionBar = props => {
             <option value='author'>Author</option>
           </Select>
         </HStack>
-
-        {/* Add New Book Button */}
-        <Stack>
-          <Button
-            variant={'solid'}
-            colorScheme={'teal'}
-            mr={4}
-            leftIcon={<AddIcon />}
-            onClick={onOpen}
-          >
-            New Book
-          </Button>
-        </Stack>
       </Stack>
-
-      {/*Add New Book Modal*/}
-      <AddNewBook onClose={onClose} isOpen={isOpen} />
     </>
   )
 }

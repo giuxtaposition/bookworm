@@ -1,12 +1,5 @@
 import React, { useState } from 'react'
-import {
-  VStack,
-  Heading,
-  HStack,
-  Text,
-  Flex,
-  useColorMode,
-} from '@chakra-ui/react'
+import { VStack, Heading, HStack, Text } from '@chakra-ui/react'
 import { POPULAR_BOOKS } from '../../graphql/queries'
 import { useQuery } from '@apollo/client'
 import BooksCarousel from '../BooksCarousel'
@@ -14,7 +7,6 @@ import BookCard from '../BookCard'
 
 const PopularBooks = () => {
   const [books, setBooks] = useState([])
-  const { colorMode, toggleColorMode } = useColorMode()
 
   useQuery(POPULAR_BOOKS, {
     onCompleted: data => {

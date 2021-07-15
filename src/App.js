@@ -21,6 +21,7 @@ import AccountSettings from './components/Account/AccountSettings'
 import PrivateRoute from './components/PrivateRoute'
 import { CURRENT_USER, ALL_BOOKS } from './graphql/queries'
 import UserProfile from './components/Account/UserProfile/UserProfile'
+import Search from './components/Search/Search'
 
 function App() {
   const [token, setToken] = useState(null)
@@ -28,12 +29,14 @@ function App() {
   const client = useApolloClient()
   const history = useHistory()
 
-  const [getUser, { called, loading, data }] = useLazyQuery(CURRENT_USER, {
+  const [getUser] = useLazyQuery(CURRENT_USER, {
     fetchPolicy: 'network-only',
     onCompleted: data => {
       setUser(data)
     },
   })
+
+  const [getBooks] = useLazyQuery(ALL_BOOKS)
 
   const includedIn = (set, object) => set.map(b => b.id).includes(object.id)
   const isEquivalent = (a, b) => {
@@ -125,6 +128,7 @@ function App() {
 
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
+      console.log('here')
       const addedBook = subscriptionData.data.bookAdded
       updateBookCache(addedBook, 'ADDED')
     },
@@ -152,8 +156,9 @@ function App() {
   useEffect(() => {
     if (token) {
       getUser()
+      getBooks()
     }
-  }, [token, getUser])
+  }, [token, getUser, getBooks])
 
   const logout = async () => {
     history.push('/')
@@ -171,6 +176,10 @@ function App() {
         <Switch>
           <Route exact path='/'>
             <Home />
+          </Route>
+
+          <Route path='/search'>
+            <Search />
           </Route>
 
           <PrivateRoute path='/library'>
