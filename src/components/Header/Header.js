@@ -41,7 +41,7 @@ const NavLink = ({ name, path }) => (
   </Link>
 )
 
-const Header = ({ token, logout, user }) => {
+const Header = ({ logout, user }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { colorMode, toggleColorMode } = useColorMode()
 
@@ -68,7 +68,7 @@ const Header = ({ token, logout, user }) => {
           spacing={8}
         >
           {/* Mobile Hamburger */}
-          {token && (
+          {user && (
             <IconButton
               size={'md'}
               icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
@@ -87,7 +87,7 @@ const Header = ({ token, logout, user }) => {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}
             >
-              {token && (
+              {user && (
                 <>
                   <NavLink key='Library' name='Library' path='/library' />
                   <NavLink key='Stats' name='Stats' path='/stats' />
@@ -99,7 +99,7 @@ const Header = ({ token, logout, user }) => {
           <HStack spacing='5'>
             {/*User Account*/}
 
-            {token ? (
+            {user ? (
               <HStack>
                 <Menu>
                   <MenuButton
@@ -258,7 +258,7 @@ const Header = ({ token, logout, user }) => {
         </Flex>
 
         {/* Mobile Nav Links */}
-        {isOpen && token ? (
+        {isOpen && user ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
               <NavLink key='Library' name='Library' path='/library' />

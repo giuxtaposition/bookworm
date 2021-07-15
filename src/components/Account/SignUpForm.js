@@ -14,7 +14,7 @@ import { useMutation } from '@apollo/client'
 import { SIGNUP } from '../../graphql/mutations'
 import { Link as ReactRouterLink, useHistory } from 'react-router-dom'
 
-const SignUpForm = ({ token }) => {
+const SignUpForm = ({ user }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
@@ -52,7 +52,7 @@ const SignUpForm = ({ token }) => {
   return (
     <VStack alignItems='center' justifyContent='center' my='24'>
       <VStack width='full' align='center' justifyContent='center' spacing='8'>
-        {!token ? (
+        {!user ? (
           <>
             <Box
               p={8}

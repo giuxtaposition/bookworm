@@ -24,13 +24,16 @@ import UserProfile from './components/Account/UserProfile/UserProfile'
 
 function App() {
   const [token, setToken] = useState(null)
+  const [user, setUser] = useState(null)
   const client = useApolloClient()
   const history = useHistory()
+
   const [getUser, { called, loading, data }] = useLazyQuery(CURRENT_USER, {
     fetchPolicy: 'network-only',
+    onCompleted: data => {
+      setUser(data)
+    },
   })
-
-  let user = client.readQuery({ query: CURRENT_USER })
 
   const includedIn = (set, object) => set.map(b => b.id).includes(object.id)
   const isEquivalent = (a, b) => {
@@ -144,8 +147,7 @@ function App() {
   useEffect(() => {
     const loggedUserToken = window.localStorage.getItem('bookworm-user-token')
     setToken(loggedUserToken)
-    getUser()
-  }, [getUser])
+  }, [])
 
   useEffect(() => {
     if (token) {
@@ -157,13 +159,14 @@ function App() {
     history.push('/')
     await client.clearStore()
     setToken(null)
+    setUser(null)
     localStorage.clear()
   }
 
   return (
     <ChakraProvider theme={globalTheme}>
       <div className='App'>
-        <Header token={token} logout={logout} user={user} />
+        <Header logout={logout} user={user} />
 
         <Switch>
           <Route exact path='/'>
@@ -187,11 +190,11 @@ function App() {
           </PrivateRoute>
 
           <Route path='/signin'>
-            <LoginForm setToken={setToken} token={token} getUser={getUser} />
+            <LoginForm setToken={setToken} user={user} />
           </Route>
 
           <Route path='/signup'>
-            <SignUpForm token={token} />
+            <SignUpForm user={user} />
           </Route>
         </Switch>
       </div>

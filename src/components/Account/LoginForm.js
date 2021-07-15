@@ -14,7 +14,7 @@ import { useMutation } from '@apollo/client'
 import { LOGIN } from '../../graphql/mutations'
 import { useHistory, useLocation } from 'react-router-dom'
 
-const LoginForm = ({ setToken, token }) => {
+const LoginForm = ({ setToken, user }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const history = useHistory()
@@ -36,6 +36,7 @@ const LoginForm = ({ setToken, token }) => {
     onCompleted: data => {
       const token = data.login.value
       setToken(token)
+      localStorage.setItem('bookworm-user', username)
       localStorage.setItem('bookworm-user-token', token)
       toast({
         title: 'Success',
@@ -61,7 +62,7 @@ const LoginForm = ({ setToken, token }) => {
   return (
     <VStack alignItems='center' justifyContent='center' my='24'>
       <Flex width='full' align='center' justifyContent='center'>
-        {!token ? (
+        {!user ? (
           <Box
             p={8}
             maxWidth='400'

@@ -28,11 +28,15 @@ if (process.env.NODE_ENV !== 'production') {
   wsLinkUri = 'wss://bookworm.giuxtaposition.tech/graphql'
 }
 
-const token = localStorage.getItem('bookworm-user-token')
-
 const authLink = setContext((_, { headers }) => {
+  let token = localStorage.getItem('bookworm-user-token')
+  let username = localStorage.getItem('bookworm-user')
   return {
-    headers: { ...headers, authorization: token ? `bearer ${token}` : null },
+    headers: {
+      ...headers,
+      authorization: token ? `bearer ${token}` : null,
+      username: username ? username : null,
+    },
   }
 })
 
@@ -49,7 +53,8 @@ const wsLink = process.browser
       options: {
         reconnect: true,
         connectionParams: {
-          authorization: token ? token : null,
+          authorization: localStorage.getItem('bookworm-user-token'),
+          username: localStorage.getItem('bookworm-user'),
           url: httpLinkUri.replace('/graphql', ''),
         },
       },
