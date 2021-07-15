@@ -61,7 +61,7 @@ function BooksCarousel({ children }) {
       pos='relative'
       alignItems='center'
       justifyContent='center'
-      p={5}
+      p={10}
     >
       <Flex h='xs' w='full' {...BooksCarouselstyle}>
         {Array.from({ length: pagesCount }).map((_, sid) => (
@@ -78,10 +78,10 @@ function BooksCarousel({ children }) {
           </HStack>
         ))}
       </Flex>
-      <Text {...arrowStyles} left='0' onClick={prevSlide}>
+      <Text {...arrowStyles} left='2' onClick={prevSlide}>
         &#10094;
       </Text>
-      <Text {...arrowStyles} right='0' onClick={nextSlide}>
+      <Text {...arrowStyles} right='2' onClick={nextSlide}>
         &#10095;
       </Text>
       {elementsPerPage > 1 && (
@@ -91,7 +91,7 @@ function BooksCarousel({ children }) {
               key={`dots-${slide}`}
               cursor='pointer'
               boxSize={['7px', '15px']}
-              m='0 2px'
+              my={4}
               bg={currentSlide === slide ? 'blackAlpha.800' : 'blackAlpha.500'}
               rounded='50%'
               display='inline-block'

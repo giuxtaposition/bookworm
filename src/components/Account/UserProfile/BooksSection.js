@@ -3,6 +3,8 @@ import BookCard from '../../BookCard'
 import BooksCarousel from '../../BooksCarousel'
 
 const BooksSection = ({ sectionTitle, sectionDescription, books }) => {
+  const handleViewAll = () => {}
+
   return (
     <VStack py={10} px={5} w='100%'>
       <HStack w='100%' justifyContent='space-between'>
@@ -16,7 +18,7 @@ const BooksSection = ({ sectionTitle, sectionDescription, books }) => {
           </Heading>
           <Text>{sectionDescription}</Text>
         </VStack>
-        <Button variant='ghost' colorScheme='teal'>
+        <Button variant='ghost' colorScheme='teal' onClick={handleViewAll}>
           View All
         </Button>
       </HStack>
