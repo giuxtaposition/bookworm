@@ -13,7 +13,7 @@ function LibraryTable(props) {
     order: '',
   })
 
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode } = useColorMode()
 
   //Search Books
   const searchedBooks = useMemo(() => {

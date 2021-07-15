@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { AiOutlineFileSearch } from 'react-icons/ai'
 
-const EmptySearch = () => {
+const EmptySearchResults = () => {
   return (
     <Stack flexGrow={1} justifyContent='center'>
       <Box
@@ -34,4 +34,4 @@ const EmptySearch = () => {
   )
 }
 
-export default EmptySearch
+export default EmptySearchResults

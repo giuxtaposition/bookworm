@@ -7,10 +7,11 @@ import {
 } from '@chakra-ui/react'
 import BookCardList from './BookCardList'
 import { useLocation } from 'react-router-dom'
-import { useQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import { SEARCH_BOOKS } from '../../graphql/queries'
 import SearchBar from './SearchBar'
-import EmptySearch from './EmptySearch'
+import EmptySearchResults from './EmptySearchResults'
+import { useEffect } from 'react'
 
 function useQueryParams() {
   return new URLSearchParams(useLocation().search)
@@ -21,13 +22,28 @@ const Search = () => {
   const queryParams = useQueryParams()
   const search = queryParams.get('q')
   const filter = queryParams.get('filter')
-  const { loading, data } = useQuery(SEARCH_BOOKS, {
+
+  const [getBooks, { loading, data }] = useLazyQuery(SEARCH_BOOKS, {
     variables: {
       searchParameter: search,
       filter: filter,
     },
     fetchPolicy: 'network-only',
   })
+
+  useEffect(() => {
+    if (search) {
+      getBooks()
+    }
+  }, [search, getBooks])
+
+  if (!search) {
+    return (
+      <VStack p={10} spacing={4} flexGrow={1}>
+        <SearchBar />
+      </VStack>
+    )
+  }
 
   return (
     <VStack p={10} spacing={4} flexGrow={1}>
@@ -69,7 +85,7 @@ const Search = () => {
           ))}
         </SimpleGrid>
       )}
-      {!loading && !data && <EmptySearch />}
+      {!loading && !data && <EmptySearchResults />}
     </VStack>
   )
 }

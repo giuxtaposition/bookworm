@@ -11,7 +11,7 @@ import { Link as ReactRouterLink } from 'react-router-dom'
 
 const Logo = () => {
   const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode } = useColorMode()
 
   return (
     <Heading

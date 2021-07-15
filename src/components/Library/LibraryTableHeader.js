@@ -15,7 +15,7 @@ const LibraryTableHeader = ({
   handleInsertionSorting = false,
   insertionSorting = false,
 }) => {
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode } = useColorMode()
   const [isLargerThan730] = useMediaQuery('(min-width: 730px)')
   const breakpoint = useBreakpointValue({ base: true, md: false })
 
