@@ -17,7 +17,7 @@ const Feature = props => {
       <Icon
         boxSize={12}
         mb={4}
-        fill={useColorModeValue('brand.700')}
+        fill={useColorModeValue('gray.700')}
         viewBox='0 0 24 24'
         stroke='currentColor'
         aria-hidden='true'

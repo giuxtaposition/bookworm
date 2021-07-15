@@ -57,6 +57,8 @@ const Header = ({ token, logout, user }) => {
         borderTopColor={useColorModeValue('teal.500', 'teal.300')}
         justifyContent={['flex-start', 'flex-start', 'center']}
         flexDir={['column', 'column', 'row']}
+        position='relative'
+        zIndex='dropdown'
       >
         <Flex
           h={16}

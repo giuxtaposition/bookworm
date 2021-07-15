@@ -35,6 +35,7 @@ const AddNewBook = ({ onClose, isOpen, oldSearch = '', oldResults = [] }) => {
   const [results, setResults] = useState(oldResults)
 
   const [getBooks, { loading, error, data }] = useLazyQuery(SEARCH_BOOKS, {
+    fetchPolicy: 'network-only',
     onCompleted: data => {
       setResults(data.searchBooks)
     },

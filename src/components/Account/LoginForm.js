@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Flex,
   Box,
@@ -44,6 +44,7 @@ const LoginForm = ({ setToken, token }) => {
         duration: 9000,
         isClosable: true,
       })
+
       if (location.state) {
         history.push(location.state.from.pathname)
       } else {
@@ -52,9 +53,9 @@ const LoginForm = ({ setToken, token }) => {
     },
   })
 
-  const handleLogin = event => {
+  const handleLogin = async event => {
     event.preventDefault()
-    login({ variables: { username, password } })
+    await login({ variables: { username, password } })
   }
 
   return (

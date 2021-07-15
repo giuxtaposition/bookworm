@@ -20,15 +20,17 @@ import { globalTheme } from './components/theme'
 import AccountSettings from './components/Account/AccountSettings'
 import PrivateRoute from './components/PrivateRoute'
 import { CURRENT_USER, ALL_BOOKS } from './graphql/queries'
+import UserProfile from './components/Account/UserProfile/UserProfile'
 
 function App() {
   const [token, setToken] = useState(null)
   const client = useApolloClient()
   const history = useHistory()
+  const [getUser, { called, loading, data }] = useLazyQuery(CURRENT_USER, {
+    fetchPolicy: 'network-only',
+  })
 
-  const [getUser] = useLazyQuery(CURRENT_USER)
-
-  const user = client.readQuery({ query: CURRENT_USER })
+  let user = client.readQuery({ query: CURRENT_USER })
 
   const includedIn = (set, object) => set.map(b => b.id).includes(object.id)
   const isEquivalent = (a, b) => {
@@ -60,6 +62,7 @@ function App() {
   const updateBookCache = (book, type) => {
     // Check that added book is not included in the current store
     const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    console.log(dataInStore)
 
     if (type === 'ADDED') {
       if (!includedIn(dataInStore.allBooks, book)) {
@@ -141,7 +144,8 @@ function App() {
   useEffect(() => {
     const loggedUserToken = window.localStorage.getItem('bookworm-user-token')
     setToken(loggedUserToken)
-  }, [])
+    getUser()
+  }, [getUser])
 
   useEffect(() => {
     if (token) {
@@ -159,7 +163,7 @@ function App() {
   return (
     <ChakraProvider theme={globalTheme}>
       <div className='App'>
-        <Header token={token} logout={logout} />
+        <Header token={token} logout={logout} user={user} />
 
         <Switch>
           <Route exact path='/'>
@@ -178,8 +182,12 @@ function App() {
             <AccountSettings user={user} />
           </PrivateRoute>
 
+          <PrivateRoute path='/profile'>
+            <UserProfile user={user} />
+          </PrivateRoute>
+
           <Route path='/signin'>
-            <LoginForm setToken={setToken} token={token} />
+            <LoginForm setToken={setToken} token={token} getUser={getUser} />
           </Route>
 
           <Route path='/signup'>
