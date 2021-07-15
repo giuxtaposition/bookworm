@@ -13,7 +13,7 @@ import { Search2Icon } from '@chakra-ui/icons'
 import { useState } from 'react'
 import { useHistory } from 'react-router'
 
-const SearchBar = ({ showRadioButtons = false }) => {
+const SearchBar = ({ showRadioButtons = true }) => {
   const [search, SetSearch] = useState('')
   const [checkedFilter, setCheckedFilter] = useState('all')
   const history = useHistory()

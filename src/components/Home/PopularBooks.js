@@ -26,13 +26,12 @@ const PopularBooks = () => {
         <BooksCarousel>
           {books &&
             books.map(book => (
-              <div key={book.id}>
-                <BookCard
-                  cover={book.cover}
-                  title={book.title}
-                  author={book.author.name}
-                />
-              </div>
+              <BookCard
+                key={book.googleId}
+                cover={book.cover}
+                title={book.title}
+                author={book.author.name}
+              />
             ))}
         </BooksCarousel>
       </HStack>

@@ -15,6 +15,7 @@ import { IoDocumentsOutline, IoCalendarOutline } from 'react-icons/io5'
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
 import { useMutation } from '@apollo/client'
 import { ADD_BOOK } from '../../graphql/mutations'
+import defaultCover from '../../images/default-cover.jpg'
 
 const BookCardList = props => {
   const [bookMarkIconHovered, setBookmarkIconHovered] = useState(false)
@@ -88,6 +89,7 @@ const BookCardList = props => {
           h={52}
           fit='cover'
           src={props.cover}
+          fallbackSrc={defaultCover}
           alt='bookCover'
           borderRadius='10px'
           dropShadow='xl'

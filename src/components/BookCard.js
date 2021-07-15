@@ -6,6 +6,9 @@ import {
   Link,
   chakra,
 } from '@chakra-ui/react'
+
+import defaultCover from '../images/default-cover.jpg'
+
 const BookCard = props => {
   return (
     <Flex
@@ -21,6 +24,7 @@ const BookCard = props => {
           h={52}
           fit='cover'
           src={props.cover}
+          fallbackSrc={defaultCover}
           alt='bookCover'
           borderRadius='10px'
           dropShadow='xl'

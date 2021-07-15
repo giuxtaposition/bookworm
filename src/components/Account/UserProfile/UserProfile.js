@@ -1,4 +1,4 @@
-import { VStack, Flex } from '@chakra-ui/react'
+import { VStack, Flex, Skeleton } from '@chakra-ui/react'
 import BooksSection from './BooksSection'
 import UserProfileCard from './UserProfileCard'
 import UserProfileHeader from './UserProfileHeader'

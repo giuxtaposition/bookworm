@@ -17,15 +17,6 @@ import { FaUserAlt } from 'react-icons/fa'
 const UserProfileCard = ({ user }) => {
   const { colorMode, toggleColorMode } = useColorMode()
 
-  var docWidth = document.documentElement.offsetWidth
-
-  let all = document.querySelectorAll('*')
-  all.forEach(el => {
-    if (el.offsetWidth > docWidth) {
-      console.log(el)
-    }
-  })
-
   return (
     <Box
       mt={'-20'}

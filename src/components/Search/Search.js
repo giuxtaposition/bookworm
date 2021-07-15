@@ -53,7 +53,7 @@ const Search = () => {
         </SimpleGrid>
       )}
 
-      {data ? (
+      {data && (
         <SimpleGrid columns={`${isLargerThan1280 ? 2 : 1}`} spacing={8} py={8}>
           {data.searchBooks.map(result => (
             <BookCardList
@@ -68,9 +68,8 @@ const Search = () => {
             />
           ))}
         </SimpleGrid>
-      ) : (
-        <EmptySearch />
       )}
+      {!loading && !data && <EmptySearch />}
     </VStack>
   )
 }
