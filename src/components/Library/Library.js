@@ -8,7 +8,7 @@ import { useQuery } from '@apollo/client'
 const Library = props => {
   const [searchFilter, setSearchFilter] = useState('')
   const [searchFilterType, setSearchFilterType] = useState('')
-  const { data, loading, error } = useQuery(ALL_BOOKS)
+  const { data, loading } = useQuery(ALL_BOOKS)
 
   return (
     <Stack px={4} mt={4} flexGrow={1} flexDir='column'>

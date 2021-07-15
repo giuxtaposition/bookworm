@@ -21,7 +21,7 @@ const Search = () => {
   const queryParams = useQueryParams()
   const search = queryParams.get('q')
   const filter = queryParams.get('filter')
-  const { loading, error, data } = useQuery(SEARCH_BOOKS, {
+  const { loading, data } = useQuery(SEARCH_BOOKS, {
     variables: {
       searchParameter: search,
       filter: filter,

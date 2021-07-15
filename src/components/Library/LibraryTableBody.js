@@ -18,7 +18,7 @@ import { useMutation } from '@apollo/client'
 
 const LibraryTableBody = ({ book }) => {
   const toast = useToast()
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode } = useColorMode()
   const [isLargerThan730] = useMediaQuery('(min-width: 730px)')
 
   const [deleteBook] = useMutation(DELETE_BOOK, {

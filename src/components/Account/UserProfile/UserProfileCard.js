@@ -15,7 +15,7 @@ import { FiBook } from 'react-icons/fi'
 import { FaUserAlt } from 'react-icons/fa'
 
 const UserProfileCard = ({ user }) => {
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode } = useColorMode()
 
   return (
     <Box

@@ -62,7 +62,7 @@ const AccountSettings = ({ user }) => {
 
   const toast = useToast()
 
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode } = useColorMode()
 
   const [editUser] = useMutation(EDIT_USER, {
     onError: error => {
@@ -145,7 +145,7 @@ const AccountSettings = ({ user }) => {
     },
   })
 
-  const [editUserCoverPhoto, { loading }] = useMutation(EDIT_USER_COVER_PHOTO, {
+  const [editUserCoverPhoto] = useMutation(EDIT_USER_COVER_PHOTO, {
     onError: ({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
         toast({

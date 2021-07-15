@@ -48,7 +48,7 @@ function BooksCarousel({ children }) {
     setCurrentSlide(slide)
   }
 
-  const BooksCarouselstyle = {
+  const BooksCarouselStyle = {
     transition: 'all .5s',
     ml: `-${currentSlide * 200}%`,
   }
@@ -63,7 +63,7 @@ function BooksCarousel({ children }) {
       justifyContent='center'
       p={10}
     >
-      <Flex h='xs' w='full' {...BooksCarouselstyle}>
+      <Flex h='xs' w='full' {...BooksCarouselStyle}>
         {Array.from({ length: pagesCount }).map((_, sid) => (
           <HStack
             key={`slide-${sid}`}
