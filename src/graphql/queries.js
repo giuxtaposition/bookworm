@@ -32,6 +32,22 @@ export const SEARCH_BOOKS = gql`
   }
 `
 
+export const SEARCH_BOOK = gql`
+  query searchBook($id: ID!) {
+    searchBook(id: $id) {
+      title
+      description
+      published
+      language
+      author
+      genres
+      pages
+      cover
+      id
+    }
+  }
+`
+
 export const BOOK_COUNT = gql`
   query bookCount {
     bookCount

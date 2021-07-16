@@ -9,17 +9,16 @@ import {
   Icon,
   Tag,
   useToast,
+  IconButton,
 } from '@chakra-ui/react'
-import { useState } from 'react'
 import { IoDocumentsOutline, IoCalendarOutline } from 'react-icons/io5'
-import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
+import { BsBookmarkFill } from 'react-icons/bs'
 import { useMutation } from '@apollo/client'
 import { ADD_BOOK } from '../../graphql/mutations'
 import defaultCover from '../../images/default-cover.jpg'
+import { Link as ReactRouterLink } from 'react-router-dom'
 
 const BookCardList = props => {
-  const [bookMarkIconHovered, setBookmarkIconHovered] = useState(false)
-  const [bookAdded, setBookAdded] = useState(false)
   const toast = useToast()
 
   const [addBook] = useMutation(ADD_BOOK, {
@@ -47,7 +46,6 @@ const BookCardList = props => {
       })
     },
     onCompleted: () => {
-      setBookAdded(true)
       toast({
         title: 'Book Added.',
         description: 'Book added with success!',
@@ -78,26 +76,31 @@ const BookCardList = props => {
       w='xl'
       spacing={8}
       py={4}
-      px={8}
+      pl={8}
+      pr={4}
       bg={useColorModeValue('white', '#2a2d37')}
       shadow='lg'
       rounded='lg'
     >
       <Box w='2xs'>
-        <Image
-          w='full'
-          h={52}
-          fit='cover'
-          src={props.cover}
-          fallbackSrc={defaultCover}
-          alt='bookCover'
-          borderRadius='10px'
-          dropShadow='xl'
-        />
+        <Link as={ReactRouterLink} to={`/book/${props.id}`}>
+          <Image
+            w='full'
+            h={52}
+            fit='cover'
+            src={props.cover}
+            fallbackSrc={defaultCover}
+            alt='bookCover'
+            borderRadius='10px'
+            dropShadow='xl'
+          />
+        </Link>
       </Box>
 
       <VStack py={5} alignItems='flex-start' w='full'>
         <Link
+          as={ReactRouterLink}
+          to={`/book/${props.id}`}
           display='block'
           color={useColorModeValue('gray.800', 'white')}
           fontWeight='bold'
@@ -127,17 +130,17 @@ const BookCardList = props => {
             </Tag>
           ))}
       </VStack>
-      <Icon
-        boxSize={8}
-        color='teal.500'
-        border
-        as={bookMarkIconHovered || bookAdded ? BsBookmarkFill : BsBookmark}
+      <IconButton
+        fontSize='xl'
+        colorscheme='teal'
+        icon={<Icon as={BsBookmarkFill} />}
         alignSelf='flex-start'
         justifySelf='flex-end'
-        cursor='pointer'
-        onMouseEnter={() => setBookmarkIconHovered(true)}
-        onMouseLeave={() => setBookmarkIconHovered(false)}
         onClick={handleAdd}
+        variant='ghost'
+        _hover={{
+          bg: useColorModeValue('teal.100', 'teal.900'),
+        }}
       />
     </HStack>
   )

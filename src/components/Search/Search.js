@@ -71,9 +71,9 @@ const Search = () => {
 
       {data && (
         <SimpleGrid columns={`${isLargerThan1280 ? 2 : 1}`} spacing={8} py={8}>
-          {data.searchBooks.map(result => (
+          {data.searchBooks.map((result, index) => (
             <BookCardList
-              key={result.id}
+              key={result.id + index}
               id={result.id}
               cover={result.cover}
               title={result.title}

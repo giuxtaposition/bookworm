@@ -27,6 +27,7 @@ const BooksSection = ({ sectionTitle, sectionDescription, books }) => {
         {books.map(book => (
           <div key={book.id}>
             <BookCard
+              id={book.googleId}
               cover={book.cover}
               title={book.title}
               author={book.author.name}

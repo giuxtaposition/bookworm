@@ -31,6 +31,7 @@ const PopularBooks = () => {
                 cover={book.cover}
                 title={book.title}
                 author={book.author.name}
+                id={book.googleId}
               />
             ))}
         </BooksCarousel>

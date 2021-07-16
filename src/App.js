@@ -22,6 +22,7 @@ import PrivateRoute from './components/PrivateRoute'
 import { CURRENT_USER, ALL_BOOKS } from './graphql/queries'
 import UserProfile from './components/Account/UserProfile/UserProfile'
 import Search from './components/Search/Search'
+import Book from './components/Book/Book'
 
 function App() {
   const [token, setToken] = useState(null)
@@ -204,6 +205,10 @@ function App() {
 
           <Route path='/signup'>
             <SignUpForm user={user} />
+          </Route>
+
+          <Route path='/book/:id'>
+            <Book />
           </Route>
         </Switch>
       </div>
