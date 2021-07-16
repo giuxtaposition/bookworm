@@ -20,18 +20,18 @@ const PopularBooks = () => {
 
   return (
     <VStack w='full'>
-      <Heading>Popular Books</Heading>
-      <Text>Check out some of our popular books below</Text>
+      <Heading>The New York Times</Heading>
+      <Text>Best selling books of the week</Text>
       <HStack w='full'>
         <BooksCarousel>
           {books &&
             books.map(book => (
               <BookCard
-                key={book.googleId}
+                key={book.id}
                 cover={book.cover}
                 title={book.title}
-                author={book.author.name}
-                id={book.googleId}
+                author={book.author}
+                id={book.id}
               />
             ))}
         </BooksCarousel>

@@ -65,13 +65,10 @@ export const POPULAR_BOOKS = gql`
     popularBooks {
       title
       published
-      author {
-        name
-      }
+      author
       genres
-      insertion
       cover
-      googleId
+      id
     }
   }
 `
