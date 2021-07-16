@@ -12,6 +12,7 @@ import {
 import { useMutation } from '@apollo/client'
 import { BsBookmarkFill } from 'react-icons/bs'
 import { ADD_BOOK } from '../../graphql/mutations'
+import { ALL_BOOKS } from '../../graphql/queries'
 
 const BookLowerBox = ({ lowerBoxBackground, book }) => {
   const toast = useToast()
@@ -27,13 +28,13 @@ const BookLowerBox = ({ lowerBoxBackground, book }) => {
         isClosable: true,
       })
     },
-    update: (cache, { data: addBook }) => {
+    update(cache, { data: { addBook } }) {
       cache.modify({
         fields: {
           allBooks(existingBooks = []) {
             const newBookRef = cache.writeQuery({
               data: addBook,
-              query: ADD_BOOK,
+              query: ALL_BOOKS,
             })
             return [...existingBooks, newBookRef]
           },
@@ -52,7 +53,6 @@ const BookLowerBox = ({ lowerBoxBackground, book }) => {
   })
 
   const handleAdd = async () => {
-    console.log(book)
     await addBook({
       variables: {
         readState: 'unread',

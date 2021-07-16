@@ -76,18 +76,25 @@ const splitLink = process.browser
   : httpLink
 
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    typePolicies: {
+      Query: {
+        merge: true,
+      },
+      Book: {
+        merge: false,
+      },
+    },
+  }),
   link: splitLink,
 })
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <React.StrictMode>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      <Router>
-        <App />
-      </Router>
-    </React.StrictMode>
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+    <Router>
+      <App />
+    </Router>
   </ApolloProvider>,
   document.getElementById('root')
 )

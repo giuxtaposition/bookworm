@@ -17,6 +17,7 @@ import { useMutation } from '@apollo/client'
 import { ADD_BOOK } from '../../graphql/mutations'
 import defaultCover from '../../images/default-cover.jpg'
 import { Link as ReactRouterLink } from 'react-router-dom'
+import { ALL_BOOKS } from '../../graphql/queries'
 
 const BookCardList = props => {
   const toast = useToast()
@@ -32,13 +33,13 @@ const BookCardList = props => {
         isClosable: true,
       })
     },
-    update: (cache, { data: addBook }) => {
+    update(cache, { data: { addBook } }) {
       cache.modify({
         fields: {
           allBooks(existingBooks = []) {
             const newBookRef = cache.writeQuery({
               data: addBook,
-              query: ADD_BOOK,
+              query: ALL_BOOKS,
             })
             return [...existingBooks, newBookRef]
           },
@@ -132,7 +133,7 @@ const BookCardList = props => {
       </VStack>
       <IconButton
         fontSize='xl'
-        colorscheme='teal'
+        color='#44aca0'
         icon={<Icon as={BsBookmarkFill} />}
         alignSelf='flex-start'
         justifySelf='flex-end'
@@ -140,6 +141,7 @@ const BookCardList = props => {
         variant='ghost'
         _hover={{
           bg: useColorModeValue('teal.100', 'teal.900'),
+          color: useColorModeValue('black', 'white'),
         }}
       />
     </HStack>

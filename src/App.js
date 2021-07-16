@@ -69,7 +69,6 @@ function App() {
   const updateBookCache = (book, type) => {
     // Check that added book is not included in the current store
     const dataInStore = client.readQuery({ query: ALL_BOOKS })
-    console.log(dataInStore)
 
     if (type === 'ADDED') {
       if (!includedIn(dataInStore.allBooks, book)) {
@@ -129,7 +128,6 @@ function App() {
 
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      console.log('here')
       const addedBook = subscriptionData.data.bookAdded
       updateBookCache(addedBook, 'ADDED')
     },
