@@ -19,7 +19,13 @@ const Book = () => {
   })
 
   return (
-    <VStack py={10} w='full' flexGrow={1} alignItems='center' spacing={4}>
+    <VStack
+      py={{ base: 0, md: 10 }}
+      w='full'
+      flexGrow={1}
+      alignItems='center'
+      spacing={4}
+    >
       {loading && <LoadingSpinner />}
       {data && (
         <VStack mx='auto' shadow='lg' maxW='2xl'>

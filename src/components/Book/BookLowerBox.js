@@ -68,8 +68,12 @@ const BookLowerBox = ({ lowerBoxBackground, book }) => {
   }
 
   return (
-    <VStack bg={lowerBoxBackground} w='full' pb={8} px={12}>
-      <Text alignSelf='flex-start' fontSize='lg' fontWeight='bold'>
+    <VStack bg={lowerBoxBackground} w='full' pb={8} px={{ base: 6, md: 12 }}>
+      <Text
+        alignSelf='flex-start'
+        fontSize={{ base: 'md', md: 'lg' }}
+        fontWeight='bold'
+      >
         Description
       </Text>
       <Box
@@ -79,6 +83,7 @@ const BookLowerBox = ({ lowerBoxBackground, book }) => {
         h={120}
         w='full'
         className='book-description'
+        fontSize={{ base: 'sm', md: 'md' }}
         dangerouslySetInnerHTML={{ __html: book.description }}
       />
       <HStack pt={4}>
