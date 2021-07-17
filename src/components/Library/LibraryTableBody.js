@@ -98,7 +98,7 @@ const LibraryTableBody = ({ book }) => {
         columns={{ base: 1, md: 6 }}
         w={{ base: '55vw', md: 'full' }}
         py={2}
-        paddingLeft={10}
+        paddingLeft={['4', '8', '10']}
         paddingRight={2}
         fontWeight='hairline'
         color='#777'
@@ -147,13 +147,16 @@ const LibraryTableBody = ({ book }) => {
         display={{ base: 'flex', md: 'none' }}
         mr={8}
         ml={`${isLargerThan730 ? 0 : 15}`}
+        alignItems='center'
       >
-        <Image
-          fit='contain'
-          src={book.cover}
-          alt='book-cover'
-          fallbackSrc={defaultCover}
-        />
+        <Link as={ReactRouterLink} to={`/book/${book.googleId}`}>
+          <Image
+            fit='contain'
+            src={book.cover}
+            alt='book-cover'
+            fallbackSrc={defaultCover}
+          />
+        </Link>
       </Box>
     </>
   )

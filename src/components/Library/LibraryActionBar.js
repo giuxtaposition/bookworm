@@ -13,7 +13,12 @@ import {
 const LibraryActionBar = props => {
   return (
     <>
-      <Stack direction={['column', 'row']} spacing={4} mt={4} px={8}>
+      <Stack
+        direction={['column', 'row']}
+        spacing={4}
+        mt={4}
+        px={['2', '4', '8']}
+      >
         {/* Search Bar */}
         <HStack>
           <InputGroup minW={150}>

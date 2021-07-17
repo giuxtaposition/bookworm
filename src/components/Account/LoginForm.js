@@ -66,9 +66,9 @@ const LoginForm = ({ setToken, user }) => {
           <Box
             p={8}
             maxWidth='400'
-            borderWidth={1}
+            borderWidth={{ base: '0', md: '1' }}
             borderRadius={8}
-            boxShadow='lg'
+            boxShadow={{ base: 'none', md: 'lg' }}
           >
             <Box textAlign='center'>
               <Heading>Login</Heading>

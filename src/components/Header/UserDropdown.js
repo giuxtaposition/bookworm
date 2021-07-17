@@ -10,7 +10,7 @@ import NavLink from './NavLink'
 import NavItem from './NavItem'
 
 const UserDropdown = ({ user, logout }) => {
-  const dropdownBackground = useColorModeValue('white', 'gray.900')
+  const dropdownBackground = useColorModeValue('white', 'gray.800')
 
   if (!user) {
     return null
@@ -35,7 +35,7 @@ const UserDropdown = ({ user, logout }) => {
         w={'2xs'}
         bgColor={dropdownBackground}
       >
-        <NavLink path='/profile' fontSize='lg'>
+        <NavLink path='/profile' fontSize='lg' rounded='xl'>
           Profile
         </NavLink>
         <NavLink path='/settings' fontSize='lg'>
@@ -43,6 +43,7 @@ const UserDropdown = ({ user, logout }) => {
         </NavLink>
         <Divider />
         <NavItem
+          rounded='xl'
           fontSize='lg'
           onClick={() => {
             logout()

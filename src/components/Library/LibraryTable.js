@@ -140,7 +140,7 @@ function LibraryTable(props) {
   return (
     <Flex
       w='full'
-      px={{ base: 15, md: 50 }}
+      px={['0', '15', '50']}
       py={50}
       alignItems='center'
       justifyContent='center'

@@ -382,7 +382,7 @@ const AccountSettings = ({ user }) => {
             )}
 
             <VStack>
-              <Stack direction={['column', 'row']}>
+              <Stack direction='row'>
                 <chakra.label htmlFor='user-profile'>
                   <Button
                     leftIcon={<BiCloudUpload />}
@@ -428,10 +428,10 @@ const AccountSettings = ({ user }) => {
           <VStack>
             <Flex
               ref={userCoverInput}
-              w={{ base: 'xs', lg: 'sm' }}
+              w={{ base: '2xs', md: 'xs', lg: 'sm' }}
               mt={1}
               justify='center'
-              px={6}
+              px={{ base: 0, md: 6 }}
               pt={5}
               pb={6}
               borderWidth={2}

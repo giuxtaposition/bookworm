@@ -20,6 +20,7 @@ import { GoSignIn, GoSignOut } from 'react-icons/go'
 import { FaUserPlus, FaUser } from 'react-icons/fa'
 import NavItem from './NavItem'
 import { Link as ReactRouterLink } from 'react-router-dom'
+import ToggleColorModeSwitch from './ToggleColorModeSwitch'
 
 const Sidebar = ({ isMenuOpen, onMenuClose, user, logout }) => {
   const sidebarRef = useRef(null)
@@ -141,6 +142,8 @@ const Sidebar = ({ isMenuOpen, onMenuClose, user, logout }) => {
               </NavLink>
             </>
           )}
+          <Divider />
+          <ToggleColorModeSwitch showText={true} />
         </Flex>
         {user && (
           <Flex px={4} marginTop='auto'>
@@ -163,6 +166,7 @@ const Sidebar = ({ isMenuOpen, onMenuClose, user, logout }) => {
                   }}
                 />
               </Link>
+
               <VStack alignItems='flex-start'>
                 <Text fontSize='md'>{user.me.username}</Text>
                 <Text fontSize='sm'>{user.me.email}</Text>

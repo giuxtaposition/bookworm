@@ -44,7 +44,7 @@ const Feature = props => {
 
 const Features = () => {
   return (
-    <Flex p={20} justifyContent='center' alignItems='center'>
+    <Flex p={['5', '10', '20']} justifyContent='center' alignItems='center'>
       <SimpleGrid
         columns={{ base: 1, md: 2, lg: 3 }}
         spacing={20}

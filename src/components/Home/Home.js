@@ -19,7 +19,7 @@ const Home = props => {
     <VStack spacing={4} w='100vw'>
       <VStack
         my={12}
-        p={12}
+        p={['4', '8', '12']}
         w={['90vw', '80vw', '80vw']}
         boxShadow='xl'
         bgColor={useColorModeValue('white', 'gray.700')}
