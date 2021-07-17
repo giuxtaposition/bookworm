@@ -46,7 +46,7 @@ const Search = () => {
   }
 
   return (
-    <VStack p={10} spacing={4} flexGrow={1}>
+    <VStack p={['5', '5', '10']} spacing={4} flexGrow={1}>
       <SearchBar />
       <Heading fontSize='3xl' alignSelf='flex-start'>
         Search Results for "{search}"

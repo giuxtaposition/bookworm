@@ -10,6 +10,7 @@ import {
   Tag,
   useToast,
   IconButton,
+  Tooltip,
 } from '@chakra-ui/react'
 import { IoDocumentsOutline, IoCalendarOutline } from 'react-icons/io5'
 import { BsBookmarkFill } from 'react-icons/bs'
@@ -74,20 +75,18 @@ const BookCardList = props => {
 
   return (
     <HStack
-      w='xl'
-      spacing={8}
+      spacing={{ base: 4, md: 8 }}
+      maxW='xl'
       py={4}
-      pl={8}
-      pr={4}
+      pl={{ base: 4, md: 8 }}
+      pr={{ base: 0, md: 4 }}
       bg={useColorModeValue('white', '#2a2d37')}
       shadow='lg'
       rounded='lg'
     >
-      <Box w='2xs'>
-        <Link as={ReactRouterLink} to={`/book/${props.id}`}>
+      <Link as={ReactRouterLink} to={`/book/${props.id}`}>
+        <Box w={{ base: '5em', md: '8em' }}>
           <Image
-            w='full'
-            h={52}
             fit='cover'
             src={props.cover}
             fallbackSrc={defaultCover}
@@ -95,8 +94,8 @@ const BookCardList = props => {
             borderRadius='10px'
             dropShadow='xl'
           />
-        </Link>
-      </Box>
+        </Box>
+      </Link>
 
       <VStack py={5} alignItems='flex-start' w='full'>
         <Link
@@ -105,28 +104,41 @@ const BookCardList = props => {
           display='block'
           color={useColorModeValue('gray.800', 'white')}
           fontWeight='bold'
-          whiteSpace='normal'
+          fontSize={{ base: 'sm', md: 'md' }}
           _hover={{
             color: useColorModeValue('teal.600', 'teal.400'),
             textDecoration: 'underline',
           }}
+          noOfLines={1}
         >
-          {props.title}
+          <Tooltip hasArrow label={props.title}>
+            {props.title}
+          </Tooltip>
         </Link>
-        <Text fontSize='md' color={useColorModeValue('gray.700', 'gray.200')}>
+        <Text
+          fontSize={{ base: 'xs', md: 'md' }}
+          color={useColorModeValue('gray.700', 'gray.200')}
+          noOfLines={1}
+        >
           {props.author}
         </Text>
-        <Text fontSize='md' color={useColorModeValue('gray.700', 'gray.200')}>
+        <Text
+          fontSize={{ base: 'xs', md: 'md' }}
+          color={useColorModeValue('gray.700', 'gray.200')}
+        >
           <Icon boxSize={4} color='gray.500' as={IoDocumentsOutline} />{' '}
           {props.pages}
         </Text>
-        <Text fontSize='md' color={useColorModeValue('gray.700', 'gray.200')}>
+        <Text
+          fontSize={{ base: 'xs', md: 'md' }}
+          color={useColorModeValue('gray.700', 'gray.200')}
+        >
           <Icon boxSize={4} color='gray.500' as={IoCalendarOutline} />{' '}
           {props.published}
         </Text>
         {props.genres &&
           props.genres.map(genre => (
-            <Tag size={'md'} key={genre} variant='subtle' colorScheme='teal'>
+            <Tag size='sm' key={genre} variant='subtle' colorScheme='teal'>
               {genre}
             </Tag>
           ))}
