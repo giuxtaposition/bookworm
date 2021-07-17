@@ -1,0 +1,32 @@
+import { Flex, Icon, useColorMode, useColorModeValue } from '@chakra-ui/react'
+import { MoonIcon, SunIcon } from '@chakra-ui/icons'
+
+const ToggleColorModeSwitch = ({ showText = false }) => {
+  const { colorMode, toggleColorMode } = useColorMode()
+
+  return (
+    <Flex
+      onClick={toggleColorMode}
+      role='button'
+      aria-label={'Toggle Light/Dark Theme'}
+      fontWeight='semibold'
+      align='center'
+      px='4'
+      pl='4'
+      py='3'
+      color={useColorModeValue('inherit', 'gray.400')}
+      _hover={{
+        bg: useColorModeValue('gray.100', 'gray.900'),
+        color: useColorModeValue('gray.900', 'gray.200'),
+      }}
+      variant='ghost'
+      cursor='pointer'
+    >
+      <Icon mr={2}>{colorMode === 'light' ? <MoonIcon /> : <SunIcon />}</Icon>
+      {showText &&
+        (colorMode === 'light' ? 'Toggle Dark Mode' : 'Toggle Light Mode')}
+    </Flex>
+  )
+}
+
+export default ToggleColorModeSwitch

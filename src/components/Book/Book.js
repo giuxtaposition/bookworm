@@ -7,7 +7,7 @@ import BookLowerBox from './BookLowerBox'
 import LoadingSpinner from '../LoadingSpinner'
 
 const Book = () => {
-  const upperBoxBackground = useColorModeValue('#44aca0', 'gray.800')
+  const upperBoxBackground = useColorModeValue('#44aca0', '#065151')
   const lowerBoxBackground = useColorModeValue('white', 'gray.800')
 
   const match = useRouteMatch('/book/:id')

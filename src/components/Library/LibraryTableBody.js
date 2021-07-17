@@ -9,12 +9,14 @@ import {
   IconButton,
   useToast,
   useColorMode,
+  Link,
 } from '@chakra-ui/react'
 import defaultCover from '../../images/default-cover.jpg'
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons'
 import { BsFillTrashFill } from 'react-icons/bs'
 import { DELETE_BOOK, EDIT_BOOK } from '../../graphql/mutations'
 import { useMutation } from '@apollo/client'
+import { Link as ReactRouterLink } from 'react-router-dom'
 
 const LibraryTableBody = ({ book }) => {
   const toast = useToast()
@@ -106,12 +108,14 @@ const LibraryTableBody = ({ book }) => {
         alignItems='center'
       >
         <Box display={{ base: 'none', md: 'flex' }}>
-          <Image
-            fit='contain'
-            src={book.cover}
-            alt='book-cover'
-            fallbackSrc={defaultCover}
-          />
+          <Link as={ReactRouterLink} to={`/book/${book.googleId}`}>
+            <Image
+              fit='contain'
+              src={book.cover}
+              alt='book-cover'
+              fallbackSrc={defaultCover}
+            />
+          </Link>
         </Box>
         <Text>{book.title}</Text>
         <Text>{book.author.name}</Text>

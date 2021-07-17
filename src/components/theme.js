@@ -16,6 +16,13 @@ export const globalTheme = extendTheme({
       },
     }),
   },
+  components: {
+    Divider: {
+      baseStyle: props => ({
+        borderColor: mode('gray.300', 'gray.700')(props),
+      }),
+    },
+  },
 })
 
 export default theme
