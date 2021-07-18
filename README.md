@@ -20,6 +20,7 @@
   - [:tada: Features](#tada-features)
   - [:construction_worker: Running Locally](#construction_worker-running-locally)
   - [:wrench: Built with](#wrench-built-with)
+  - [Contributing](#contributing)
   - [Backend](#backend)
   - [License](#license)
   - [Contact](#contact)
@@ -48,6 +49,10 @@ yarn start
 - Chakra UI for styling the ui
 - Apollo Client to communicate with the backend
 - React Router for routing
+
+## Contributing
+
+Feel like contributing? That's awesome! We have a [contributing guide](./CONTRIBUTING.md) to help guide you.
 
 ## Backend
 
