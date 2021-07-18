@@ -17,7 +17,7 @@ import {
 import Stats from './components/Stats/Stats'
 import Home from './components/Home/Home'
 import { globalTheme } from './components/theme'
-import AccountSettings from './components/Account/AccountSettings'
+import AccountSettings from './components/Account/AccountSettings/AccountSettings'
 import PrivateRoute from './components/PrivateRoute'
 import { CURRENT_USER, ALL_BOOKS } from './graphql/queries'
 import UserProfile from './components/Account/UserProfile/UserProfile'
