@@ -35,11 +35,11 @@
 
 ## :construction_worker: Running Locally
 
-```
-$ git clone https://github.com/giuxtaposition/bookworm.git
-$ cd bookworm
-$ yarn install
-$ yarn start
+``` bash
+git clone https://github.com/giuxtaposition/bookworm.git
+cd bookworm
+yarn install
+yarn start
 ```
 
 ## :wrench: Built with
