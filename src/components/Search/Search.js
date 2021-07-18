@@ -1,10 +1,4 @@
-import {
-  VStack,
-  Heading,
-  SimpleGrid,
-  useMediaQuery,
-  Skeleton,
-} from '@chakra-ui/react'
+import { VStack, Heading, SimpleGrid, useMediaQuery } from '@chakra-ui/react'
 import BookCardList from './BookCardList'
 import { useLocation } from 'react-router-dom'
 import { useLazyQuery } from '@apollo/client'
@@ -12,6 +6,7 @@ import { SEARCH_BOOKS } from '../../graphql/queries'
 import SearchBar from './SearchBar'
 import EmptySearchResults from './EmptySearchResults'
 import { useEffect } from 'react'
+import SearchLoadingSkeleton from './SearchLoadingSkeleton'
 
 function useQueryParams() {
   return new URLSearchParams(useLocation().search)
@@ -51,23 +46,8 @@ const Search = () => {
       <Heading fontSize='3xl' alignSelf='flex-start'>
         Search Results for "{search}"
       </Heading>
-      {loading && (
-        <SimpleGrid columns={`${isLargerThan1280 ? 2 : 1}`} spacing={8} py={8}>
-          {Array.from({ length: 6 }).map((_, index) => (
-            <Skeleton
-              key={index}
-              bg='#2a2d37'
-              w='xl'
-              h='2xs'
-              spacing={8}
-              py={4}
-              px={8}
-              shadow='lg'
-              rounded='lg'
-            ></Skeleton>
-          ))}
-        </SimpleGrid>
-      )}
+
+      {loading && <SearchLoadingSkeleton />}
 
       {data && (
         <SimpleGrid columns={`${isLargerThan1280 ? 2 : 1}`} spacing={8} py={8}>
