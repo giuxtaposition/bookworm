@@ -2,11 +2,12 @@
   "name": "bookworm",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
+  "author": "Giulia Ye",
   "dependencies": {
     "@apollo/client": "^3.3.21",
     "@chakra-ui/icons": "^1.0.13",
     "@chakra-ui/react": "^1.6.3",
-    "@date-io/date-fns": "1.x",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@testing-library/jest-dom": "^5.11.4",
@@ -14,8 +15,6 @@
     "@testing-library/user-event": "^12.1.10",
     "apollo-link-context": "^1.0.20",
     "apollo-upload-client": "^16.0.0",
-    "axios": "^0.21.1",
-    "date-fns": "^2.22.1",
     "framer-motion": "^4",
     "graphql": "^15.5.1",
     "moment": "^2.29.1",
@@ -51,8 +50,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "gh-pages": "^3.2.1"
   }
 }
