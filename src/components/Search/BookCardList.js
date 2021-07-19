@@ -11,9 +11,10 @@ import {
   useToast,
   IconButton,
   Tooltip,
+  useColorMode,
 } from '@chakra-ui/react'
 import { IoDocumentsOutline, IoCalendarOutline } from 'react-icons/io5'
-import { BsBookmarkFill } from 'react-icons/bs'
+import { BsBookmarkFill, BsBookmark } from 'react-icons/bs'
 import { useMutation } from '@apollo/client'
 import { ADD_BOOK } from '../../graphql/mutations'
 import defaultCover from '../../images/default-cover.jpg'
@@ -22,6 +23,7 @@ import { ALL_BOOKS } from '../../graphql/queries'
 
 const BookCardList = props => {
   const toast = useToast()
+  const { colorMode } = useColorMode
 
   const [addBook] = useMutation(ADD_BOOK, {
     onError: error => {
@@ -43,6 +45,15 @@ const BookCardList = props => {
               query: ALL_BOOKS,
             })
             return [...existingBooks, newBookRef]
+          },
+        },
+      })
+
+      cache.modify({
+        id: `searchedBook:${props.id}`,
+        fields: {
+          inLibrary() {
+            return true
           },
         },
       })
@@ -143,19 +154,35 @@ const BookCardList = props => {
             </Tag>
           ))}
       </VStack>
-      <IconButton
-        fontSize='xl'
-        color='#44aca0'
-        icon={<Icon as={BsBookmarkFill} />}
-        alignSelf='flex-start'
-        justifySelf='flex-end'
-        onClick={handleAdd}
-        variant='ghost'
-        _hover={{
-          bg: useColorModeValue('teal.100', 'teal.900'),
-          color: useColorModeValue('black', 'white'),
-        }}
-      />
+      {!props.inLibrary ? (
+        <IconButton
+          fontSize='xl'
+          color='#44aca0'
+          alignSelf='flex-start'
+          justifySelf='flex-end'
+          icon={<Icon as={BsBookmark} />}
+          onClick={handleAdd}
+          variant='ghost'
+          _hover={{
+            bg: colorMode === 'light' ? 'teal.100' : 'teal.900',
+            color: colorMode === 'light' ? 'black' : 'white',
+          }}
+        />
+      ) : (
+        <IconButton
+          fontSize='xl'
+          color='#44aca0'
+          icon={<Icon as={BsBookmarkFill} />}
+          alignSelf='flex-start'
+          justifySelf='flex-end'
+          onClick={handleAdd}
+          variant='ghost'
+          _hover={{
+            bg: colorMode === 'light' ? 'teal.100' : 'teal.900',
+            color: colorMode === 'light' ? 'black' : 'white',
+          }}
+        />
+      )}
     </HStack>
   )
 }

@@ -8,14 +8,16 @@ import {
   ButtonGroup,
   IconButton,
   useToast,
+  useColorMode,
 } from '@chakra-ui/react'
 import { useMutation } from '@apollo/client'
-import { BsBookmarkFill } from 'react-icons/bs'
+import { BsBookmarkFill, BsBookmark } from 'react-icons/bs'
 import { ADD_BOOK } from '../../graphql/mutations'
 import { ALL_BOOKS } from '../../graphql/queries'
 
 const BookLowerBox = ({ lowerBoxBackground, book }) => {
   const toast = useToast()
+  const { colorMode } = useColorMode()
 
   const [addBook] = useMutation(ADD_BOOK, {
     onError: error => {
@@ -88,14 +90,25 @@ const BookLowerBox = ({ lowerBoxBackground, book }) => {
       />
       <HStack pt={4}>
         <ButtonGroup variant='ghost' colorScheme='teal'>
-          <IconButton
-            fontSize='xl'
-            icon={<Icon as={BsBookmarkFill} />}
-            onClick={handleAdd}
-            _hover={{
-              bg: useColorModeValue('teal.100', 'teal.900'),
-            }}
-          />
+          {!book.inLibrary ? (
+            <IconButton
+              fontSize='xl'
+              icon={<Icon as={BsBookmark} />}
+              onClick={handleAdd}
+              _hover={{
+                bg: colorMode === 'light' ? 'teal.100' : 'teal.900',
+              }}
+            />
+          ) : (
+            <IconButton
+              fontSize='xl'
+              icon={<Icon as={BsBookmarkFill} />}
+              onClick={handleAdd}
+              _hover={{
+                bg: colorMode === 'light' ? 'teal.100' : 'teal.900',
+              }}
+            />
+          )}
         </ButtonGroup>
       </HStack>
     </VStack>

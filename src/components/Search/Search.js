@@ -18,7 +18,7 @@ const Search = () => {
   const search = queryParams.get('q')
   const filter = queryParams.get('filter')
 
-  const [getBooks, { loading, data }] = useLazyQuery(SEARCH_BOOKS, {
+  const [searchBooks, { loading, data }] = useLazyQuery(SEARCH_BOOKS, {
     variables: {
       searchParameter: search,
       filter: filter,
@@ -28,9 +28,9 @@ const Search = () => {
 
   useEffect(() => {
     if (search) {
-      getBooks()
+      searchBooks()
     }
-  }, [search, getBooks])
+  }, [search, searchBooks])
 
   if (!search) {
     return (
@@ -61,6 +61,7 @@ const Search = () => {
               pages={result.pages}
               genres={result.genres}
               published={result.published}
+              inLibrary={result.inLibrary}
             />
           ))}
         </SimpleGrid>
