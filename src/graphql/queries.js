@@ -28,6 +28,7 @@ export const SEARCH_BOOKS = gql`
       pages
       cover
       id
+      inLibrary
     }
   }
 `
@@ -44,6 +45,7 @@ export const SEARCH_BOOK = gql`
       pages
       cover
       id
+      inLibrary
     }
   }
 `
