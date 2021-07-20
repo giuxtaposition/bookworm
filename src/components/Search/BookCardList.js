@@ -8,80 +8,56 @@ import {
   VStack,
   Icon,
   Tag,
-  useToast,
   IconButton,
   Tooltip,
   useColorMode,
 } from '@chakra-ui/react'
 import { IoDocumentsOutline, IoCalendarOutline } from 'react-icons/io5'
 import { BsBookmarkFill, BsBookmark } from 'react-icons/bs'
-import { useMutation } from '@apollo/client'
-import { ADD_BOOK } from '../../graphql/mutations'
 import defaultCover from '../../images/default-cover.jpg'
 import { Link as ReactRouterLink } from 'react-router-dom'
-import { ALL_BOOKS } from '../../graphql/queries'
+import { useHistory, useLocation } from 'react-router-dom'
 
 const BookCardList = props => {
-  const toast = useToast()
   const { colorMode } = useColorMode
-
-  const [addBook] = useMutation(ADD_BOOK, {
-    onError: error => {
-      console.log(error)
-      toast({
-        title: 'Error',
-        description: error.graphQLErrors[0].message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
-    },
-    update(cache, { data: { addBook } }) {
-      cache.modify({
-        fields: {
-          allBooks(existingBooks = []) {
-            const newBookRef = cache.writeQuery({
-              data: addBook,
-              query: ALL_BOOKS,
-            })
-            return [...existingBooks, newBookRef]
-          },
-        },
-      })
-
-      cache.modify({
-        id: `searchedBook:${props.id}`,
-        fields: {
-          inLibrary() {
-            return true
-          },
-        },
-      })
-    },
-    onCompleted: () => {
-      toast({
-        title: 'Book Added.',
-        description: 'Book added with success!',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
-      })
-    },
-  })
+  const history = useHistory()
+  const location = useLocation()
 
   const handleAdd = async () => {
-    await addBook({
-      variables: {
-        readState: 'unread',
-        title: props.title,
-        id: props.id,
-        published: props.published,
-        author: props.author[0],
-        genres: props.genres,
-        cover: props.cover,
-        pages: props.pages,
-      },
-    })
+    if (props.user) {
+      await props.addBook({
+        variables: {
+          readState: 'unread',
+          title: props.title,
+          id: props.id,
+          published: props.published,
+          author: props.author[0],
+          genres: props.genres,
+          cover: props.cover,
+          pages: props.pages,
+        },
+      })
+    } else {
+      history.push({
+        pathname: '/signin',
+        state: {
+          from: {
+            bookToAdd: {
+              readState: 'unread',
+              title: props.title,
+              id: props.id,
+              published: props.published,
+              author: props.author[0],
+              genres: props.genres,
+              cover: props.cover,
+              pages: props.pages,
+            },
+            pathname: location.pathname,
+            search: location.search,
+          },
+        },
+      })
+    }
   }
 
   return (

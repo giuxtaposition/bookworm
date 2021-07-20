@@ -47,7 +47,15 @@ const LoginForm = ({ setToken, user }) => {
       })
 
       if (location.state) {
-        history.push(location.state.from.pathname)
+        history.push({
+          pathname: location.state.from.pathname,
+          search: location.state.from.search ? location.state.from.search : '',
+          state: {
+            bookToAdd: location.state.from.bookToAdd
+              ? location.state.from.bookToAdd
+              : '',
+          },
+        })
       } else {
         history.push('/')
       }

@@ -4,73 +4,62 @@ import {
   Text,
   HStack,
   Icon,
-  useColorModeValue,
   ButtonGroup,
   IconButton,
-  useToast,
   useColorMode,
 } from '@chakra-ui/react'
-import { useMutation } from '@apollo/client'
 import { BsBookmarkFill, BsBookmark } from 'react-icons/bs'
-import { ADD_BOOK } from '../../graphql/mutations'
-import { ALL_BOOKS } from '../../graphql/queries'
+import { useHistory, useLocation } from 'react-router-dom'
 
-const BookLowerBox = ({ lowerBoxBackground, book }) => {
-  const toast = useToast()
+const BookLowerBox = props => {
   const { colorMode } = useColorMode()
+  const history = useHistory()
+  const location = useLocation()
 
-  const [addBook] = useMutation(ADD_BOOK, {
-    onError: error => {
-      console.log(error)
-      toast({
-        title: 'Error',
-        description: error.graphQLErrors[0].message,
-        status: 'error',
-        duration: 9000,
-        isClosable: true,
-      })
-    },
-    update(cache, { data: { addBook } }) {
-      cache.modify({
-        fields: {
-          allBooks(existingBooks = []) {
-            const newBookRef = cache.writeQuery({
-              data: addBook,
-              query: ALL_BOOKS,
-            })
-            return [...existingBooks, newBookRef]
+  const handleAdd = async () => {
+    if (!props.user || !props.user.length) {
+      history.push({
+        pathname: '/signin',
+        state: {
+          from: {
+            bookToAdd: {
+              readState: 'unread',
+              title: props.book.title,
+              id: props.book.id,
+              published: props.book.published,
+              author: props.book.author[0],
+              genres: props.book.genres,
+              cover: props.book.cover,
+              pages: props.book.pages,
+            },
+            pathname: location.pathname,
+            search: location.search,
           },
         },
       })
-    },
-    onCompleted: () => {
-      toast({
-        title: 'Book Added.',
-        description: 'Book added with success!',
-        status: 'success',
-        duration: 9000,
-        isClosable: true,
+    } else {
+      await props.addBook({
+        variables: {
+          readState: 'unread',
+          title: props.book.title,
+          id: props.book.id,
+          published: props.book.published,
+          author: props.book.author[0],
+          genres: props.book.genres,
+          cover: props.book.cover,
+          pages: props.book.pages,
+        },
       })
-    },
-  })
-
-  const handleAdd = async () => {
-    await addBook({
-      variables: {
-        readState: 'unread',
-        title: book.title,
-        id: book.id,
-        published: book.published,
-        author: book.author[0],
-        genres: book.genres,
-        cover: book.cover,
-        pages: book.pages,
-      },
-    })
+    }
   }
 
   return (
-    <VStack bg={lowerBoxBackground} w='full' pb={8} px={{ base: 6, md: 12 }}>
+    <VStack
+      bg={props.lowerBoxBackground}
+      w='full'
+      pb={8}
+      px={{ base: 6, md: 12 }}
+    >
       <Text
         alignSelf='flex-start'
         fontSize={{ base: 'md', md: 'lg' }}
@@ -86,11 +75,11 @@ const BookLowerBox = ({ lowerBoxBackground, book }) => {
         w='full'
         className='book-description'
         fontSize={{ base: 'sm', md: 'md' }}
-        dangerouslySetInnerHTML={{ __html: book.description }}
+        dangerouslySetInnerHTML={{ __html: props.book.description }}
       />
       <HStack pt={4}>
         <ButtonGroup variant='ghost' colorScheme='teal'>
-          {!book.inLibrary ? (
+          {!props.book.inLibrary ? (
             <IconButton
               fontSize='xl'
               icon={<Icon as={BsBookmark} />}

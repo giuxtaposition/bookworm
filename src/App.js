@@ -178,7 +178,7 @@ function App() {
           </Route>
 
           <Route path='/search'>
-            <Search />
+            <Search user={user} />
           </Route>
 
           <PrivateRoute path='/library'>
@@ -206,7 +206,7 @@ function App() {
           </Route>
 
           <Route path='/book/:id'>
-            <Book />
+            <Book user={user} />
           </Route>
         </Switch>
       </div>
