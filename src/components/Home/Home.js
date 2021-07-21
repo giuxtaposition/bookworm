@@ -3,10 +3,13 @@ import React from 'react'
 import Features from './Features'
 import PopularBooks from './PopularBooks'
 import SearchBar from '../Search/SearchBar'
+import DemoUserBanner from './DemoUserBanner'
 
 const Home = props => {
   return (
     <VStack spacing={4} w='100vw'>
+      {!props.user && <DemoUserBanner setToken={props.setToken} />}
+
       <VStack
         w='full'
         spacing={4}

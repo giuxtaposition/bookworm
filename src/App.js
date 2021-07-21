@@ -174,7 +174,7 @@ function App() {
 
         <Switch>
           <Route exact path='/'>
-            <Home />
+            <Home setToken={setToken} user={user} />
           </Route>
 
           <Route path='/search'>
