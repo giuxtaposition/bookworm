@@ -1,34 +1,23 @@
-import {
-  Heading,
-  VStack,
-  Text,
-  useColorModeValue,
-  Stack,
-  useMediaQuery,
-  chakra,
-} from '@chakra-ui/react'
+import { Heading, VStack, Text, Stack, chakra } from '@chakra-ui/react'
 import React from 'react'
 import Features from './Features'
 import PopularBooks from './PopularBooks'
 import SearchBar from '../Search/SearchBar'
 
 const Home = props => {
-  const [isLargerThan600] = useMediaQuery('(min-width: 600px)')
-
   return (
     <VStack spacing={4} w='100vw'>
       <VStack
-        my={12}
-        p={['4', '8', '12']}
-        w={['90vw', '80vw', '80vw']}
-        boxShadow='xl'
-        bgColor={useColorModeValue('white', 'gray.700')}
+        w='full'
         spacing={4}
         justifyContent='center'
         textAlign='center'
+        alignItems='center'
+        my={10}
+        p={['4', '8', '12']}
       >
         <Stack alignItems='center' justifyContent='center'>
-          <Heading fontWeight='bold' size={`${isLargerThan600 ? 'xl' : 'md'}`}>
+          <Heading fontWeight='bold'>
             Welcome to{' '}
             <chakra.span
               bgGradient='linear(to-r, teal.500, teal.300, blue.500)'
@@ -38,7 +27,10 @@ const Home = props => {
             </chakra.span>
           </Heading>
         </Stack>
-        <Text>Search for your favourite book</Text>
+        <Text>
+          Search for your favourite book <br /> and keep track of your reading
+          list!
+        </Text>
 
         <SearchBar showRadioButtons={false} />
       </VStack>
