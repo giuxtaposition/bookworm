@@ -17,7 +17,7 @@ const BookLowerBox = props => {
   const location = useLocation()
 
   const handleAdd = async () => {
-    if (!props.user || !props.user.length) {
+    if (!props.user) {
       history.push({
         pathname: '/signin',
         state: {

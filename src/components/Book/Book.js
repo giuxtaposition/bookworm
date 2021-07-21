@@ -11,7 +11,7 @@ import { ALL_BOOKS } from '../../graphql/queries'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-const Book = user => {
+const Book = props => {
   const upperBoxBackground = useColorModeValue('#44aca0', '#065151')
   const lowerBoxBackground = useColorModeValue('white', 'gray.800')
   const toast = useToast()
@@ -63,7 +63,6 @@ const Book = user => {
   useEffect(() => {
     const handleAdd = async () => {
       if (location.state) {
-        console.log(location.state)
         const bookToAdd = location.state.bookToAdd
         await addBook({
           variables: {
@@ -101,7 +100,7 @@ const Book = user => {
           <BookLowerBox
             lowerBoxBackground={lowerBoxBackground}
             book={data.searchBook}
-            user={user}
+            user={props.user}
             addBook={addBook}
           />
         </VStack>
