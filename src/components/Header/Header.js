@@ -62,7 +62,7 @@ const Header = ({ logout, user }) => {
           </HStack>
 
           {isSearchOpen | (displaySearchBar === 'flex') ? (
-            <SearchBar showRadioButtons={false} />
+            <SearchBar showRadioButtons={false} shadow={false} />
           ) : (
             <Logo type='icon' />
           )}

@@ -12,7 +12,7 @@ export const globalTheme = extendTheme({
   styles: {
     global: props => ({
       body: {
-        bg: mode('gray.100', '#1d202b')(props),
+        bg: mode('white', '#1d202b')(props),
       },
     }),
   },

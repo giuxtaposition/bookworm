@@ -4,7 +4,6 @@ import {
   InputGroup,
   Input,
   InputRightElement,
-  useColorModeValue,
   Radio,
   RadioGroup,
   Stack,
@@ -13,7 +12,7 @@ import { Search2Icon } from '@chakra-ui/icons'
 import { useState } from 'react'
 import { useHistory } from 'react-router'
 
-const SearchBar = ({ showRadioButtons = true }) => {
+const SearchBar = ({ showRadioButtons = true, shadow = true }) => {
   const [search, SetSearch] = useState('')
   const [checkedFilter, setCheckedFilter] = useState('all')
   const history = useHistory()
@@ -41,14 +40,13 @@ const SearchBar = ({ showRadioButtons = true }) => {
           value={search}
           onChange={e => SetSearch(e.target.value)}
           onKeyDown={e => handleKeyDown(e)}
+          boxShadow={shadow ? 'xl' : 'unset'}
+          focusBorderColor='teal.500'
         />
         <InputRightElement
           children={
             <Button bg='transparent'>
-              <Search2Icon
-                color={useColorModeValue('gray.700', 'gray.500')}
-                onClick={() => submitSearch()}
-              />
+              <Search2Icon color='teal.500' onClick={() => submitSearch()} />
             </Button>
           }
         />
