@@ -7,6 +7,8 @@ import {
   useColorModeValue,
   HStack,
   useBreakpointValue,
+  Button,
+  Link,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { Search2Icon } from '@chakra-ui/icons'
@@ -16,6 +18,7 @@ import ToggleColorModeSwitch from './ToggleColorModeSwitch'
 
 import Sidebar from './Sidebar'
 import UserDropdown from './UserDropdown'
+import { Link as ReactRouterLink } from 'react-router-dom'
 
 const Header = ({ logout, user }) => {
   const displaySearchBar = useBreakpointValue({ base: 'none', md: 'flex' })
@@ -67,8 +70,40 @@ const Header = ({ logout, user }) => {
             <Logo type='icon' />
           )}
 
-          <HStack display={{ base: 'none', md: 'flex' }}>
-            {user && <UserDropdown user={user.me} logout={logout} />}
+          <HStack display={{ base: 'none', md: 'flex' }} spacing={5}>
+            {user ? (
+              <UserDropdown user={user.me} logout={logout} />
+            ) : (
+              <>
+                <Link
+                  as={ReactRouterLink}
+                  to='/signin'
+                  _hover={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  <Button colorScheme='teal' variant='ghost' size='sm'>
+                    Sign in
+                  </Button>
+                </Link>
+                <Link
+                  as={ReactRouterLink}
+                  to='/signup'
+                  _hover={{
+                    textDecoration: 'none',
+                  }}
+                >
+                  <Button
+                    colorScheme='teal'
+                    variant='solid'
+                    size='sm'
+                    onClick={logout}
+                  >
+                    Sign up
+                  </Button>
+                </Link>
+              </>
+            )}
             <ToggleColorModeSwitch />
           </HStack>
           <IconButton
