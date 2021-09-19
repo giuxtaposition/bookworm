@@ -66,4 +66,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Giulia Ye - yg97.cs@gmail.com
 
-Project Link: https://giuxtaposition.github.io/bookworm
+Project Link: https://bookworm.vercel.app/
