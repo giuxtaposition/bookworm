@@ -31,7 +31,7 @@ const BookUpperBox: React.FC<Props> = ({ upperBoxBackground, book }) => {
                     {book.title}
                 </Text>
                 <Text fontWeight='bold' fontSize={{ base: 'xs', md: 'lg' }}>
-                    By {book.author}
+                    By {book.author.name ?? book.author}
                 </Text>
             </VStack>
             <HStack borderRadius='10px' bgColor='rgba(0, 0, 0, 0.3)' p={4}>

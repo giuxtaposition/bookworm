@@ -1,12 +1,13 @@
 import { useQuery } from '@apollo/client'
 import { Flex, VStack } from '@chakra-ui/react'
 import { ALL_BOOKS } from '../../../graphql/queries'
+import { User } from '../../../types/User'
 import BooksSection from './BooksSection'
 import UserProfileCard from './UserProfileCard'
 import UserProfileHeader from './UserProfileHeader'
 
 interface Props {
-    user: any
+    user: User
 }
 
 const UserProfile: React.FC<Props> = ({ user }) => {

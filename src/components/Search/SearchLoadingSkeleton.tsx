@@ -8,7 +8,7 @@ import {
     VStack,
 } from '@chakra-ui/react'
 
-const SearchLoadingSkeleton = () => {
+const SearchLoadingSkeleton: React.FC = () => {
     const skeletonContainerColor = useColorModeValue('white', '#2a2d37')
     const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)')
 

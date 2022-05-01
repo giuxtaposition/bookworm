@@ -19,11 +19,12 @@ import {
     useHistory,
     useLocation,
 } from 'react-router-dom'
+import useAddBookMutation from '../../graphql/useAddBookMutation'
 import defaultCover from '../../images/default-cover.jpg'
+import { User } from '../../types/User'
 
 interface Props {
-    user: any
-    addBook: any
+    user?: User
     cover: string
     id: string
     title: string
@@ -36,7 +37,6 @@ interface Props {
 
 const BookCardList: React.FC<Props> = ({
     user,
-    addBook,
     cover,
     id,
     title,
@@ -49,20 +49,20 @@ const BookCardList: React.FC<Props> = ({
     const { colorMode } = useColorMode()
     const history = useHistory()
     const location = useLocation()
+    const addBook = useAddBookMutation()
+
+    console.log('author', author)
 
     const handleAdd = async () => {
         if (user) {
             await addBook({
-                variables: {
-                    readState: 'unread',
-                    title: title,
-                    id: id,
-                    published: published,
-                    author: author[0],
-                    genres: genres,
-                    cover: cover,
-                    pages: pages,
-                },
+                title,
+                id,
+                published,
+                author,
+                genres,
+                cover,
+                pages,
             })
         } else {
             history.push({
@@ -74,7 +74,7 @@ const BookCardList: React.FC<Props> = ({
                             title: title,
                             id: id,
                             published: published,
-                            author: author[0],
+                            author: author,
                             genres: genres,
                             cover: cover,
                             pages: pages,
@@ -144,7 +144,7 @@ const BookCardList: React.FC<Props> = ({
                         boxSize={4}
                         color='gray.500'
                         as={IoDocumentsOutline}
-                    />{' '}
+                    />
                     {pages}
                 </Text>
                 <Text

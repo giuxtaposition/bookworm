@@ -13,10 +13,12 @@ import {
 import React, { useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { LOGIN } from '../../graphql/mutations'
+import { AddBookRequest } from '../../graphql/useAddBookMutation'
+import { User } from '../../types/User'
 
 interface Props {
-    setToken: any
-    user: any
+    setToken: React.Dispatch<React.SetStateAction<string | undefined>>
+    user?: User
 }
 
 export interface LocationState {
@@ -25,15 +27,7 @@ export interface LocationState {
         search: string
         bookToAdd: string
     }
-    bookToAdd: {
-        title: string
-        id: string
-        published: string
-        author: string
-        genres: string
-        cover: string
-        pages: string
-    }
+    bookToAdd: AddBookRequest
 }
 
 const LoginForm: React.FC<Props> = ({ setToken, user }) => {

@@ -1,6 +1,6 @@
 import { Box, Stack } from '@chakra-ui/react'
 
-const LoadingSpinner = () => {
+const LoadingSpinner: React.FC = () => {
     return (
         <Stack
             flexGrow={1}

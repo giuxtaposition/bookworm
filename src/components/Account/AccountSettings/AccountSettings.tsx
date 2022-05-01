@@ -10,12 +10,13 @@ import {
 import React, { useState } from 'react'
 import { EDIT_USER } from '../../../graphql/mutations'
 import { CURRENT_USER } from '../../../graphql/queries'
+import { User } from '../../../types/User'
 import CoverPhoto from './CoverPhoto'
 import PersonalInfo from './PersonalInfo'
 import ProfilePhoto from './ProfilePhoto'
 
 interface Props {
-    user: any
+    user: User
 }
 
 const AccountSettings: React.FC<Props> = ({ user }) => {

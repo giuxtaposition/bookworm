@@ -1,7 +1,11 @@
 import { MoonIcon, SunIcon } from '@chakra-ui/icons'
 import { Flex, Icon, useColorMode, useColorModeValue } from '@chakra-ui/react'
 
-const ToggleColorModeSwitch = ({ showText = false }) => {
+interface Props {
+    showText?: boolean
+}
+
+const ToggleColorModeSwitch: React.FC<Props> = ({ showText = false }) => {
     const { colorMode, toggleColorMode } = useColorMode()
 
     return (

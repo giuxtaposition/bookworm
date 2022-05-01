@@ -5,9 +5,7 @@ import { ALL_BOOKS } from '../../graphql/queries'
 import LibraryActionBar from './LibraryActionBar'
 import LibraryTable from './LibraryTable'
 
-interface Props {}
-
-const Library: React.FC<Props> = () => {
+const Library: React.FC = () => {
     const [searchFilter, setSearchFilter] = useState('')
     const [searchFilterType, setSearchFilterType] = useState('')
     const { data, loading } = useQuery(ALL_BOOKS)

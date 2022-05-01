@@ -13,9 +13,10 @@ import {
 import React, { useState } from 'react'
 import { Link as ReactRouterLink, useHistory } from 'react-router-dom'
 import { SIGNUP } from '../../graphql/mutations'
+import { User } from '../../types/User'
 
 interface Props {
-    user: any
+    user?: User
 }
 
 const SignUpForm: React.FC<Props> = ({ user }) => {

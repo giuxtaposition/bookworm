@@ -17,9 +17,10 @@ import { BsFillTrashFill } from 'react-icons/bs'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { DELETE_BOOK, EDIT_BOOK } from '../../graphql/mutations'
 import defaultCover from '../../images/default-cover.jpg'
+import { Book } from '../../types/Book'
 
 interface Props {
-    book: any
+    book: Book
 }
 
 const LibraryTableBody: React.FC<Props> = ({ book }) => {

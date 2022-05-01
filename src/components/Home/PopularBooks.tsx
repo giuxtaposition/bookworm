@@ -2,11 +2,12 @@ import { useQuery } from '@apollo/client'
 import { Heading, HStack, Text, VStack } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { POPULAR_BOOKS } from '../../graphql/queries'
+import { Book } from '../../types/Book'
 import BookCard from '../BookCard'
 import BooksCarousel from '../BooksCarousel'
 
-const PopularBooks = () => {
-    const [books, setBooks] = useState<any[]>([])
+const PopularBooks: React.FC = () => {
+    const [books, setBooks] = useState<Book[]>([])
 
     useQuery(POPULAR_BOOKS, {
         onCompleted: data => {

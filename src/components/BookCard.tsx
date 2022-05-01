@@ -8,12 +8,13 @@ import {
 } from '@chakra-ui/react'
 import { Link as ReactRouterLink } from 'react-router-dom'
 import defaultCover from '../images/default-cover.jpg'
+import { Author } from '../types/Book'
 
 interface Props {
     cover: string
     id: string
     title: string
-    author: string
+    author: Author
 }
 
 const BookCard: React.FC<Props> = ({ cover, id, title, author }) => {
@@ -59,7 +60,7 @@ const BookCard: React.FC<Props> = ({ cover, id, title, author }) => {
                     fontSize='sm'
                     color={useColorModeValue('gray.700', 'gray.200')}
                 >
-                    {author}
+                    {author.name}
                 </chakra.span>
             </Box>
         </Flex>

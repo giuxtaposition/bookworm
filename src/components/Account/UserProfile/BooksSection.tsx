@@ -1,11 +1,12 @@
 import { Button, Heading, HStack, Text, VStack } from '@chakra-ui/react'
+import { Book } from '../../../types/Book'
 import BookCard from '../../BookCard'
 import BooksCarousel from '../../BooksCarousel'
 
 interface Props {
     sectionTitle: string
     sectionDescription: string
-    books: any[]
+    books: Book[]
 }
 
 const BooksSection: React.FC<Props> = ({
@@ -13,7 +14,9 @@ const BooksSection: React.FC<Props> = ({
     sectionDescription,
     books,
 }) => {
-    const handleViewAll = () => {}
+    const handleViewAll = () => {
+        console.log('TODO: View all books')
+    }
 
     return (
         <VStack py={10} px={5} w='100%'>
@@ -44,7 +47,7 @@ const BooksSection: React.FC<Props> = ({
                             id={book.googleId}
                             cover={book.cover}
                             title={book.title}
-                            author={book.author.name}
+                            author={book.author}
                         />
                     </div>
                 ))}

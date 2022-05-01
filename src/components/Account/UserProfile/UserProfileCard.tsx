@@ -13,9 +13,10 @@ import {
 import { AiOutlineMail } from 'react-icons/ai'
 import { FaUserAlt } from 'react-icons/fa'
 import { FiBook } from 'react-icons/fi'
+import { User } from '../../../types/User'
 
 interface Props {
-    user: any
+    user: User
 }
 
 const UserProfileCard: React.FC<Props> = ({ user }) => {
@@ -34,15 +35,13 @@ const UserProfileCard: React.FC<Props> = ({ user }) => {
             zIndex='200'
         >
             <Flex justify={'center'}>
-                {user.me.profilePhoto ? (
+                {user.profilePhoto ? (
                     <Image
                         w='3xs'
                         src={
-                            user.me.profilePhoto
-                                ? user.me.profilePhoto.location
-                                : ''
+                            user.profilePhoto ? user.profilePhoto.location : ''
                         }
-                        alt={user.me.username}
+                        alt={user.username}
                         rounded='full'
                         borderStyle='solid'
                         borderWidth={2}
@@ -73,34 +72,32 @@ const UserProfileCard: React.FC<Props> = ({ user }) => {
                         fontWeight={500}
                         fontFamily={'body'}
                     >
-                        {user.me.username}
+                        {user.username}
                     </Heading>
-                    {user.me.name && (
-                        <Text color={'gray.500'}>{user.me.name}</Text>
-                    )}
+                    {user.name && <Text color={'gray.500'}>{user.name}</Text>}
                 </Stack>
 
-                {user.me.bio && (
+                {user.bio && (
                     <Stack textAlign='center' py={4}>
-                        <Text fontSize='lg'>{user.me.bio}</Text>
+                        <Text fontSize='lg'>{user.bio}</Text>
                     </Stack>
                 )}
 
                 <Stack direction={'column'} justify={'flex-start'} spacing={2}>
-                    {user.me.email && (
+                    {user.email && (
                         <Stack spacing={2} align={'center'} direction={'row'}>
                             <Icon
                                 boxSize={6}
                                 color='gray.500'
                                 as={AiOutlineMail}
                             />
-                            <Text fontSize={'sm'}>{user.me.email}</Text>
+                            <Text fontSize={'sm'}>{user.email}</Text>
                         </Stack>
                     )}
-                    {user.me.favoriteGenre && (
+                    {user.favoriteGenre && (
                         <Stack spacing={2} align={'center'} direction={'row'}>
                             <Icon boxSize={6} color='gray.500' as={FiBook} />
-                            <Text fontSize={'sm'}>{user.me.favoriteGenre}</Text>
+                            <Text fontSize={'sm'}>{user.favoriteGenre}</Text>
                         </Stack>
                     )}
                 </Stack>

@@ -22,29 +22,33 @@ import {
     BOOK_EDITED,
     USER_PROFILE_EDITED,
 } from './graphql/subscriptions'
+import { Book as BookEntity } from './types/Book'
+import { User } from './types/User'
+
+type BookAction = 'ADDED' | 'DELETED' | 'EDITED'
 
 const App: React.FC = () => {
-    const [token, setToken] = useState<string | null>(null)
-    const [user, setUser] = useState(null)
+    const [token, setToken] = useState<string | undefined>(undefined)
+    const [user, setUser] = useState<User | undefined>(undefined)
     const client = useApolloClient()
     const history = useHistory()
 
     const [getUser] = useLazyQuery(CURRENT_USER, {
         fetchPolicy: 'network-only',
         onCompleted: data => {
-            setUser(data)
+            setUser(data.me)
         },
     })
 
     const [getBooks] = useLazyQuery(ALL_BOOKS)
 
-    const includedIn = (set: any, object: any) =>
-        set.map((b: any) => b.id).includes(object.id)
+    const includedIn = (books: BookEntity[], book: BookEntity) =>
+        books.map(b => b.id).includes(book.id)
 
-    const isEquivalent = (a: any, b: any) => {
+    const isEquivalent = (userInStore: User, currentUser: User) => {
         // Create arrays of property names
-        var aProps = Object.getOwnPropertyNames(a)
-        var bProps = Object.getOwnPropertyNames(b)
+        const aProps = Object.getOwnPropertyNames(userInStore)
+        const bProps = Object.getOwnPropertyNames(currentUser)
 
         // If number of properties is different,
         // objects are not equivalent
@@ -52,12 +56,15 @@ const App: React.FC = () => {
             return false
         }
 
-        for (var i = 0; i < aProps.length; i++) {
-            var propName = aProps[i]
+        for (let i = 0; i < aProps.length; i++) {
+            const propName = aProps[i]
 
             // If values of same property are not equal,
             // objects are not equivalent
-            if (a[propName] !== b[propName]) {
+            if (
+                userInStore[propName as keyof User] !==
+                currentUser[propName as keyof User]
+            ) {
                 return false
             }
         }
@@ -67,10 +74,7 @@ const App: React.FC = () => {
         return true
     }
 
-    const updateBookCache = (
-        book: any,
-        type: 'ADDED' | 'DELETED' | 'EDITED'
-    ) => {
+    const updateBookCache = (book: BookEntity, type: BookAction) => {
         // Check that added book is not included in the current store
         const dataInStore = client.readQuery({ query: ALL_BOOKS })
 
@@ -89,7 +93,8 @@ const App: React.FC = () => {
                     query: ALL_BOOKS,
                     data: {
                         allBooks: dataInStore.allBooks.filter(
-                            (bookInStore: any) => bookInStore.id !== book.id
+                            (bookInStore: BookEntity) =>
+                                bookInStore.id !== book.id
                         ),
                     },
                 })
@@ -103,7 +108,8 @@ const App: React.FC = () => {
                     data: {
                         allBooks: dataInStore.allBooks
                             .filter(
-                                (bookInStore: any) => bookInStore.id !== book.id
+                                (bookInStore: BookEntity) =>
+                                    bookInStore.id !== book.id
                             )
                             .concat(book),
                     },
@@ -112,7 +118,7 @@ const App: React.FC = () => {
         }
     }
 
-    const updateUserCache = (user: any) => {
+    const updateUserCache = (user: User) => {
         const dataInStore = client.readQuery({ query: CURRENT_USER })
 
         if (!isEquivalent(dataInStore.me, user)) {
@@ -157,7 +163,10 @@ const App: React.FC = () => {
         const loggedUserToken = window.localStorage.getItem(
             'bookworm-user-token'
         )
-        setToken(loggedUserToken)
+
+        if (loggedUserToken) {
+            setToken(loggedUserToken)
+        }
     }, [])
 
     useEffect(() => {
@@ -170,8 +179,8 @@ const App: React.FC = () => {
     const logout = async () => {
         history.push('/')
         await client.clearStore()
-        setToken(null)
-        setUser(null)
+        setToken(undefined)
+        setUser(undefined)
         localStorage.clear()
     }
 
@@ -197,13 +206,17 @@ const App: React.FC = () => {
                         <Stats />
                     </PrivateRoute>
 
-                    <PrivateRoute path='/settings'>
-                        <AccountSettings user={user} />
-                    </PrivateRoute>
+                    {user && (
+                        <PrivateRoute path='/settings'>
+                            <AccountSettings user={user} />
+                        </PrivateRoute>
+                    )}
 
-                    <PrivateRoute path='/profile'>
-                        <UserProfile user={user} />
-                    </PrivateRoute>
+                    {user && (
+                        <PrivateRoute path='/profile'>
+                            <UserProfile user={user} />
+                        </PrivateRoute>
+                    )}
 
                     <Route path='/signin'>
                         <LoginForm setToken={setToken} user={user} />

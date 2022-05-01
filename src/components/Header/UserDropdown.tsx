@@ -6,6 +6,7 @@ import {
     PopoverTrigger as OrigPopoverTrigger,
     useColorModeValue,
 } from '@chakra-ui/react'
+import { User } from '../../types/User'
 import NavItem from './NavItem'
 import NavLink from './NavLink'
 
@@ -14,7 +15,7 @@ const PopoverTrigger: React.FC<{ children: React.ReactNode }> =
     OrigPopoverTrigger
 
 interface Props {
-    user: any
+    user: User
     logout: () => void
 }
 
@@ -24,6 +25,7 @@ const UserDropdown: React.FC<Props> = ({ user, logout }) => {
     if (!user) {
         return null
     }
+
     return (
         <Popover placement='bottom-start'>
             <PopoverTrigger>

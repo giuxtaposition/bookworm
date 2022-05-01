@@ -20,10 +20,11 @@ import {
     EDIT_USER_PROFILE_PHOTO,
 } from '../../../graphql/mutations'
 import { CURRENT_USER } from '../../../graphql/queries'
+import { User } from '../../../types/User'
 import FormSection from './FormSection'
 
 interface Props {
-    user: any
+    user: User
 }
 
 const ProfilePhoto: React.FC<Props> = ({ user }) => {
@@ -129,12 +130,10 @@ const ProfilePhoto: React.FC<Props> = ({ user }) => {
                 {user && (
                     <Avatar
                         size='xl'
-                        name={user.me.username}
+                        name={user.username}
                         bg={colorMode === 'light' ? 'gray.300' : 'gray.700'}
                         src={
-                            user.me.profilePhoto
-                                ? user.me.profilePhoto.location
-                                : ''
+                            user.profilePhoto ? user.profilePhoto.location : ''
                         }
                     />
                 )}

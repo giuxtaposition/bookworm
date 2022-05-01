@@ -28,8 +28,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const authLink = setContext((_, { headers }) => {
-    let token = localStorage.getItem('bookworm-user-token')
-    let username = localStorage.getItem('bookworm-user')
+    const token = localStorage.getItem('bookworm-user-token')
+    const username = localStorage.getItem('bookworm-user')
     return {
         headers: {
             ...headers,
@@ -69,7 +69,7 @@ const splitLink = process.browser
                   definition.operation === 'subscription'
               )
           },
-          wsLink!,
+          wsLink ?? httpLink,
           authLink.concat(httpLink)
       )
     : httpLink

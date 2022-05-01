@@ -1,13 +1,14 @@
 import { Flex, Stack, useColorMode } from '@chakra-ui/react'
 import moment from 'moment'
 import React, { useMemo, useState } from 'react'
+import { Book } from '../../types/Book'
 import LibraryTableBody from './LibraryTableBody'
 import LibraryTableHeader from './LibraryTableHeader'
 
 interface Props {
     searchFilter: string
     searchFilterType: string
-    books: any[]
+    books: Book[]
 }
 
 const LibraryTable: React.FC<Props> = ({
@@ -30,7 +31,7 @@ const LibraryTable: React.FC<Props> = ({
 
     //Search Books
     const searchedBooks = useMemo(() => {
-        const checkAuthorOrTitle = (book: any) => {
+        const checkAuthorOrTitle = (book: Book) => {
             if (book.title.toLowerCase().includes(searchFilter.toLowerCase())) {
                 return book
             } else if (
@@ -42,7 +43,7 @@ const LibraryTable: React.FC<Props> = ({
             }
         }
 
-        const checkAuthor = (book: any) => {
+        const checkAuthor = (book: Book) => {
             if (
                 book.author.name
                     .toLowerCase()
@@ -52,7 +53,7 @@ const LibraryTable: React.FC<Props> = ({
             }
         }
 
-        const checkTitle = (book: any) => {
+        const checkTitle = (book: Book) => {
             if (book.title.toLowerCase().includes(searchFilter.toLowerCase())) {
                 return book
             }
@@ -73,7 +74,7 @@ const LibraryTable: React.FC<Props> = ({
 
     //Sort Books
     const sortedBooks = useMemo(() => {
-        let booksToSort = searchedBooks.slice()
+        const booksToSort = searchedBooks.slice()
         if (sortByFilter.sort === 'insertion') {
             if (sortByFilter.order === 'asc') {
                 return booksToSort.sort((a, b) =>

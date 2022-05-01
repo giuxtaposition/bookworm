@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 import { Link as ReactRouterLink } from 'react-router-dom'
+import { User } from '../../types/User'
 import SearchBar from '../Search/SearchBar'
 import Logo from './Logo'
 import Sidebar from './Sidebar'
@@ -20,7 +21,7 @@ import UserDropdown from './UserDropdown'
 
 interface Props {
     logout: () => void
-    user: any
+    user?: User
 }
 
 const Header: React.FC<Props> = ({ logout, user }) => {
@@ -80,7 +81,7 @@ const Header: React.FC<Props> = ({ logout, user }) => {
 
                     <HStack display={{ base: 'none', md: 'flex' }} spacing={5}>
                         {user ? (
-                            <UserDropdown user={user.me} logout={logout} />
+                            <UserDropdown user={user} logout={logout} />
                         ) : (
                             <>
                                 <Link

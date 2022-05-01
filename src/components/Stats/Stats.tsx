@@ -5,9 +5,7 @@ import { BOOK_COUNT, BOOK_COUNT_BY_READSTATE } from '../../graphql/queries'
 import LoadingSpinner from '../LoadingSpinner'
 import StatBox from './StatBox'
 
-interface Props {}
-
-const Stats: React.FC<Props> = () => {
+const Stats: React.FC = () => {
     const totalBooks = useQuery(BOOK_COUNT)
     const totalRead = useQuery(BOOK_COUNT_BY_READSTATE, {
         variables: { readState: 'read' },

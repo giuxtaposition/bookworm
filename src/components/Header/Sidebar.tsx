@@ -9,7 +9,7 @@ import {
     useColorMode,
     VStack,
 } from '@chakra-ui/react'
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { BsGearFill } from 'react-icons/bs'
 import { FaUser, FaUserPlus } from 'react-icons/fa'
 import { GoSignIn, GoSignOut } from 'react-icons/go'
@@ -17,6 +17,7 @@ import { ImBooks } from 'react-icons/im'
 import { IoMdStats } from 'react-icons/io'
 import { MdHome } from 'react-icons/md'
 import { Link as ReactRouterLink } from 'react-router-dom'
+import { User } from '../../types/User'
 import Logo from './Logo'
 import NavItem from './NavItem'
 import NavLink from './NavLink'
@@ -25,8 +26,7 @@ import ToggleColorModeSwitch from './ToggleColorModeSwitch'
 interface Props {
     isMenuOpen: boolean
     onMenuClose: () => void
-
-    user: any
+    user?: User
     logout: () => void
 }
 
@@ -40,11 +40,11 @@ const Sidebar: React.FC<Props> = ({
     const { colorMode } = useColorMode()
 
     useEffect(() => {
-        const checkIfClickedOutside = (e: any) => {
+        const checkIfClickedOutside = (event: MouseEvent) => {
             if (
                 isMenuOpen &&
                 sidebarRef.current &&
-                !sidebarRef.current.contains(e.target)
+                !sidebarRef.current.contains(event.target as Node)
             ) {
                 onMenuClose()
             }
@@ -175,10 +175,10 @@ const Sidebar: React.FC<Props> = ({
                             >
                                 <Avatar
                                     size='md'
-                                    name={user.me.username}
+                                    name={user.username}
                                     src={
-                                        user.me.profilePhoto
-                                            ? user.me.profilePhoto.location
+                                        user.profilePhoto
+                                            ? user.profilePhoto.location
                                             : ''
                                     }
                                     _hover={{
@@ -188,8 +188,8 @@ const Sidebar: React.FC<Props> = ({
                             </Link>
 
                             <VStack alignItems='flex-start'>
-                                <Text fontSize='md'>{user.me.username}</Text>
-                                <Text fontSize='sm'>{user.me.email}</Text>
+                                <Text fontSize='md'>{user.username}</Text>
+                                <Text fontSize='sm'>{user.email}</Text>
                             </VStack>
                         </HStack>
                     </Flex>

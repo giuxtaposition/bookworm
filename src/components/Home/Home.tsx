@@ -1,13 +1,14 @@
 import { chakra, Heading, Stack, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
+import { User } from '../../types/User'
 import SearchBar from '../Search/SearchBar'
 import DemoUserBanner from './DemoUserBanner'
 import Features from './Features'
 import PopularBooks from './PopularBooks'
 
 interface Props {
-    user: any
-    setToken: any
+    user?: User
+    setToken: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
 const Home: React.FC<Props> = ({ user, setToken }) => {

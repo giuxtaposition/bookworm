@@ -13,13 +13,14 @@ interface Props {
 }
 
 const BooksCarousel: React.FC<Props> = ({ children }) => {
-    const elementsPerPage: number = useBreakpointValue({
-        base: 1,
-        sm: 2,
-        md: 3,
-        lg: 4,
-        xl: 5,
-    })!
+    const elementsPerPage =
+        useBreakpointValue<number>({
+            base: 1,
+            sm: 2,
+            md: 3,
+            lg: 4,
+            xl: 5,
+        }) ?? 1
 
     const [currentSlide, setCurrentSlide] = useState(0)
     const pagesCount = Math.ceil(children?.length / elementsPerPage)

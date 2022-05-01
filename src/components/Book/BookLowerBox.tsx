@@ -10,26 +10,24 @@ import {
 } from '@chakra-ui/react'
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
 import { useHistory, useLocation } from 'react-router-dom'
+import useAddBookMutation from '../../graphql/useAddBookMutation'
+import { SearchedBookResult } from '../../types/Book'
+import { User } from '../../types/User'
 
 interface Props {
-    user: any
-    book: any
-    addBook: (book: any) => void
+    user?: User
+    book: SearchedBookResult
     lowerBoxBackground: string
 }
 
-const BookLowerBox: React.FC<Props> = ({
-    user,
-    book,
-    addBook,
-    lowerBoxBackground,
-}) => {
+const BookLowerBox: React.FC<Props> = ({ user, book, lowerBoxBackground }) => {
     const { colorMode } = useColorMode()
     const history = useHistory()
     const location = useLocation()
+    const addBook = useAddBookMutation()
 
     const handleAdd = async () => {
-        if (!user || !user.length) {
+        if (!user) {
             history.push({
                 pathname: '/signin',
                 state: {
@@ -39,7 +37,7 @@ const BookLowerBox: React.FC<Props> = ({
                             title: book.title,
                             id: book.id,
                             published: book.published,
-                            author: book.author[0],
+                            author: book.author,
                             genres: book.genres,
                             cover: book.cover,
                             pages: book.pages,
@@ -51,16 +49,7 @@ const BookLowerBox: React.FC<Props> = ({
             })
         } else {
             await addBook({
-                variables: {
-                    readState: 'unread',
-                    title: book.title,
-                    id: book.id,
-                    published: book.published,
-                    author: book.author[0],
-                    genres: book.genres,
-                    cover: book.cover,
-                    pages: book.pages,
-                },
+                ...book,
             })
         }
     }

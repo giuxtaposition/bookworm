@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { AiOutlineFileSearch } from 'react-icons/ai'
 
-const EmptySearchResults = () => {
+const EmptySearchResults: React.FC = () => {
     return (
         <Stack flexGrow={1} justifyContent='center'>
             <Box

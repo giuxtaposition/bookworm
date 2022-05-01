@@ -1,23 +1,20 @@
 import { Box, Image } from '@chakra-ui/react'
+import { User } from '../../../types/User'
 
 interface Props {
-    user: any
+    user: User
 }
 
 const UserProfileHeader: React.FC<Props> = ({ user }) => {
     return (
         <>
-            {user.me.coverPhoto ? (
+            {user.coverPhoto ? (
                 <Box>
                     <Image
                         w='100vw'
                         h='30vh'
                         objectFit='cover'
-                        src={
-                            user.me.coverPhoto
-                                ? user.me.coverPhoto.location
-                                : ''
-                        }
+                        src={user.coverPhoto ? user.coverPhoto.location : ''}
                         alt='user-cover'
                     />
                 </Box>

@@ -48,7 +48,7 @@ const Feature: React.FC<Props> = ({ title, icon, children }) => {
     )
 }
 
-const Features = () => {
+const Features: React.FC = () => {
     return (
         <Flex p={['5', '10', '20']} justifyContent='center' alignItems='center'>
             <SimpleGrid

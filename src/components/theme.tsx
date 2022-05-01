@@ -10,7 +10,7 @@ const theme = extendTheme({ config })
 
 export const globalTheme = extendTheme({
     styles: {
-        global: (props: any) => ({
+        global: (props: { colorMode: 'dark' | 'light' }) => ({
             body: {
                 bg: mode('white', '#1d202b')(props),
             },
@@ -18,7 +18,7 @@ export const globalTheme = extendTheme({
     },
     components: {
         Divider: {
-            baseStyle: (props: any) => ({
+            baseStyle: (props: { colorMode: 'dark' | 'light' }) => ({
                 borderColor: mode('gray.300', 'gray.700')(props),
             }),
         },

@@ -1,81 +1,33 @@
-import { useLazyQuery, useMutation } from '@apollo/client'
-import {
-    Heading,
-    SimpleGrid,
-    useMediaQuery,
-    useToast,
-    VStack,
-} from '@chakra-ui/react'
-import { useEffect } from 'react'
+import { useLazyQuery } from '@apollo/client'
+import { Heading, SimpleGrid, useMediaQuery, VStack } from '@chakra-ui/react'
+import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import { ADD_BOOK } from '../../graphql/mutations'
-import { ALL_BOOKS, SEARCH_BOOKS } from '../../graphql/queries'
-import { Book } from '../../types/Book'
+import { SEARCH_BOOKS } from '../../graphql/queries'
+import useAddBookMutation from '../../graphql/useAddBookMutation'
+import { User } from '../../types/User'
 import { LocationState } from '../Account/LoginForm'
 import BookCardList from './BookCardList'
 import EmptySearchResults from './EmptySearchResults'
 import SearchBar from './SearchBar'
 import SearchLoadingSkeleton from './SearchLoadingSkeleton'
 
-function useQueryParams() {
-    return new URLSearchParams(useLocation().search)
+function useQuery() {
+    const { search } = useLocation()
+
+    return React.useMemo(() => new URLSearchParams(search), [search])
 }
 
 interface Props {
-    user: any
+    user?: User
 }
 
 const Search: React.FC<Props> = ({ user }) => {
     const location = useLocation<LocationState>()
     const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)')
-    const queryParams = useQueryParams()
+    const queryParams = useQuery()
     const search = queryParams.get('q')
     const filter = queryParams.get('filter')
-    const toast = useToast()
-
-    const [addBook] = useMutation(ADD_BOOK, {
-        onError: error => {
-            console.log(error)
-            toast({
-                title: 'Error',
-                description: error.graphQLErrors[0].message,
-                status: 'error',
-                duration: 9000,
-                isClosable: true,
-            })
-        },
-        update(cache, { data: { addBook } }) {
-            cache.modify({
-                fields: {
-                    allBooks(existingBooks = []) {
-                        const newBookRef = cache.writeQuery({
-                            data: addBook,
-                            query: ALL_BOOKS,
-                        })
-                        return [...existingBooks, newBookRef]
-                    },
-                },
-            })
-
-            cache.modify({
-                id: `searchedBook:${addBook.googleId}`,
-                fields: {
-                    inLibrary() {
-                        return true
-                    },
-                },
-            })
-        },
-        onCompleted: () => {
-            toast({
-                title: 'Book Added.',
-                description: 'Book added with success!',
-                status: 'success',
-                duration: 9000,
-                isClosable: true,
-            })
-        },
-    })
+    const addBook = useAddBookMutation()
 
     const [searchBooks, { loading, data }] = useLazyQuery(SEARCH_BOOKS, {
         variables: {
@@ -95,18 +47,7 @@ const Search: React.FC<Props> = ({ user }) => {
         const handleAdd = async () => {
             if (location.state) {
                 const bookToAdd = location.state.bookToAdd
-                await addBook({
-                    variables: {
-                        readState: 'unread',
-                        title: bookToAdd.title,
-                        id: bookToAdd.id,
-                        published: bookToAdd.published,
-                        author: bookToAdd.author,
-                        genres: bookToAdd.genres,
-                        cover: bookToAdd.cover,
-                        pages: bookToAdd.pages,
-                    },
-                })
+                await addBook({ ...bookToAdd })
             }
         }
 
@@ -129,6 +70,7 @@ const Search: React.FC<Props> = ({ user }) => {
             </Heading>
 
             {loading && <SearchLoadingSkeleton />}
+            {console.log(search, filter)}
 
             {data && (
                 <SimpleGrid
@@ -136,21 +78,31 @@ const Search: React.FC<Props> = ({ user }) => {
                     spacing={8}
                     py={8}
                 >
-                    {data.searchBooks.map((result: Book, index: number) => (
-                        <BookCardList
-                            key={result.id + index}
-                            id={result.id}
-                            cover={result.cover}
-                            title={result.title}
-                            author={result.author}
-                            pages={result.pages}
-                            genres={result.genres}
-                            published={result.published}
-                            inLibrary={result.inLibrary}
-                            user={user}
-                            addBook={addBook}
-                        />
-                    ))}
+                    {data.searchBooks.map(
+                        (result: {
+                            id: string
+                            cover: string
+                            title: string
+                            author: string
+                            pages: number
+                            genres: string[]
+                            published: string
+                            inLibrary: boolean
+                        }) => (
+                            <BookCardList
+                                key={result.id}
+                                id={result.id}
+                                cover={result.cover}
+                                title={result.title}
+                                author={result.author}
+                                pages={result.pages}
+                                genres={result.genres}
+                                published={result.published}
+                                inLibrary={result.inLibrary}
+                                user={user}
+                            />
+                        )
+                    )}
                 </SimpleGrid>
             )}
             {!loading && !data && <EmptySearchResults />}
