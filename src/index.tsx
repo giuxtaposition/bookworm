@@ -88,6 +88,8 @@ const client = new ApolloClient({
     link: splitLink,
 })
 
+console.log(process.browser)
+
 ReactDOM.render(
     <ApolloProvider client={client}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />

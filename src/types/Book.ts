@@ -19,5 +19,17 @@ export interface Author {
 }
 
 export type SearchedBookResult = {
+    readState: 'read' | 'unread'
+    id: string
+    googleId: string
+    cover?: string
+    title: string
+    description: string
     author: string
-} & Book
+    pages: number
+    genres: string[]
+    published: string
+    insertion: string
+    language: string
+    inLibrary: boolean
+}

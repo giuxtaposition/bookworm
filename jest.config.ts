@@ -7,13 +7,13 @@ const config: Config.InitialOptions = {
         '^.+\\.cjs$': 'babel-jest',
     },
     moduleNameMapper: {
-        '.+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$':
-            'identity-obj-proxy',
+        '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+            '<rootDir>/src/__tests__/__mocks__/fileMock.ts',
     },
     moduleDirectories: ['node_modules', 'src/__tests__/utils'],
     testEnvironment: 'jest-environment-jsdom',
     setupFilesAfterEnv: ['<rootDir>/src/__tests__/utils/setupTests.ts'],
-    testPathIgnorePatterns: ['src/__tests__/utils'],
+    testPathIgnorePatterns: ['src/__tests__/utils', 'src/__tests__/__mocks__'],
 }
 
 export default config

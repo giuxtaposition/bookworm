@@ -71,6 +71,6 @@ export interface AddBookRequest {
     published: string
     author: string
     genres: string[]
-    cover: string
+    cover?: string
     pages: number
 }

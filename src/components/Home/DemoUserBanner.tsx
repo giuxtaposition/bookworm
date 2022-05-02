@@ -13,7 +13,7 @@ import React from 'react'
 import { LOGIN } from '../../graphql/mutations'
 
 interface Props {
-    setToken: (token: string) => void
+    setToken: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
 const DemoUserBanner: React.FC<Props> = ({ setToken }) => {

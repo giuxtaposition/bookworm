@@ -1,13 +1,20 @@
-import { Divider, HStack, Image, Text, VStack } from '@chakra-ui/react'
+import {
+    Divider,
+    HStack,
+    Image,
+    Text,
+    useColorModeValue,
+    VStack,
+} from '@chakra-ui/react'
 import defaultCover from '../../images/default-cover.jpg'
-import { Book } from '../../types/Book'
+import { SearchedBookResult } from '../../types/Book'
 
 interface Props {
-    upperBoxBackground: string
-    book: Book
+    book: SearchedBookResult
 }
 
-const BookUpperBox: React.FC<Props> = ({ upperBoxBackground, book }) => {
+const BookUpperBox: React.FC<Props> = ({ book }) => {
+    const upperBoxBackground = useColorModeValue('#44aca0', '#065151')
     return (
         <VStack
             bg={upperBoxBackground}
@@ -20,8 +27,7 @@ const BookUpperBox: React.FC<Props> = ({ upperBoxBackground, book }) => {
                 w='auto'
                 h={{ base: 40, md: 80 }}
                 fit='contain'
-                src={book.cover}
-                fallbackSrc={defaultCover}
+                src={book.cover ?? defaultCover}
                 alt='bookCover'
                 borderRadius='10px'
                 dropShadow='xl'
@@ -31,7 +37,7 @@ const BookUpperBox: React.FC<Props> = ({ upperBoxBackground, book }) => {
                     {book.title}
                 </Text>
                 <Text fontWeight='bold' fontSize={{ base: 'xs', md: 'lg' }}>
-                    By {book.author.name ?? book.author}
+                    By {book.author}
                 </Text>
             </VStack>
             <HStack borderRadius='10px' bgColor='rgba(0, 0, 0, 0.3)' p={4}>

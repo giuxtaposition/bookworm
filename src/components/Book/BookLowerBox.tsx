@@ -6,6 +6,7 @@ import {
     IconButton,
     Text,
     useColorMode,
+    useColorModeValue,
     VStack,
 } from '@chakra-ui/react'
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
@@ -17,39 +18,32 @@ import { User } from '../../types/User'
 interface Props {
     user?: User
     book: SearchedBookResult
-    lowerBoxBackground: string
 }
 
-const BookLowerBox: React.FC<Props> = ({ user, book, lowerBoxBackground }) => {
+const BookLowerBox: React.FC<Props> = ({ user, book }) => {
     const { colorMode } = useColorMode()
+    const lowerBoxBackground = useColorModeValue('white', 'gray.800')
     const history = useHistory()
     const location = useLocation()
     const addBook = useAddBookMutation()
 
     const handleAdd = async () => {
-        if (!user) {
+        if (user) {
+            addBook({
+                ...book,
+            })
+        } else {
             history.push({
                 pathname: '/signin',
                 state: {
                     from: {
                         bookToAdd: {
-                            readState: 'unread',
-                            title: book.title,
-                            id: book.id,
-                            published: book.published,
-                            author: book.author,
-                            genres: book.genres,
-                            cover: book.cover,
-                            pages: book.pages,
+                            ...book,
                         },
                         pathname: location.pathname,
                         search: location.search,
                     },
                 },
-            })
-        } else {
-            await addBook({
-                ...book,
             })
         }
     }
@@ -80,33 +74,25 @@ const BookLowerBox: React.FC<Props> = ({ user, book, lowerBoxBackground }) => {
             />
             <HStack pt={4}>
                 <ButtonGroup variant='ghost' colorScheme='teal'>
-                    {!book.inLibrary ? (
-                        <IconButton
-                            fontSize='xl'
-                            icon={<Icon as={BsBookmark} />}
-                            onClick={handleAdd}
-                            _hover={{
-                                bg:
-                                    colorMode === 'light'
-                                        ? 'teal.100'
-                                        : 'teal.900',
-                            }}
-                            aria-label={'add to library'}
-                        />
-                    ) : (
-                        <IconButton
-                            fontSize='xl'
-                            icon={<Icon as={BsBookmarkFill} />}
-                            onClick={handleAdd}
-                            _hover={{
-                                bg:
-                                    colorMode === 'light'
-                                        ? 'teal.100'
-                                        : 'teal.900',
-                            }}
-                            aria-label={'book already in library'}
-                        />
-                    )}
+                    <IconButton
+                        fontSize='xl'
+                        icon={
+                            <Icon
+                                as={
+                                    book.inLibrary ? BsBookmarkFill : BsBookmark
+                                }
+                            />
+                        }
+                        onClick={!book.inLibrary ? handleAdd : undefined}
+                        _hover={{
+                            bg: colorMode === 'light' ? 'teal.100' : 'teal.900',
+                        }}
+                        aria-label={
+                            book.inLibrary
+                                ? 'book already in library'
+                                : 'add book to library'
+                        }
+                    />
                 </ButtonGroup>
             </HStack>
         </VStack>

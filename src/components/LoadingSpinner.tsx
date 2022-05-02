@@ -9,6 +9,9 @@ const LoadingSpinner: React.FC = () => {
             h='full'
             justifyContent='center'
             alignItems='center'
+            aria-live='polite'
+            aria-busy='true'
+            role='progressbar'
         >
             <Box className='loading-spinner'>
                 <div></div>
