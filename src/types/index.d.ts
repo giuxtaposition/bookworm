@@ -3,3 +3,5 @@ declare namespace NodeJS {
         browser?: string
     }
 }
+
+declare module '*.jpg'
