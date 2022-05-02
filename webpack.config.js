@@ -5,9 +5,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
     mode: 'development',
     entry: './src/index.tsx',
-    output: { path: path.join(__dirname, '/dist'), filename: 'bundle.js' },
+    output: { path: path.join(__dirname, '/build'), filename: 'bundle.js' },
     devtool: 'inline-source-map',
-    devServer: { static: './dist', port: 3000 },
+    devServer: { static: './build', port: 3000 },
     module: {
         rules: [
             {

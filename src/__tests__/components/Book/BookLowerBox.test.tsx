@@ -1,5 +1,6 @@
 import { MockedProvider } from '@apollo/client/testing'
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import BookLowerBox from '../../../components/Book/BookLowerBox'
 import { User } from '../../../types/User'
 import { searchedBookResult } from '../../utils/bookUtils'
@@ -23,7 +24,7 @@ jest.mock('react-router-dom', () => {
 })
 
 const mockAddBook = jest.fn()
-jest.mock('../../../graphql/useAddBookMutation', () => ({
+jest.mock('../../../hooks/graphql/useAddBook', () => ({
     __esModule: true,
     default: () => mockAddBook,
 }))
@@ -81,7 +82,9 @@ describe('BookLowerBox component', () => {
                 'add book to library'
             )
 
-            fireEvent.click(bookmarkComponent)
+            act(() => {
+                userEvent.click(bookmarkComponent)
+            })
 
             expect(mockAddBook).toHaveBeenCalledWith(book)
             expect(mockHistoryPush).not.toHaveBeenCalled()
@@ -94,7 +97,9 @@ describe('BookLowerBox component', () => {
                 'add book to library'
             )
 
-            fireEvent.click(bookmarkComponent)
+            act(() => {
+                userEvent.click(bookmarkComponent)
+            })
 
             expect(mockAddBook).not.toHaveBeenCalled()
             expect(mockHistoryPush).toHaveBeenCalledWith({

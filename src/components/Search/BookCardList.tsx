@@ -19,7 +19,7 @@ import {
     useHistory,
     useLocation,
 } from 'react-router-dom'
-import useAddBookMutation from '../../graphql/useAddBookMutation'
+import useAddBook from '../../hooks/graphql/useAddBook'
 import defaultCover from '../../images/default-cover.jpg'
 import { User } from '../../types/User'
 
@@ -49,7 +49,7 @@ const BookCardList: React.FC<Props> = ({
     const { colorMode } = useColorMode()
     const history = useHistory()
     const location = useLocation()
-    const addBook = useAddBookMutation()
+    const addBook = useAddBook()
 
     console.log('author', author)
 

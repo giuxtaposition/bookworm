@@ -1,8 +1,8 @@
 import { useQuery } from '@apollo/client'
 import { useRouteMatch } from 'react-router-dom'
-import { SEARCH_BOOK } from './queries'
+import { SEARCH_BOOK } from '../../graphql/queries'
 
-const useSearchBookQuery = () => {
+const useSearchBook = () => {
     const match = useRouteMatch<{ id: string }>('/book/:id')
 
     const { data, loading } = useQuery(SEARCH_BOOK, {
@@ -16,4 +16,4 @@ const useSearchBookQuery = () => {
         loading,
     }
 }
-export default useSearchBookQuery
+export default useSearchBook

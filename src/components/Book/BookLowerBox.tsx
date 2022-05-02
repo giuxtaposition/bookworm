@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs'
 import { useHistory, useLocation } from 'react-router-dom'
-import useAddBookMutation from '../../graphql/useAddBookMutation'
+import useAddBook from '../../hooks/graphql/useAddBook'
 import { SearchedBookResult } from '../../types/Book'
 import { User } from '../../types/User'
 
@@ -25,7 +25,7 @@ const BookLowerBox: React.FC<Props> = ({ user, book }) => {
     const lowerBoxBackground = useColorModeValue('white', 'gray.800')
     const history = useHistory()
     const location = useLocation()
-    const addBook = useAddBookMutation()
+    const addBook = useAddBook()
 
     const handleAdd = async () => {
         if (user) {

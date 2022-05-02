@@ -1,7 +1,7 @@
 import { MockedProvider } from '@apollo/client/testing'
 import { cleanup, render, screen } from '@testing-library/react'
 import Book from '../../../components/Book/Book'
-import * as useSearchBookQuery from '../../../graphql/useSearchBookQuery'
+import * as useSearchBookQuery from '../../../hooks/graphql/useSearchBook'
 import { searchedBookResult } from '../../utils/bookUtils'
 
 jest.mock('react-router-dom', () => {
@@ -30,7 +30,7 @@ describe('Book component', () => {
         ).toBeInTheDocument()
     })
 
-    test('if loading, show loading spinner', () => {
+    test('if not loading, show book data', () => {
         renderBook(false)
 
         expect(screen.getByText(searchedBookResult.title)).toBeInTheDocument()

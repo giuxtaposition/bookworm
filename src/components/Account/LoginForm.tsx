@@ -13,7 +13,7 @@ import {
 import React, { useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { LOGIN } from '../../graphql/mutations'
-import { AddBookRequest } from '../../graphql/useAddBookMutation'
+import { AddBookRequest } from '../../hooks/graphql/useAddBook'
 import { User } from '../../types/User'
 
 interface Props {

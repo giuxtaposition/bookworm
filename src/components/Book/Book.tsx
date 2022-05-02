@@ -1,5 +1,5 @@
 import { VStack } from '@chakra-ui/react'
-import useSearchBookQuery from '../../graphql/useSearchBookQuery'
+import useSearchBook from '../../hooks/graphql/useSearchBook'
 import { User } from '../../types/User'
 import LoadingSpinner from '../LoadingSpinner'
 import BookLowerBox from './BookLowerBox'
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Book: React.FC<Props> = ({ user }) => {
-    const { searchBookResult, loading } = useSearchBookQuery()
+    const { searchBookResult, loading } = useSearchBook()
 
     return (
         <VStack

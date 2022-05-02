@@ -1,18 +1,11 @@
-import { useQuery } from '@apollo/client'
 import { Box, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react'
 import React from 'react'
-import { BOOK_COUNT, BOOK_COUNT_BY_READSTATE } from '../../graphql/queries'
+import useBookCount from '../../hooks/graphql/useBookCount'
 import LoadingSpinner from '../LoadingSpinner'
 import StatBox from './StatBox'
 
 const Stats: React.FC = () => {
-    const totalBooks = useQuery(BOOK_COUNT)
-    const totalRead = useQuery(BOOK_COUNT_BY_READSTATE, {
-        variables: { readState: 'read' },
-    })
-    const totalUnread = useQuery(BOOK_COUNT_BY_READSTATE, {
-        variables: { readState: 'unread' },
-    })
+    const { totalBooks, totalRead, totalUnread } = useBookCount()
 
     return (
         <>
@@ -51,21 +44,19 @@ const Stats: React.FC = () => {
                                 {/*Total Number of Books*/}
                                 <StatBox
                                     label='Total Books'
-                                    number={totalBooks.data.bookCount}
+                                    number={totalBooks.bookCount}
                                     text='Total number of books in the library'
                                 />
                                 {/*Total Read*/}
                                 <StatBox
                                     label='Read'
-                                    number={totalRead.data.bookCountByReadState}
+                                    number={totalRead.bookCount}
                                     text='Total number of books read'
                                 />
                                 {/*Total Not Read*/}
                                 <StatBox
                                     label='Not Read'
-                                    number={
-                                        totalUnread.data.bookCountByReadState
-                                    }
+                                    number={totalUnread.bookCount}
                                     text='Total number of books not read'
                                 />
                             </SimpleGrid>

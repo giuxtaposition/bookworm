@@ -1,9 +1,9 @@
 import { useMutation } from '@apollo/client'
 import { useToast } from '@chakra-ui/react'
-import { ADD_BOOK } from './mutations'
-import { ALL_BOOKS } from './queries'
+import { ADD_BOOK } from '../../graphql/mutations'
+import { ALL_BOOKS } from '../../graphql/queries'
 
-const useAddBookMutation = (): ((request: AddBookRequest) => void) => {
+const useAddBook = (): ((request: AddBookRequest) => void) => {
     const toast = useToast()
     const [addBook] = useMutation(ADD_BOOK, {
         onError: error => {
@@ -63,7 +63,7 @@ const useAddBookMutation = (): ((request: AddBookRequest) => void) => {
             },
         })
 }
-export default useAddBookMutation
+export default useAddBook
 
 export interface AddBookRequest {
     title: string

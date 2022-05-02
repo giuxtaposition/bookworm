@@ -3,7 +3,7 @@ import { Heading, SimpleGrid, useMediaQuery, VStack } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { SEARCH_BOOKS } from '../../graphql/queries'
-import useAddBookMutation from '../../graphql/useAddBookMutation'
+import useAddBook from '../../hooks/graphql/useAddBook'
 import { User } from '../../types/User'
 import { LocationState } from '../Account/LoginForm'
 import BookCardList from './BookCardList'
@@ -27,7 +27,7 @@ const Search: React.FC<Props> = ({ user }) => {
     const queryParams = useQuery()
     const search = queryParams.get('q')
     const filter = queryParams.get('filter')
-    const addBook = useAddBookMutation()
+    const addBook = useAddBook()
 
     const [searchBooks, { loading, data }] = useLazyQuery(SEARCH_BOOKS, {
         variables: {
