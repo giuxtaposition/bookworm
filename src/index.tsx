@@ -5,10 +5,11 @@ import {
     split,
 } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { WebSocketLink } from '@apollo/client/link/ws'
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { getMainDefinition } from '@apollo/client/utilities'
 import { ColorModeScript } from '@chakra-ui/react'
 import { createUploadLink } from 'apollo-upload-client'
+import { createClient } from 'graphql-ws'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
@@ -47,17 +48,16 @@ const httpLink = createUploadLink({
 })
 
 const wsLink = process.browser
-    ? new WebSocketLink({
-          uri: wsLinkUri,
-          options: {
-              reconnect: true,
+    ? new GraphQLWsLink(
+          createClient({
+              url: wsLinkUri,
               connectionParams: {
                   authorization: localStorage.getItem('bookworm-user-token'),
                   username: localStorage.getItem('bookworm-user'),
                   url: httpLinkUri.replace('/graphql', ''),
               },
-          },
-      })
+          })
+      )
     : null
 
 const splitLink = process.browser

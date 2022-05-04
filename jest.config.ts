@@ -13,7 +13,11 @@ const config: Config.InitialOptions = {
     moduleDirectories: ['node_modules', 'src/__tests__/utils'],
     testEnvironment: 'jest-environment-jsdom',
     setupFilesAfterEnv: ['<rootDir>/src/__tests__/utils/setupTests.ts'],
-    testPathIgnorePatterns: ['src/__tests__/utils', 'src/__tests__/__mocks__'],
+    testPathIgnorePatterns: [
+        'src/__tests__/utils',
+        'src/__tests__/__mocks__',
+        'cypress/tests',
+    ],
 }
 
 export default config
