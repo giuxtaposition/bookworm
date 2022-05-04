@@ -25,6 +25,7 @@ const BookCard: React.FC<Props> = ({ cover, id, title, author }) => {
             w='3xs'
             alignItems='center'
             justifyContent='center'
+            className='book-card'
         >
             <Box>
                 <Link as={ReactRouterLink} to={`/book/${id}`}>

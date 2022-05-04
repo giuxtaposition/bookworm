@@ -51,11 +51,9 @@ const BookCardList: React.FC<Props> = ({
     const location = useLocation()
     const addBook = useAddBook()
 
-    console.log('author', author)
-
     const handleAdd = async () => {
         if (user) {
-            await addBook({
+            addBook({
                 title,
                 id,
                 published,
@@ -97,6 +95,7 @@ const BookCardList: React.FC<Props> = ({
             bg={useColorModeValue('white', '#2a2d37')}
             shadow='lg'
             rounded='lg'
+            className='search-result-list-item'
         >
             <Link as={ReactRouterLink} to={`/book/${id}`}>
                 <Box w={{ base: '5em', md: '8em' }}>

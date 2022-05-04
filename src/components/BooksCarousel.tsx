@@ -49,6 +49,7 @@ const BooksCarousel: React.FC<Props> = ({ children }) => {
             alignItems='center'
             justifyContent='center'
             p={10}
+            className='books-carousel'
         >
             <Flex h='xs' w='full' {...BooksCarouselStyle}>
                 {Array.from({ length: pagesCount }).map((_, sid) => (

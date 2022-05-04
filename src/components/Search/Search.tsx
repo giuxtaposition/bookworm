@@ -70,7 +70,6 @@ const Search: React.FC<Props> = ({ user }) => {
             </Heading>
 
             {loading && <SearchLoadingSkeleton />}
-            {console.log(search, filter)}
 
             {data && (
                 <SimpleGrid

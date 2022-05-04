@@ -13,7 +13,7 @@ interface Props {
 
 const Home: React.FC<Props> = ({ user, setToken }) => {
     return (
-        <VStack spacing={4} w='100vw'>
+        <VStack spacing={4} w='100vw' id='home-hero'>
             {!user && <DemoUserBanner setToken={setToken} />}
 
             <VStack
