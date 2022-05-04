@@ -123,7 +123,7 @@ const LibraryTableBody: React.FC<Props> = ({ book }) => {
                     </Link>
                 </Box>
                 <Text>{book.title}</Text>
-                <Text>{book.author.name}</Text>
+                <Text>{book.author?.name}</Text>
                 <Text>
                     {!isLargerThan730 && 'Published: '}
                     {book.published}

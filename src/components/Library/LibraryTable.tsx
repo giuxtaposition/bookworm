@@ -35,7 +35,7 @@ const LibraryTable: React.FC<Props> = ({
             if (book.title.toLowerCase().includes(searchFilter.toLowerCase())) {
                 return book
             } else if (
-                book.author.name
+                book.author?.name
                     .toLowerCase()
                     .includes(searchFilter.toLowerCase())
             ) {
@@ -45,7 +45,7 @@ const LibraryTable: React.FC<Props> = ({
 
         const checkAuthor = (book: Book) => {
             if (
-                book.author.name
+                book.author?.name
                     .toLowerCase()
                     .includes(searchFilter.toLowerCase())
             ) {

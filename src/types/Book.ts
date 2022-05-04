@@ -5,7 +5,7 @@ export interface Book {
     cover: string
     title: string
     description: string
-    author: Author
+    author?: Author
     pages: number
     genres: string[]
     published: string
