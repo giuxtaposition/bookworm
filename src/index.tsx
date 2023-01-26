@@ -24,8 +24,8 @@ if (process.env.NODE_ENV !== "production") {
     httpLinkUri = "http://localhost:4000/graphql"
     wsLinkUri = "ws://localhost:4000/graphql"
 } else {
-    httpLinkUri = "https://bookworm-backend-production.up.railway.app/graphql"
-    wsLinkUri = "wss://bookworm-backend-production.up.railway.app/graphql"
+    httpLinkUri = "https://bookworm-backend-giuxtaposition.vercel.app/graphql"
+    wsLinkUri = "wss://bookworm-backend-giuxtaposition.vercel.app/graphql"
 }
 
 const authLink = setContext((_, { headers }) => {
